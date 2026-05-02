@@ -244,3 +244,25 @@ a {
     padding-bottom: 8px;
   }
 }
+
+/* Home globe — (< sm / 640px) only; Figma-sized mask/clipping is restored at sm+. */
+@media (max-width: 639px) {
+  .hero-home-globe-mobile.hero-circle {
+    top: 14%;
+    /* Stay inside overflow-x-clip + edge safe inset so the sphere is not cropped on the sides */
+    width: min(76vw, calc(100vw - 48px));
+    height: min(76vw, calc(100vw - 48px));
+    max-width: min(340px, calc(100vw - 48px));
+    max-height: min(340px, calc(100vw - 48px));
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  /* Fixed 553px mask dwarfs the small circle — scale artwork to fit the sphere. */
+  .hero-home-globe-mobile .hero-globe-fill {
+    -webkit-mask-size: contain !important;
+    mask-size: contain !important;
+    -webkit-mask-position: center !important;
+    mask-position: center !important;
+  }
+}

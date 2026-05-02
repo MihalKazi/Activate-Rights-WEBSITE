@@ -19,6 +19,55 @@ const figmaHeroHeight = FIGMA_FRAME.H - FIGMA_NAV_BAND_PX;
 /** Figma mask node 34:37 / 34:39 — exported from MCP; local copy for stable URLs. */
 const EARTH_MASK_SRC = "/images/earth-mask.png";
 
+/**
+ * Home hero headline sizes:
+ * - **Phones / tablets (below `lg`):** edit **`MOBILE_HEADLINE_CLAMPS`** — injected as a `<style>` block in this component so sizes always apply (Tailwind `h1` preflight + vars were unreliable).
+ *   - **`base`** — viewport **&lt; 640px**
+ *   - **`sm`** — **640px–767px**
+ *   - **`md`** — **768px–1023px** (still below `lg`)
+ * - **Desktop (`lg`+):** `DESKTOP_HEADLINE_CLAMP` on the `hidden lg:block` headings.
+ * Font **family**: `.home-headline-font` in **`app/globals.css`** (Stack Sans Notch).
+ */
+const MOBILE_HEADLINE_CLAMPS = {
+  /** viewport &lt; 640px */
+  base: "clamp(36px, 10.5vw, 58px)",
+  sm: "clamp(50px, 11.5vw, 66px)",
+  md: "clamp(54px, 10.8vw, 72px)"
+} as const;
+
+/** Matches `.home-headline-font` — clean bold, no faux outline. */
+const MOBILE_HEADLINE_WEIGHT = "700";
+
+/** Injected once per Hero — uses clamps above so edits take effect immediately after save. */
+const MOBILE_HEADLINE_STYLE_TAG = `
+.hero-home-mobile-lines h1 {
+  font-size: ${MOBILE_HEADLINE_CLAMPS.base} !important;
+  line-height: 1.02;
+  font-weight: ${MOBILE_HEADLINE_WEIGHT} !important;
+  letter-spacing: -0.025em;
+}
+@media (min-width: 640px) {
+  .hero-home-mobile-lines h1 {
+    font-size: ${MOBILE_HEADLINE_CLAMPS.sm} !important;
+    line-height: 1.05;
+    font-weight: ${MOBILE_HEADLINE_WEIGHT} !important;
+    letter-spacing: -0.02em;
+  }
+}
+@media (min-width: 768px) {
+  .hero-home-mobile-lines h1 {
+    font-size: ${MOBILE_HEADLINE_CLAMPS.md} !important;
+    line-height: 1.06;
+    font-weight: ${MOBILE_HEADLINE_WEIGHT} !important;
+    letter-spacing: -0.015em;
+  }
+}
+`;
+
+/** Home hero desktop (`lg`+) — five headline lines; tune max / formula here. */
+const DESKTOP_HEADLINE_CLAMP =
+  "clamp(28px, calc((min(100vw, 1440px) - 100px) / 13.5), 107px)";
+
 export function Hero() {
   const lines = new Array(5).fill("internet demands freedom");
   const lineTopsPct = FIGMA_LINE_Y.map(
@@ -49,12 +98,16 @@ export function Hero() {
         } as CSSProperties
       }
     >
+      <style dangerouslySetInnerHTML={{ __html: MOBILE_HEADLINE_STYLE_TAG }} />
       <div className="relative mx-auto h-full w-full min-h-0 max-w-[1440px]">
         {/* Globe — lg+: lift so bottom arc clears stripe band (gap above stripes) */}
         <div
-          className="hero-circle pointer-events-none absolute z-20 left-1/2 top-[18%] h-[88vw] w-[88vw] max-h-[440px] max-w-[440px] -translate-x-1/2 sm:top-[16%] sm:h-[82vw] sm:w-[82vw] sm:max-h-[480px] sm:max-w-[480px] md:top-[14%] md:h-[72vw] md:w-[72vw] md:max-h-[520px] md:max-w-[520px] lg:left-[105.19px] lg:top-[var(--figma-globe-y-lg)] lg:h-[717.436px] lg:w-[705.047px] lg:max-h-none lg:max-w-none lg:translate-x-0 lg:-translate-y-12 xl:-translate-y-14 2xl:-translate-y-16"
+          className="hero-circle hero-home-globe-mobile pointer-events-none absolute z-20 left-1/2 top-[18%] h-[88vw] w-[88vw] max-h-[440px] max-w-[440px] -translate-x-1/2 sm:top-[16%] sm:h-[82vw] sm:w-[82vw] sm:max-h-[480px] sm:max-w-[480px] md:top-[14%] md:h-[72vw] md:w-[72vw] md:max-h-[520px] md:max-w-[520px] lg:left-[105.19px] lg:top-[var(--figma-globe-y-lg)] lg:h-[717.436px] lg:w-[705.047px] lg:max-h-none lg:max-w-none lg:translate-x-0 lg:-translate-y-12 xl:-translate-y-14 2xl:-translate-y-16"
         >
-          <div className="h-full w-full bg-[#006b40]" style={globeMask} />
+          <div
+            className="hero-globe-fill h-full w-full bg-[#006b40]"
+            style={globeMask}
+          />
         </div>
 
         {/* Stripes — node 34:45 */}
@@ -69,14 +122,21 @@ export function Hero() {
         </div>
 
         <div className="absolute inset-0 z-30">
-          <div className="hero-lines home-headline-font lowercase text-white lg:hidden">
-            <div className="absolute left-4 right-4 top-[4%] space-y-1 sm:left-6 sm:right-6 sm:top-[3%] sm:space-y-1.5 md:top-[2%] md:space-y-2">
+          <div className="hero-home-mobile-lines home-headline-font lowercase text-white lg:hidden">
+            {/*
+              Below sm: five left-aligned phrases, each full width (two headline lines); sit clear
+              of stripe band (~top 79%); smaller type only when needed (< sm). sm+: stacked block layout.
+            */}
+            <div className="absolute inset-x-4 top-[4.75rem] bottom-[41%] flex flex-col justify-between pb-2 sm:inset-x-6 sm:top-[3%] sm:bottom-auto sm:block sm:space-y-2 sm:pb-0 md:top-[2%] md:space-y-2.5">
               {lines.map((_, index) => (
-                <div key={`hero-mobile-block-${index}`} className="text-left">
-                  <h1 className="text-[clamp(34px,9.6vw,46px)] leading-[0.93] sm:text-[clamp(38px,8.8vw,52px)] md:text-[clamp(42px,7.8vw,56px)]">
+                <div
+                  key={`hero-mobile-block-${index}`}
+                  className="w-full min-w-0 text-left"
+                >
+                  <h1 className="block w-full max-w-none">
                     internet demands
                   </h1>
-                  <h1 className="text-[clamp(34px,9.6vw,46px)] leading-[0.93] sm:text-[clamp(38px,8.8vw,52px)] md:text-[clamp(42px,7.8vw,56px)]">
+                  <h1 className="mt-2 block w-full max-w-none sm:mt-1.5">
                     freedom
                   </h1>
                 </div>
@@ -94,8 +154,7 @@ export function Hero() {
                 className="absolute left-4 right-10 box-border max-w-full -translate-y-1/2 whitespace-nowrap sm:left-6 sm:right-10 lg:left-[40px] lg:right-10"
                 style={{
                   top: `${lineTopsPct[index]}%`,
-                  fontSize:
-                    "clamp(28px, calc((min(100vw, 1440px) - 100px) / 13.5), 107px)",
+                  fontSize: DESKTOP_HEADLINE_CLAMP,
                   lineHeight: 0.929
                 }}
               >
