@@ -1,0 +1,12 @@
+{
+  "name": "activate-rights",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "pnpm -C activaterights dev",
+    "build": "pnpm -C activaterights build",
+    "lint": "pnpm -C activaterights lint",
+    "typecheck": "pnpm -C activaterights typecheck",
+    "sanity": "pnpm -C activaterights/apps/web exec sanity"
+  }
+}

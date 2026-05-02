@@ -1,0 +1,285 @@
+{
+  "about": {
+    "metaTitle": "About — Activate Rights",
+    "metaDescription": "We are a collective fighting for free speech, human rights, and an open internet in Bangladesh.",
+    "heroLine1": "      we are a collective",
+    "heroLine2": "fighting for",
+    "heroLine3": "free speech, human rights,",
+    "heroLine4": "and         an open internet",
+    "whatWeDoTitle1": "what  do",
+    "whatWeDoTitle2": "we do",
+    "workRow1Title1": "CENSORSHIP",
+    "workRow1Title2": "Monitoring",
+    "workRow1Body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
+    "workRow2Title1": "Archive",
+    "workRow2Title2": "Violence",
+    "workRow2Body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
+    "workRow3Title1": "EMPOWER",
+    "workRow3Title2": "COMMUNITY",
+    "workRow3Body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
+    "whoWeAreTitle": "who are we",
+    "teamMembers": [
+      {
+        "name": "Shoeb Abdullah",
+        "role": "Executive Director",
+        "imageAscii": "/images/about/shoeb-ascii.png",
+        "imagePhoto": "/images/about/shoeb-photo.png"
+      },
+      {
+        "name": "Minhaj Aman",
+        "role": "Research and Policy Lead",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Dewan Maruf Ahmed",
+        "role": "Program and Strategy Lead",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Saeed Mahmud Sohrab",
+        "role": "Tech and Security Lead",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Subinoy Mustofi Eron",
+        "role": "Internet Freedom Coordinator",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Rakib Hasan Siam",
+        "role": "Organizational Operations Lead",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Adnan Aziz",
+        "role": "Archive and Documentation Coordinator",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Iffat Nowshin Joye",
+        "role": "Creative Advocacy Coordinator",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      },
+      {
+        "name": "Anika Momenine Nur",
+        "role": "Finance Coordinator",
+        "imageAscii": "/images/about/member-placeholder-ascii.png",
+        "imagePhoto": "/images/about/member-placeholder-photo.png"
+      }
+    ],
+    "partnersTitle1": "we have",
+    "partnersTitle2": "worked with",
+    "partnerEngageMediaAlt": "EngageMedia",
+    "ctaHeading1": "want to work with us",
+    "ctaHeading2": "on our fight for digital freedom?",
+    "ctaButton": "Let's Collab!",
+    "footerEmail": "contact@activaterights.org",
+    "footerFacebook": "Facebook",
+    "footerTwitter": "Twitter / X",
+    "footerInstagram": "Instagram"
+  },
+  "projects": {
+    "metaTitle": "Projects — Activate Rights",
+    "metaDescription": "Initiatives we run to defend digital rights, monitor shutdowns, and push back on disinformation in Bangladesh.",
+    "heroLine1": "our",
+    "heroLine2": "projects",
+    "partnerTechTalesLine1": "TECH TALES",
+    "partnerTechTalesLine2": "YOUTH",
+    "items": [
+      {
+        "slug": "shutdown-watch",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": false,
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      },
+      {
+        "slug": "disinfo-watch",
+        "title": "Disinfo Watch",
+        "titleLeadingSlash": false,
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      },
+      {
+        "slug": "shutdown-watch",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": false,
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      },
+      {
+        "slug": "disinfo-watch",
+        "title": "Disinfo Watch",
+        "titleLeadingSlash": false,
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      }
+    ]
+  },
+  "reports": {
+    "metaTitle": "Reports — Activate Rights",
+    "metaDescription": "Published reports on digital rights, internet shutdowns, and policy in Bangladesh.",
+    "heroLine1": "published",
+    "heroLine2": "reports",
+    "items": [
+      {
+        "slug": "shutdown-watch",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": false,
+        "date": "2024-02-19"
+      },
+      {
+        "slug": "shutdown-watch-2",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": false,
+        "date": "2024-02-19"
+      },
+      {
+        "slug": "shutdown-watch-slash",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": true,
+        "date": "2024-02-19"
+      },
+      {
+        "slug": "shutdown-watch-4",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": false,
+        "date": "2024-02-19"
+      },
+      {
+        "slug": "shutdown-watch-5",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": false,
+        "date": "2024-02-19"
+      },
+      {
+        "slug": "shutdown-watch-slash-2",
+        "title": "Shutdown Watch",
+        "titleLeadingSlash": true,
+        "date": "2024-02-19"
+      }
+    ]
+  },
+  "articles": {
+    "metaTitle": "Articles — Activate Rights",
+    "metaDescription": "Updates and articles on digital rights, internet freedom, and policy in Bangladesh.",
+    "heroLine1": "updates and",
+    "heroLine2": "articles",
+    "filterAll": "ALL",
+    "filterOpinion": "OPINION",
+    "filterUpdates": "UPDATES",
+    "filterFeature": "FEATURE",
+    "filterBlah": "BLAH",
+    "loadMore": "LOAD MORE",
+    "backToArticles": "Back to articles",
+    "defaultPublished": "—",
+    "shareArticleAria": "Share this article",
+    "fallbackBody": "This article’s full text will appear here when connected to the CMS.",
+    "items": [
+      {
+        "slug": "shutdown-patterns",
+        "title": "Mapping shutdown patterns across districts",
+        "author": "John Doe",
+        "metaCategory": "Updates",
+        "publishedAt": "12.03.2025",
+        "filter": "updates",
+        "accentTitle": false,
+        "bodyLines": [
+          "We compiled district-level disruption signals to show how shutdowns cluster in time and geography.",
+          "The dataset draws on public reporting, partner alerts, and technical measurements where available. Patterns help advocates brief policymakers with clearer evidence.",
+          "This note will expand as we publish the full methodology and interactive maps."
+        ]
+      },
+      {
+        "slug": "opinion-net-neutrality",
+        "title": "Why net neutrality still matters here",
+        "author": "John Doe",
+        "metaCategory": "Blog",
+        "publishedAt": "02.05.2026",
+        "filter": "opinion",
+        "accentTitle": true,
+        "bodyLines": [
+          "Net neutrality is not an abstract regulatory debate—it shapes whether local voices can reach audiences without paying tolls to gatekeepers.",
+          "Where prioritization is opaque, independent media and small enterprises are first to lose reach during congestion or political pressure.",
+          "We argue for simple, enforceable rules and transparency so users—not intermediaries alone—decide what succeeds online."
+        ]
+      },
+      {
+        "slug": "feature-long-read",
+        "title": "A year inside the monitoring room",
+        "author": "John Doe",
+        "metaCategory": "Blog",
+        "filter": "feature",
+        "accentTitle": false,
+        "bodyLines": [
+          "Our monitoring room runs on rotating shifts, checklists, and a shared log so nothing gets dropped when traffic spikes.",
+          "Verification means cross-checking traceroutes, crowd alerts, and regulator notices before we publish a timeline.",
+          "This long read walks through three real incidents and what we changed in process afterward."
+        ]
+      },
+      {
+        "slug": "quick-update-march",
+        "title": "Quick update: March incidents",
+        "author": "John Doe",
+        "metaCategory": "Updates",
+        "filter": "updates",
+        "accentTitle": false,
+        "bodyLines": [
+          "March saw concentrated throttling reports in two regions alongside short DNS anomalies.",
+          "We are validating secondary sources and will issue a fuller bulletin next week."
+        ]
+      },
+      {
+        "slug": "notes-field",
+        "title": "Notes from the field team",
+        "author": "John Doe",
+        "metaCategory": "Blog",
+        "filter": "blah",
+        "accentTitle": false,
+        "bodyLines": [
+          "Field notes capture context that charts miss—how outages feel on the ground, and what small businesses do to stay reachable.",
+          "These fragments inform our longer reports and training materials."
+        ]
+      }
+    ]
+  },
+  "events": {
+    "metaTitle": "Events — Activate Rights",
+    "metaDescription": "Upcoming workshops, talks, and community events from Activate Rights.",
+    "heroLine1": "upcoming",
+    "heroLine2": "events",
+    "empty": "No upcoming events scheduled. Check back soon."
+  },
+  "contact": {
+    "metaTitle": "Contact — Activate Rights",
+    "metaDescription": "Reach out to Activate Rights — tell us your story or collaborate on digital rights work.",
+    "heroTitle": "let's talk!",
+    "fieldName": "Name *",
+    "fieldEmail": "Email *",
+    "fieldStory": "Write us your story *",
+    "send": "Send",
+    "formThanks": "Thanks — we’ll get back to you soon."
+  },
+  "nav": {
+    "home": "Home",
+    "articles": "Articles",
+    "projects": "Projects",
+    "team": "Team",
+    "events": "Events",
+    "campaigns": "Campaigns"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "newsletter": "Newsletter",
+    "subscribe": "Subscribe"
+  },
+  "common": {
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "loading": "Loading...",
+    "error": "Something went wrong."
+  }
+}

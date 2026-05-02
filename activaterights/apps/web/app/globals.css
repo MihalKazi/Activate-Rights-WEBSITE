@@ -1,0 +1,246 @@
+@import url("https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&display=swap");
+
+:root {
+  /* Figma Home frame fill (Rectangle 38) */
+  --color-bg: #248f6b;
+  --color-surface: #1a8d77;
+  --color-accent: #ffffff;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d6efe9;
+  --color-border: rgba(255, 255, 255, 0.35);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  /* Default canvas — each route sets its own surface (e.g. home-surface). */
+  background-color: #ffffff;
+  color: #171717;
+}
+
+body {
+  font-family: var(--font-inter), Inter, sans-serif;
+  background-color: #ffffff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container-shell {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.texture-overlay {
+  position: relative;
+}
+
+.texture-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("/images/home-texture.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+}
+
+.home-surface {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  background-image: url("/images/home-texture-target.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  /* Tile is a photo of linen — without blend, opaque pixels replace the fill and read as “forest” green */
+  background-blend-mode: soft-light;
+}
+
+/* Projects — Figma 34:550: green 34:551 #06B85C, partners blue 34:585 #2D74FD */
+.projects-grain-green,
+.projects-grain-blue {
+  position: relative;
+  isolation: isolate;
+}
+
+.projects-grain-green {
+  /* Figma 34:551 */
+  background-color: #06b85c;
+  background-image: url("/images/home-texture-target.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  background-blend-mode: soft-light;
+}
+
+.projects-grain-blue {
+  /* Figma 34:585 */
+  background-color: #2d74fd;
+  background-image: url("/images/home-texture-target.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  background-blend-mode: soft-light;
+}
+
+/* Fine-grain overlay — keep subtle so base #06b85c / #2d74fd stay close to Figma */
+.home-surface::after,
+.projects-grain-green::after,
+.projects-grain-blue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/images/home-texture-grain.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
+/* Reports 34:740 — optional grain on #fafcff grid (lighter than hero) */
+.reports-body-grain {
+  background-image: url("/images/home-texture-grain.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+}
+
+/* Articles listing — soft grain on #fafcff (multiply was reading as flat gray) */
+.articles-listing-grain {
+  background-image: url("/images/home-texture-grain.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  opacity: 0.12;
+  mix-blend-mode: soft-light;
+}
+
+/* Figma 34:583 — Stack Sans Notch SemiBold headline */
+.projects-hero-title.home-headline-font {
+  font-weight: 600;
+}
+
+.home-headline-font {
+  font-family: "Stack Sans Notch", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@media (min-width: 1536px) {
+  .hero-content {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .hero-lines {
+    font-size: clamp(72px, 5.2vw, 100px);
+    line-height: 0.91;
+  }
+
+  .hero-stripes {
+    margin-top: 16px;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1919px) {
+  .hero-section {
+    padding-top: 26px;
+  }
+
+  .hero-content {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+
+  .hero-lines {
+    font-size: clamp(74px, 6vw, 98px);
+    line-height: 0.905;
+  }
+
+  .hero-circle {
+    left: 22px;
+    top: 122px;
+    width: 470px;
+    height: 470px;
+  }
+
+  .hero-stripes {
+    margin-top: 16px;
+    padding-bottom: 14px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .home-surface,
+  .home-surface::after,
+  .projects-grain-green,
+  .projects-grain-green::after,
+  .projects-grain-blue,
+  .projects-grain-blue::after {
+    background-size: 600px auto;
+  }
+
+  .hero-content {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .hero-lines {
+    font-size: clamp(84px, 4.9vw, 112px);
+    line-height: 0.91;
+  }
+
+  .hero-circle {
+    left: 26px;
+    top: 132px;
+    width: 500px;
+    height: 500px;
+  }
+
+  .hero-stripes {
+    margin-top: 14px;
+    padding-bottom: 16px;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 900px) {
+  .hero-section {
+    padding-top: 10px;
+  }
+
+  .hero-lines {
+    font-size: clamp(46px, 6vw, 82px);
+    line-height: 0.9;
+  }
+
+  .hero-circle {
+    top: 80px;
+    width: 320px;
+    height: 320px;
+  }
+
+  .hero-stripes {
+    margin-top: 12px;
+    padding-bottom: 8px;
+  }
+}
