@@ -160,8 +160,8 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
               maskImage: "url(/images/about/hero-mask.png)",
               WebkitMaskRepeat: "no-repeat",
               maskRepeat: "no-repeat",
-              WebkitMaskPosition: "center bottom",
-              maskPosition: "center bottom",
+              WebkitMaskPosition: "right bottom",
+              maskPosition: "right bottom",
               WebkitMaskSize: "min(100%, 900px) 100%",
               maskSize: "min(100%, 900px) 100%"
             }}
