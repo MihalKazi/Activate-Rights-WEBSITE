@@ -8,7 +8,8 @@ export const sanityClient = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === "production",
+  /** API directly — avoids stale reads on the Edge CDN right after publishing/import. */
+  useCdn: false,
   perspective: "published"
 });
 

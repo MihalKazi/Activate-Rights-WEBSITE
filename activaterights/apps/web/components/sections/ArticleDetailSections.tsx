@@ -3,11 +3,17 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Roboto_Mono } from "next/font/google";
+import type { Image as SanityImage } from "sanity";
+import { ArticlePdfEmbed } from "../ArticlePdfEmbed";
+import { ArticlePortableBody } from "../ArticlePortableBody";
 import { AboutFooter } from "../layout/AboutFooter";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
-import { ARTICLE_ROW_RULE_CLASS, type ArticleListItem } from "./ArticlesListClient";
+import { mapArticleToCardRow } from "../../lib/articles/mapArticleCard";
+import { getArticleBySlug } from "../../lib/sanity/queries";
+import { urlFor } from "../../lib/sanity/image";
 import { ArticleShareButton } from "./ArticleShareButton";
+import { RelatedWritings } from "./RelatedWritings";
 import { cn } from "../../lib/utils";
 
 const robotoMono = Roboto_Mono({
@@ -16,60 +22,52 @@ const robotoMono = Roboto_Mono({
   display: "swap"
 });
 
-/** Listing row + optional body copy for detail view */
-export type ArticleDetailItem = ArticleListItem & {
-  bodyLines?: string[];
-};
-
 type ArticleDetailSectionsProps = {
   locale: Locale;
   slug: string;
 };
 
-function parseArticleItems(raw: unknown): ArticleDetailItem[] {
-  if (!Array.isArray(raw)) return [];
-  return raw.filter((item): item is ArticleDetailItem => {
-    if (!item || typeof item !== "object") return false;
-    const r = item as Record<string, unknown>;
-    return (
-      typeof r.slug === "string" &&
-      typeof r.title === "string" &&
-      typeof r.author === "string" &&
-      typeof r.metaCategory === "string" &&
-      typeof r.filter === "string" &&
-      typeof r.accentTitle === "boolean"
-    );
-  });
-}
-
-/** Figma 34:1065 — Stack Sans Regular 22px / 26px (not mono) */
-const articleBodyClass =
-  'max-w-[784px] space-y-6 font-[\'Stack Sans Notch\',sans-serif] text-[22px] font-normal leading-[26px] text-black [&_a]:underline [&_a]:underline-offset-2';
-
 export async function ArticleDetailSections({ locale, slug }: ArticleDetailSectionsProps) {
   const t = await getTranslations({ locale, namespace: "articles" });
   const tAbout = await getTranslations({ locale, namespace: "about" });
 
-  const items = parseArticleItems(t.raw("items"));
-  const article = items.find((i) => i.slug === slug);
+  const article = await getArticleBySlug(slug, locale);
   if (!article) {
     notFound();
   }
 
-  const bodyLines =
-    article.bodyLines?.length ? article.bodyLines : [t("fallbackBody")];
+  const row = mapArticleToCardRow(article, locale);
+  const coverSrc = article.coverImage?.asset?._ref
+    ? urlFor(article.coverImage as SanityImage).width(1920).height(1080).fit("crop").auto("format").url()
+    : undefined;
 
-  const publishedDisplay = article.publishedAt ?? t("defaultPublished");
+  const publishedDisplay = row.publishedAt ?? t("defaultPublished");
+  const hasBody = Array.isArray(article.body) && article.body.length > 0;
+  const pdfFromStudio = (article.pdfAttachments ?? []).filter(
+    (p): p is { title?: string | null; url: string } =>
+      Boolean(p?.url && typeof p.url === "string")
+  );
+  const hasPdfAttachments = pdfFromStudio.length > 0;
+  const showBodyFallback = !hasBody && !hasPdfAttachments;
+  const excerptText = article.excerpt?.trim();
+
+  const relatedWritings = (article.relatedArticles ?? []).filter(
+    (r) =>
+      r &&
+      r._id !== article._id &&
+      r.slug?.current &&
+      String(r.slug.current).length > 0
+  );
 
   return (
     <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-[#212121]">
       {/* Hero from y=0; nav overlays image (Figma-style stacked header) */}
       <div className="relative w-full">
         <div className="relative h-[min(56vw,804px)] min-h-[220px] w-full overflow-hidden bg-neutral-300">
-          {article.coverSrc ? (
+          {coverSrc ? (
             <Image
-              src={article.coverSrc}
-              alt=""
+              src={coverSrc}
+              alt={article.title}
               fill
               className="object-cover"
               sizes="100vw"
@@ -92,11 +90,11 @@ export async function ArticleDetailSections({ locale, slug }: ArticleDetailSecti
       <section className="relative bg-[#fafcff] px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14">
         <div className="articles-listing-grain pointer-events-none absolute inset-0 z-0" aria-hidden />
 
-        <article className="relative z-10 mx-auto w-full max-w-[785px]">
+        <article className="relative z-10 mx-auto w-full max-w-[min(100%,720px)] lg:max-w-[785px]">
           {/* Title — Figma 34:1059: Stack Sans SemiBold 48px #303ccf */}
           <h1
             className={cn(
-              "home-headline-font !font-semibold text-[clamp(28px,6vw,48px)] leading-[1.1] text-[#303ccf]"
+              "home-headline-font !font-semibold text-[clamp(28px,6vw,48px)] leading-[1.08] tracking-tight text-[#303ccf]"
             )}
           >
             {article.title}
@@ -106,35 +104,81 @@ export async function ArticleDetailSections({ locale, slug }: ArticleDetailSecti
           <div
             className={cn(
               robotoMono.className,
-              "mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between md:mt-10"
+              "mt-7 flex flex-col gap-4 border-b border-[#303ccf]/10 pb-7 sm:flex-row sm:items-center sm:justify-between md:mt-9"
             )}
           >
-            <p className="text-[18px] font-normal leading-[26px] text-[#212121] md:text-[20px]">
-              <span className={article.accentTitle ? "text-[#1423cb]" : undefined}>
-                {article.author}
-              </span>
-              <span className="text-[#212121]"> {" / "} </span>
-              <span>{article.metaCategory}</span>
+            <p className="text-[17px] font-normal leading-relaxed text-[#212121] md:text-[18px]">
+              <span className={row.accentTitle ? "font-medium text-[#1423cb]" : undefined}>{row.author}</span>
+              <span className="text-neutral-400"> {" · "} </span>
+              <span className="text-neutral-700">{row.metaCategory}</span>
             </p>
-            <div className="flex shrink-0 items-center gap-3 sm:justify-end">
-              <span className="text-[14px] font-normal leading-[26px] text-[#c1bebe]">
+            <div className="flex shrink-0 items-center gap-4 sm:justify-end">
+              <time
+                dateTime={article.publishedAt}
+                className="text-[13px] font-normal uppercase tracking-wide text-[#9ca3af] md:text-[14px]"
+              >
                 {publishedDisplay}
-              </span>
+              </time>
               <ArticleShareButton ariaLabel={t("shareArticleAria")} />
             </div>
           </div>
 
-          <div className={cn("mt-6 h-px w-full max-w-[785px]", ARTICLE_ROW_RULE_CLASS)} aria-hidden />
+          {excerptText ? (
+            <p
+              className={cn(
+                "mt-8 border-l-[3px] border-[#303ccf]/35 bg-white/80 py-1 pl-5 text-[clamp(17px,2.8vw,20px)] font-normal leading-[1.55] text-neutral-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[2px] md:mt-10 md:pl-6 md:leading-[1.6]"
+              )}
+            >
+              {excerptText}
+            </p>
+          ) : null}
 
-          {/* Body — long-form Stack Sans (not mono), Figma 34:1065 */}
-          <div className={cn(articleBodyClass, "mt-8 md:mt-10")}>
-            {bodyLines.map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
+          {/* Body — long-form readable column */}
+          <div
+            className={cn(
+              "mt-8 md:mt-11 [&_figure_a]:no-underline [&_figure_a:hover]:no-underline",
+              excerptText ? "md:mt-12" : ""
+            )}
+          >
+            {hasBody ? (
+              <ArticlePortableBody
+                value={article.body}
+                pdfLabels={{
+                  document: t("pdfDocument"),
+                  open: t("pdfOpen"),
+                  download: t("pdfDownload")
+                }}
+              />
+            ) : null}
+            {hasPdfAttachments ? (
+              <div className={cn(hasBody ? "mt-10 space-y-10 md:mt-12 md:space-y-12" : "")}>
+                {pdfFromStudio.map((pdf, i) => (
+                  <ArticlePdfEmbed
+                    key={`${pdf.url}-${i}`}
+                    url={pdf.url}
+                    headingTitle={pdf.title?.trim() || undefined}
+                    documentLabel={t("pdfDocument")}
+                    openLabel={t("pdfOpen")}
+                    downloadLabel={t("pdfDownload")}
+                  />
+                ))}
+              </div>
+            ) : null}
+            {showBodyFallback ? (
+              <p className="font-[\'Stack Sans Notch\',sans-serif] text-[18px] leading-relaxed text-neutral-600">
+                {t("fallbackBody")}
+              </p>
+            ) : null}
           </div>
         </article>
 
-        <div className="relative z-10 mx-auto mt-12 flex max-w-[785px] justify-center md:mt-16">
+        <RelatedWritings
+          locale={locale}
+          items={relatedWritings}
+          sectionTitle={t("relatedWritingsHeading")}
+        />
+
+        <div className="relative z-10 mx-auto mt-12 flex max-w-[min(100%,720px)] justify-center lg:max-w-[785px] md:mt-16">
           <Link
             href={`/${locale}/articles`}
             className={cn(

@@ -4,6 +4,9 @@ import { getTranslations } from "next-intl/server";
 import { ArticlesSections } from "../../../components/sections/ArticlesSections";
 import { locales, type Locale } from "../../../i18n/config";
 
+/** Always fetch fresh article list from Sanity (avoid stale static shell). */
+export const dynamic = "force-dynamic";
+
 type ArticlesPageProps = {
   params: {
     locale: string;

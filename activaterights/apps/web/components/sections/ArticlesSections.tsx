@@ -2,7 +2,9 @@ import { getTranslations } from "next-intl/server";
 import { AboutFooter } from "../layout/AboutFooter";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
-import { ArticlesListClient, type ArticleListItem } from "./ArticlesListClient";
+import { mapArticleToCardRow } from "../../lib/articles/mapArticleCard";
+import { getAllArticles } from "../../lib/sanity/queries";
+import { ArticlesListClient } from "./ArticlesListClient";
 
 type ArticlesSectionsProps = {
   locale: Locale;
@@ -12,19 +14,10 @@ export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
   const t = await getTranslations({ locale, namespace: "articles" });
   const tAbout = await getTranslations({ locale, namespace: "about" });
 
-  const rawItems = t.raw("items");
-  const items: ArticleListItem[] = Array.isArray(rawItems)
-    ? (rawItems as ArticleListItem[]).filter(
-        (item) =>
-          item &&
-          typeof item.slug === "string" &&
-          typeof item.title === "string" &&
-          typeof item.author === "string" &&
-          typeof item.metaCategory === "string" &&
-          typeof item.filter === "string" &&
-          typeof item.accentTitle === "boolean"
-      )
-    : [];
+  const rows = await getAllArticles(locale);
+  const items = rows
+    .filter((row) => row.slug?.current && String(row.slug.current).length > 0)
+    .map((row) => mapArticleToCardRow(row, locale));
 
   return (
     <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
