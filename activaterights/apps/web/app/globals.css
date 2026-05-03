@@ -57,17 +57,20 @@ a {
   opacity: 1;
 }
 
-.home-surface {
+/*
+ * Home + contact — same full-bleed art (`home-background.png`), no blend layers.
+ * Use `.home-surface` on `/`, `.contact-surface` on `/team` (same rules).
+ */
+.home-surface,
+.contact-surface {
   position: relative;
   isolation: isolate;
   min-height: 100vh;
   background-color: var(--color-bg);
-  background-image: url("/images/home-texture-target.png");
-  background-size: 560px auto;
-  background-repeat: repeat;
-  background-position: left top;
-  /* Tile is a photo of linen — without blend, opaque pixels replace the fill and read as “forest” green */
-  background-blend-mode: soft-light;
+  background-image: url("/images/home-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Projects — Figma 34:550: green 34:551 #06B85C, partners blue 34:585 #2D74FD */
@@ -97,8 +100,7 @@ a {
   background-blend-mode: soft-light;
 }
 
-/* Fine-grain overlay — keep subtle so base #06b85c / #2d74fd stay close to Figma */
-.home-surface::after,
+/* Projects / about blue — keep subtle PNG grain so brand greens & blues stay on-Figma */
 .projects-grain-green::after,
 .projects-grain-blue::after {
   content: "";
@@ -191,11 +193,12 @@ a {
 }
 
 @media (min-width: 1920px) {
-  .home-surface,
-  .home-surface::after,
   .projects-grain-green,
+  .projects-grain-blue {
+    background-size: 600px auto;
+  }
+
   .projects-grain-green::after,
-  .projects-grain-blue,
   .projects-grain-blue::after {
     background-size: 600px auto;
   }

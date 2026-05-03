@@ -17,11 +17,14 @@ type NavbarProps = {
   locale: "en" | "bn";
   /** Set `false` to hide HOME (rare); default is full nav including HOME. */
   showHomeLink?: boolean;
-  /** `"outlined"` = inactive links are white-outline pills (legacy). `"default"` = Figma Blogs/Projects: ABOUT–ARTICLES solid white; CONTACT outline only. */
+  /**
+   * Kept for API compatibility. All items (incl. HOME) share one pill system:
+   * rest = white fill + black type; hover = white outline + transparent + white type.
+   */
   navGreenStyle?: "default" | "outlined";
   /**
-   * `"heroOverlay"` — nav on full-bleed image/cyan hero (Article reference): no green bar;
-   * logo reads light on photo; pills stay white/black. Use with absolutely positioned wrapper only.
+   * `"heroOverlay"` — nav on full-bleed image/cyan hero: logo reads light on photo;
+   * pills get a light shadow on the outline state for contrast.
    */
   variant?: "default" | "heroOverlay";
 };
@@ -56,7 +59,6 @@ function isNavActive(pathname: string | null, locale: "en" | "bn", href: string)
 export function Navbar({
   locale,
   showHomeLink = true,
-  navGreenStyle = "default",
   variant = "default"
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,9 +68,23 @@ export function Navbar({
 
   const onHero = variant === "heroOverlay";
 
-  /** Figma 34:740 — ABOUT…ARTICLES (+ REPORTS): white fill, no border; CONTACT: white outline on green */
   const navLinkBase =
-    "inline-flex items-center justify-center px-[18px] py-[10px] text-[14px] font-normal uppercase leading-none tracking-normal transition-colors";
+    "inline-flex items-center justify-center rounded-none px-[18px] py-[10px] text-[14px] font-normal uppercase leading-none tracking-normal transition-colors";
+
+  /** Rest: solid pill (HOME-style). Hover: outline on bar (CONTACT-style). Hero: light shadow on outline hover. */
+  const outlineOnHover = onHero
+    ? "hover:border-white hover:bg-transparent hover:text-white hover:drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]"
+    : "hover:border-white hover:bg-transparent hover:text-white";
+
+  const navPillClass = (active: boolean) =>
+    cn(
+      navLinkBase,
+      onHero && "shadow-sm",
+      "border border-white transition-colors",
+      active
+        ? cn("border-white bg-neutral-100 text-black", outlineOnHover)
+        : cn("border-white bg-white text-black", outlineOnHover)
+    );
 
   return (
     <header className="relative z-40">
@@ -88,7 +104,10 @@ export function Navbar({
           type="button"
           className={cn(
             robotoMono.className,
-            "inline-flex border border-white bg-transparent px-[18px] py-[10px] text-[14px] font-normal uppercase leading-none text-white md:hidden"
+            "inline-flex rounded-none border border-white bg-white px-[18px] py-[10px] text-[14px] font-normal uppercase leading-none text-black transition-colors md:hidden",
+            onHero
+              ? "hover:border-white hover:bg-transparent hover:text-white hover:drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]"
+              : "hover:border-white hover:bg-transparent hover:text-white"
           )}
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle menu"
@@ -96,37 +115,15 @@ export function Navbar({
           MENU
         </button>
 
-        {/* Figma Home (34:6–15): ~2–4px gutters between pills; top 40px */}
         <div className={cn("hidden items-stretch gap-1 md:flex", robotoMono.className)}>
           {links.map((item) => {
-            const isContact = item.label === "CONTACT";
             const active = isNavActive(pathname, locale, item.href);
-            const outlined = navGreenStyle === "outlined";
             return (
               <Link
                 key={item.label}
                 href={withLocale(locale, item.href)}
                 aria-current={active ? "page" : undefined}
-                className={cn(
-                  navLinkBase,
-                  isContact
-                    ? cn(
-                        onHero
-                          ? "border border-white bg-transparent text-white shadow-sm hover:bg-white/15"
-                          : "border border-white bg-transparent text-white hover:bg-white/10",
-                        active && "bg-white/10"
-                      )
-                    : outlined
-                      ? cn(
-                          active
-                            ? "border border-white bg-white text-black hover:bg-neutral-100"
-                            : "border border-white bg-transparent text-white hover:bg-white/10"
-                        )
-                      : cn(
-                          "border-0 bg-white text-black hover:bg-neutral-100",
-                          active && "bg-neutral-100"
-                        )
-                )}
+                className={navPillClass(active)}
               >
                 {item.label}
               </Link>
@@ -138,34 +135,13 @@ export function Navbar({
       <div className={cn("mx-auto max-w-[1440px] px-6 pb-4 md:hidden lg:px-[40px]", !isOpen && "hidden")}>
         <div className={cn("flex flex-col gap-1", robotoMono.className)}>
           {links.map((item) => {
-            const isContact = item.label === "CONTACT";
             const active = isNavActive(pathname, locale, item.href);
-            const outlined = navGreenStyle === "outlined";
             return (
               <Link
                 key={item.label}
                 href={withLocale(locale, item.href)}
                 aria-current={active ? "page" : undefined}
-                className={cn(
-                  navLinkBase,
-                  isContact
-                    ? cn(
-                        onHero
-                          ? "border border-white bg-transparent text-white shadow-sm hover:bg-white/15"
-                          : "border border-white bg-transparent text-white hover:bg-white/10",
-                        active && "bg-white/10"
-                      )
-                    : outlined
-                      ? cn(
-                          active
-                            ? "border border-white bg-white text-black hover:bg-neutral-100"
-                            : "border border-white bg-transparent text-white hover:bg-white/10"
-                        )
-                      : cn(
-                          "border-0 bg-white text-black hover:bg-neutral-100",
-                          active && "bg-neutral-100"
-                        )
-                )}
+                className={navPillClass(active)}
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}
