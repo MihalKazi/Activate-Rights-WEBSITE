@@ -1,4 +1,5 @@
 import { groq } from "next-sanity";
+import { normalizeArticleSlugParam } from "../articles/slug";
 import { sanityClient } from "./client";
 import type { Locale } from "../../i18n/config";
 
@@ -14,19 +15,28 @@ export type ArticleListItem = {
   _id: string;
   title: string;
   slug: Slug;
-  excerpt: string;
+  excerpt: string | null;
   coverImage: SanityImage;
   publishedAt: string;
+  category?: string | null;
+  featured?: boolean;
+  /** Resolved display name: team member or guest author */
+  authorName?: string | null;
+};
+
+export type ArticlePdfAttachment = {
+  title?: string | null;
+  url: string | null;
 };
 
 export type ArticleDetail = ArticleListItem & {
-  body: unknown[];
+  body: unknown[] | null;
   category?: string;
-  author?: {
-    _id: string;
-    name: string;
-    role?: string;
-  };
+  guestAuthor?: string | null;
+  /** Curated picks from Sanity; shown at bottom of article page */
+  relatedArticles?: ArticleListItem[];
+  /** Uploaded PDFs from Studio */
+  pdfAttachments?: ArticlePdfAttachment[];
 };
 
 export type ProjectItem = {
@@ -89,31 +99,85 @@ export type SiteSettings = {
   };
 };
 
+/** Prefer locale, then other language — skips empty strings (coalesce alone keeps ""). */
+const localizedArticleTitle = `
+select(
+  $locale == "en" && defined(title.en) && title.en != "" => title.en,
+  $locale == "en" && defined(title.bn) && title.bn != "" => title.bn,
+  $locale == "bn" && defined(title.bn) && title.bn != "" => title.bn,
+  $locale == "bn" && defined(title.en) && title.en != "" => title.en,
+  defined(title.en) && title.en != "" => title.en,
+  defined(title.bn) && title.bn != "" => title.bn,
+  ""
+)
+`.trim();
+
+const localizedArticleExcerpt = `
+select(
+  $locale == "en" && defined(excerpt.en) && excerpt.en != "" => excerpt.en,
+  $locale == "en" && defined(excerpt.bn) && excerpt.bn != "" => excerpt.bn,
+  $locale == "bn" && defined(excerpt.bn) && excerpt.bn != "" => excerpt.bn,
+  $locale == "bn" && defined(excerpt.en) && excerpt.en != "" => excerpt.en,
+  defined(excerpt.en) && excerpt.en != "" => excerpt.en,
+  defined(excerpt.bn) && excerpt.bn != "" => excerpt.bn,
+  ""
+)
+`.trim();
+
+/** Prefer locale with blocks, then fall back — coalesce([]) wrongly kept empty arrays. */
+const localizedArticleBody = `
+select(
+  $locale == "en" && count(coalesce(body.en, [])) > 0 => body.en,
+  $locale == "en" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.bn, [])) > 0 => body.bn,
+  []
+)
+`.trim();
+
 const articleListQuery = groq`
   *[_type == "article"] | order(publishedAt desc) {
     _id,
-    "title": title[$locale],
+    "title": ${localizedArticleTitle},
     slug,
-    "excerpt": excerpt[$locale],
+    "excerpt": ${localizedArticleExcerpt},
     coverImage,
-    publishedAt
+    publishedAt,
+    category,
+    featured,
+    "authorName": coalesce(author->name[$locale], author->name.en, author->name.bn, guestAuthor)
   }
 `;
 
 const articleBySlugQuery = groq`
   *[_type == "article" && slug.current == $slug][0] {
     _id,
-    "title": title[$locale],
+    "title": ${localizedArticleTitle},
     slug,
-    "excerpt": excerpt[$locale],
-    "body": body[$locale],
+    "excerpt": ${localizedArticleExcerpt},
+    "body": ${localizedArticleBody},
     category,
     coverImage,
     publishedAt,
-    author->{
+    featured,
+    guestAuthor,
+    "authorName": coalesce(author->name[$locale], author->name.en, author->name.bn, guestAuthor),
+    "pdfAttachments": pdfAttachments[]{
+      title,
+      "url": file.asset->url
+    },
+    "relatedArticles": relatedArticles[]->{
       _id,
-      "name": name[$locale],
-      "role": role[$locale]
+      "title": ${localizedArticleTitle},
+      slug,
+      "excerpt": ${localizedArticleExcerpt},
+      coverImage,
+      publishedAt,
+      category,
+      featured,
+      "authorName": coalesce(author->name[$locale], author->name.en, author->name.bn, guestAuthor)
     }
   }
 `;
@@ -121,13 +185,15 @@ const articleBySlugQuery = groq`
 const featuredArticlesQuery = groq`
   *[_type == "article" && featured == true] | order(publishedAt desc)[0...3] {
     _id,
-    "title": title[$locale],
+    "title": ${localizedArticleTitle},
     slug,
-    "excerpt": excerpt[$locale],
+    "excerpt": ${localizedArticleExcerpt},
     coverImage,
     publishedAt
   }
 `;
+
+const allArticleSlugsQuery = groq`*[_type == "article" && defined(slug.current)].slug.current`;
 
 const allProjectsQuery = groq`
   *[_type == "project"] | order(order asc) {
@@ -221,7 +287,8 @@ export async function getArticleBySlug(
   slug: string,
   locale: Locale
 ): Promise<ArticleDetail | null> {
-  return sanityClient.fetch(articleBySlugQuery, { slug, locale });
+  const normalized = normalizeArticleSlugParam(slug);
+  return sanityClient.fetch(articleBySlugQuery, { slug: normalized, locale });
 }
 
 export async function getFeaturedArticles(locale: Locale): Promise<ArticleListItem[]> {
@@ -253,4 +320,8 @@ export async function getActiveCampaigns(locale: Locale): Promise<CampaignItem[]
 
 export async function getSiteSettings(locale: Locale): Promise<SiteSettings | null> {
   return sanityClient.fetch(siteSettingsQuery, { locale });
+}
+
+export async function getAllArticleSlugs(): Promise<string[]> {
+  return sanityClient.fetch(allArticleSlugsQuery);
 }

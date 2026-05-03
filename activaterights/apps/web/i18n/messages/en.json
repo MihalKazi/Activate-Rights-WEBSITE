@@ -178,73 +178,11 @@
     "defaultPublished": "—",
     "shareArticleAria": "Share this article",
     "fallbackBody": "This article’s full text will appear here when connected to the CMS.",
-    "items": [
-      {
-        "slug": "shutdown-patterns",
-        "title": "Mapping shutdown patterns across districts",
-        "author": "John Doe",
-        "metaCategory": "Updates",
-        "publishedAt": "12.03.2025",
-        "filter": "updates",
-        "accentTitle": false,
-        "bodyLines": [
-          "We compiled district-level disruption signals to show how shutdowns cluster in time and geography.",
-          "The dataset draws on public reporting, partner alerts, and technical measurements where available. Patterns help advocates brief policymakers with clearer evidence.",
-          "This note will expand as we publish the full methodology and interactive maps."
-        ]
-      },
-      {
-        "slug": "opinion-net-neutrality",
-        "title": "Why net neutrality still matters here",
-        "author": "John Doe",
-        "metaCategory": "Blog",
-        "publishedAt": "02.05.2026",
-        "filter": "opinion",
-        "accentTitle": true,
-        "bodyLines": [
-          "Net neutrality is not an abstract regulatory debate—it shapes whether local voices can reach audiences without paying tolls to gatekeepers.",
-          "Where prioritization is opaque, independent media and small enterprises are first to lose reach during congestion or political pressure.",
-          "We argue for simple, enforceable rules and transparency so users—not intermediaries alone—decide what succeeds online."
-        ]
-      },
-      {
-        "slug": "feature-long-read",
-        "title": "A year inside the monitoring room",
-        "author": "John Doe",
-        "metaCategory": "Blog",
-        "filter": "feature",
-        "accentTitle": false,
-        "bodyLines": [
-          "Our monitoring room runs on rotating shifts, checklists, and a shared log so nothing gets dropped when traffic spikes.",
-          "Verification means cross-checking traceroutes, crowd alerts, and regulator notices before we publish a timeline.",
-          "This long read walks through three real incidents and what we changed in process afterward."
-        ]
-      },
-      {
-        "slug": "quick-update-march",
-        "title": "Quick update: March incidents",
-        "author": "John Doe",
-        "metaCategory": "Updates",
-        "filter": "updates",
-        "accentTitle": false,
-        "bodyLines": [
-          "March saw concentrated throttling reports in two regions alongside short DNS anomalies.",
-          "We are validating secondary sources and will issue a fuller bulletin next week."
-        ]
-      },
-      {
-        "slug": "notes-field",
-        "title": "Notes from the field team",
-        "author": "John Doe",
-        "metaCategory": "Blog",
-        "filter": "blah",
-        "accentTitle": false,
-        "bodyLines": [
-          "Field notes capture context that charts miss—how outages feel on the ground, and what small businesses do to stay reachable.",
-          "These fragments inform our longer reports and training materials."
-        ]
-      }
-    ]
+    "pdfDocument": "PDF attachment",
+    "pdfOpen": "Open",
+    "pdfDownload": "Download",
+    "relatedWritingsHeading": "Relevant writings",
+    "items": []
   },
   "events": {
     "metaTitle": "Events — Activate Rights",
