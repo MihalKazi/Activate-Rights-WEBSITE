@@ -11,16 +11,15 @@ type ContactSectionsProps = {
 };
 
 /**
- * Contact / team route — Figma 34:1459 (Share-AR): forest home-surface, cursor art,
- * “let’s talk!”, underlined form, #303ccf Send, footer with forest rule bars.
+ * Contact / team route — same full-bleed `home-background.png` as home (`.contact-surface`);
+ * cursor art, underlined form, #303ccf Send, forest rule bars in footer.
  */
 export async function ContactSections({ locale }: ContactSectionsProps) {
   const t = await getTranslations({ locale, namespace: "contact" });
   const tAbout = await getTranslations({ locale, namespace: "about" });
 
   return (
-    <main className="home-surface flex min-h-screen flex-col text-white">
-      {/* Figma 34:1459 — ABOUT…ARTICLES: white fill + black type; CONTACT: white outline only */}
+    <main className="contact-surface flex min-h-screen flex-col text-white">
       <Navbar locale={locale} navGreenStyle="default" />
 
       {/* Hero — cursor + headline */}
