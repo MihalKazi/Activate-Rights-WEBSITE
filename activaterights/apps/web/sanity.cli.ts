@@ -1,15 +1,10 @@
-import { existsSync } from "node:fs";
-import { resolve } from "node:path";
-import { config as loadEnv } from "dotenv";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineCliConfig } from "sanity/cli";
+import { loadMonorepoEnv } from "./sanity/loadEnv";
 
-const root = process.cwd();
-for (const name of [".env", ".env.local"]) {
-  const path = resolve(root, name);
-  if (existsSync(path)) {
-    loadEnv({ path, override: name === ".env.local" });
-  }
-}
+const appWebRoot = dirname(fileURLToPath(import.meta.url));
+loadMonorepoEnv(appWebRoot);
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";

@@ -216,6 +216,11 @@
     "newsletter": "Newsletter",
     "subscribe": "Subscribe"
   },
+  "homePage": {
+    "recentEvents": "Events",
+    "recentEventsAria": "Recent events",
+    "viewAllEvents": "View all"
+  },
   "common": {
     "readMore": "Read more",
     "viewAll": "View all",

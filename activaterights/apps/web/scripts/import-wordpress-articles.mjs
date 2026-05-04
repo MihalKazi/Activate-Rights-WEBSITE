@@ -13,13 +13,12 @@ import { createClient } from "@sanity/client";
 import { Schema } from "@sanity/schema";
 import { htmlToBlocks } from "@sanity/block-tools";
 import { JSDOM } from "jsdom";
-import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import { loadMonorepoEnv } from "../load-monorepo-env.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: path.join(__dirname, "../.env.local") });
-dotenv.config({ path: path.join(__dirname, "../.env") });
+loadMonorepoEnv(path.join(__dirname, ".."));
 
 const WP_BASE = "https://activaterights.org/wp-json/wp/v2";
 

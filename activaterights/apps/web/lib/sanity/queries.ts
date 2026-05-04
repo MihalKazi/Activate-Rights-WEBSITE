@@ -236,7 +236,7 @@ const allTeamMembersQuery = groq`
 const upcomingEventsQuery = groq`
   *[_type == "event" && date >= now()] | order(date asc) {
     _id,
-    "title": title[$locale],
+    "title": coalesce(title[$locale], title.en, title.bn, ""),
     slug,
     "description": description[$locale],
     date,
@@ -251,7 +251,7 @@ const upcomingEventsQuery = groq`
 const listedEventsQuery = groq`
   *[_type == "event"] | order(date desc) [0...47] {
     _id,
-    "title": title[$locale],
+    "title": coalesce(title[$locale], title.en, title.bn, ""),
     slug,
     "description": description[$locale],
     date,

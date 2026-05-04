@@ -216,6 +216,11 @@
     "newsletter": "নিউজলেটার",
     "subscribe": "সাবস্ক্রাইব"
   },
+  "homePage": {
+    "recentEvents": "ইভেন্ট",
+    "recentEventsAria": "সাম্প্রতিক ইভেন্ট",
+    "viewAllEvents": "সব দেখুন"
+  },
   "common": {
     "readMore": "আরও পড়ুন",
     "viewAll": "সব দেখুন",

@@ -11,7 +11,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "import:wp-articles": "node ./scripts/import-wordpress-articles.mjs"
+    "import:wp-articles": "node ./scripts/import-wordpress-articles.mjs",
+    "seed:events": "node ./scripts/import-events-seed.mjs",
+    "seed:events:dry": "node ./scripts/import-events-seed.mjs --dry-run"
   },
   "dependencies": {
     "@portabletext/react": "^3.0.0",
