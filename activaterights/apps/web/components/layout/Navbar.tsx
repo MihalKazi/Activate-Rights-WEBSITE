@@ -35,6 +35,7 @@ const navItems = [
   { label: "PROJECTS", href: "/projects" },
   { label: "REPORTS", href: "/reports" },
   { label: "ARTICLES", href: "/articles" },
+  { label: "EVENTS", href: "/events" },
   { label: "CONTACT", href: "/team" }
 ] as const;
 

@@ -247,6 +247,21 @@ const upcomingEventsQuery = groq`
   }
 `;
 
+/** Listing page (Figma events grid): recent first, includes past events. */
+const listedEventsQuery = groq`
+  *[_type == "event"] | order(date desc) [0...47] {
+    _id,
+    "title": title[$locale],
+    slug,
+    "description": description[$locale],
+    date,
+    "location": location[$locale],
+    isOnline,
+    registrationUrl,
+    coverImage
+  }
+`;
+
 const activeCampaignsQuery = groq`
   *[_type == "campaign" && status == "active"] | order(startDate desc) {
     _id,
@@ -312,6 +327,10 @@ export async function getAllTeamMembers(locale: Locale): Promise<TeamMember[]> {
 
 export async function getUpcomingEvents(locale: Locale): Promise<EventItem[]> {
   return sanityClient.fetch(upcomingEventsQuery, { locale });
+}
+
+export async function getListedEvents(locale: Locale): Promise<EventItem[]> {
+  return sanityClient.fetch(listedEventsQuery, { locale });
 }
 
 export async function getActiveCampaigns(locale: Locale): Promise<CampaignItem[]> {
