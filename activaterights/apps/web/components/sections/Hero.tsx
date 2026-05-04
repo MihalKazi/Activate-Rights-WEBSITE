@@ -64,9 +64,9 @@ const MOBILE_HEADLINE_STYLE_TAG = `
 }
 `;
 
-/** Home hero desktop (`lg`+) — five headline lines; tune max / formula here. */
+/** Home hero desktop (`lg`+) — keep laptop lines separated (avoid text collisions). */
 const DESKTOP_HEADLINE_CLAMP =
-  "clamp(28px, calc((min(100vw, 1440px) - 100px) / 13.5), 107px)";
+  "clamp(28px, calc((min(100vw, 1440px) - 120px) / 14.5), 96px)";
 
 export function Hero() {
   const lines = new Array(5).fill("internet demands freedom");
