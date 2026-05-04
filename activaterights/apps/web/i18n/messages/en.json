@@ -5,7 +5,8 @@
     "heroLine1": "      we are a collective",
     "heroLine2": "fighting for",
     "heroLine3": "free speech, human rights,",
-    "heroLine4": "and         an open internet",
+    "heroLine4Start": "and",
+    "heroLine4End": "an open internet",
     "whatWeDoTitle1": "what  do",
     "whatWeDoTitle2": "we do",
     "workRow1Title1": "CENSORSHIP",
@@ -186,10 +187,11 @@
   },
   "events": {
     "metaTitle": "Events — Activate Rights",
-    "metaDescription": "Upcoming workshops, talks, and community events from Activate Rights.",
+    "metaDescription": "Workshops, talks, and community events from Activate Rights.",
+    "heroTitle": "events",
     "heroLine1": "upcoming",
     "heroLine2": "events",
-    "empty": "No upcoming events scheduled. Check back soon."
+    "empty": "No events published yet. Check back soon."
   },
   "contact": {
     "metaTitle": "Contact — Activate Rights",

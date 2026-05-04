@@ -73,21 +73,20 @@ a {
   background-position: center;
 }
 
-/* Projects — Figma 34:550: green 34:551 #06B85C, partners blue 34:585 #2D74FD */
+/* Photo-backed section heroes + blue Figma bands (`.projects-grain-blue`) */
 .projects-grain-green,
 .projects-grain-blue {
   position: relative;
   isolation: isolate;
 }
 
+/* Section heroes (projects, reports, articles): full-bleed photo — same as home/contact */
 .projects-grain-green {
-  /* Figma 34:551 */
-  background-color: #06b85c;
-  background-image: url("/images/home-texture-target.png");
-  background-size: 560px auto;
-  background-repeat: repeat;
-  background-position: left top;
-  background-blend-mode: soft-light;
+  background-color: var(--color-bg);
+  background-image: url("/images/home-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .projects-grain-blue {
@@ -100,8 +99,7 @@ a {
   background-blend-mode: soft-light;
 }
 
-/* Projects / about blue — keep subtle PNG grain so brand greens & blues stay on-Figma */
-.projects-grain-green::after,
+/* Blue section hero — keep subtle PNG grain on top of solid blue */
 .projects-grain-blue::after {
   content: "";
   position: absolute;
@@ -113,6 +111,32 @@ a {
   background-repeat: repeat;
   background-position: left top;
   opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
+/* Events listing — Figma 34:1337: #212121 hero + texture (not photo-backed green) */
+.events-hero-dark {
+  position: relative;
+  isolation: isolate;
+  background-color: #212121;
+  background-image: url("/images/home-texture-target.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  background-blend-mode: soft-light;
+}
+
+.events-hero-dark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/images/home-texture-grain.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+  opacity: 0.18;
   mix-blend-mode: soft-light;
 }
 
@@ -193,13 +217,13 @@ a {
 }
 
 @media (min-width: 1920px) {
-  .projects-grain-green,
-  .projects-grain-blue {
+  .projects-grain-blue,
+  .events-hero-dark {
     background-size: 600px auto;
   }
 
-  .projects-grain-green::after,
-  .projects-grain-blue::after {
+  .projects-grain-blue::after,
+  .events-hero-dark::after {
     background-size: 600px auto;
   }
 
