@@ -4,6 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { EventsSections } from "../../../components/sections/EventsSections";
 import { locales, type Locale } from "../../../i18n/config";
 
+export const dynamic = "force-dynamic";
+
 type EventsPageProps = {
   params: {
     locale: string;

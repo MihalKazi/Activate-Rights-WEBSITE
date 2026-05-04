@@ -1,5 +1,8 @@
+import Image from "next/image";
+import type { Image as SanityImageSource } from "sanity";
 import { Roboto_Mono } from "next/font/google";
 import { cn } from "../../lib/utils";
+import { urlFor } from "../../lib/sanity/image";
 import type { EventItem } from "../../lib/sanity/queries";
 import type { Locale } from "../../i18n/config";
 
@@ -41,11 +44,22 @@ type EventCellProps = {
   isFeatured: boolean;
 };
 
+function eventCoverSrc(event: EventItem): string | null {
+  if (!event.coverImage?.asset?._ref) return null;
+  return urlFor(event.coverImage as SanityImageSource)
+    .width(1262)
+    .height(760)
+    .fit("crop")
+    .auto("format")
+    .url();
+}
+
 function EventCell({ event, isFeatured }: EventCellProps) {
   const desc = (event.description ?? "").trim();
   const excerpt = isFeatured && desc ? truncateExcerpt(desc, 160) : null;
   const dateStr = formatListingDate(event.date);
   const href = event.registrationUrl?.trim();
+  const coverSrc = eventCoverSrc(event);
 
   const titleClass = cn(
     "home-headline-font text-[30px] font-normal leading-[1.15] tracking-tight transition-colors",
@@ -54,14 +68,36 @@ function EventCell({ event, isFeatured }: EventCellProps) {
 
   const titleInner = <span className={titleClass}>{event.title}</span>;
 
+  const coverBlock =
+    coverSrc !== null ? (
+      <div className="relative aspect-[631/380] w-full max-w-[631px] overflow-hidden bg-neutral-200">
+        <Image
+          src={coverSrc}
+          alt={href ? "" : event.title}
+          fill
+          className="object-cover transition-opacity group-hover:opacity-95"
+          sizes="(max-width: 1024px) 100vw, 631px"
+        />
+      </div>
+    ) : null;
+
   return (
     <div className="group flex min-w-0 flex-col gap-11 lg:max-w-[670px]">
       {href ? (
-        <a href={href} className="block w-full max-w-[631px]" target="_blank" rel="noopener noreferrer">
+        <a
+          href={href}
+          className="flex w-full max-w-[631px] flex-col gap-6"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {coverBlock}
           {titleInner}
         </a>
       ) : (
-        <div className="max-w-[631px]">{titleInner}</div>
+        <div className="flex max-w-[631px] flex-col gap-6">
+          {coverBlock}
+          {titleInner}
+        </div>
       )}
       <p className={cn(robotoMono.className, "text-[14px] font-normal leading-[26px] text-[#212121]")}>
         {dateStr}

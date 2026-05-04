@@ -1,4 +1,9 @@
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import createNextIntlPlugin from "next-intl/plugin";
+import { loadMonorepoEnv } from "./load-monorepo-env.mjs";
+
+loadMonorepoEnv(dirname(fileURLToPath(import.meta.url)));
 
 const withNextIntl = createNextIntlPlugin();
 
