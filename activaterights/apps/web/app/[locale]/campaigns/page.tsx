@@ -1,10 +1,32 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { locales, type Locale } from "../../../i18n/config";
+import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
-export const metadata: Metadata = {
-  title: "Campaigns"
+type CampaignsPageProps = {
+  params: { locale: string };
 };
 
-export default function CampaignsPage() {
+export async function generateMetadata({ params }: CampaignsPageProps): Promise<Metadata> {
+  const locale = params.locale as Locale;
+  const title = locale === "bn" ? "ক্যাম্পেইন — অ্যাক্টিভেট রাইটস" : "Campaigns — Activate Rights";
+  const description =
+    locale === "bn"
+      ? "অ্যাক্টিভেট রাইটসের ডিজিটাল অধিকার ও ইন্টারনেট স্বাধীনতা ক্যাম্পেইন।"
+      : "Campaigns from Activate Rights for digital rights and internet freedom in Bangladesh.";
+
+  return withLocaleSeo(locale, "/campaigns", {
+    title,
+    description
+  });
+}
+
+export default function CampaignsPage({ params }: CampaignsPageProps) {
+  const locale = params.locale as Locale;
+  if (!locales.includes(locale)) {
+    notFound();
+  }
+
   return (
     <main className="container-shell py-16">
       <p className="text-text-secondary">Campaigns listing coming soon.</p>

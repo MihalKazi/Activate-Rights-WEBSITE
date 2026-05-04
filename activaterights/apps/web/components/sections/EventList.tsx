@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Image as SanityImageSource } from "sanity";
 import { Roboto_Mono } from "next/font/google";
 import { cn } from "../../lib/utils";
@@ -42,6 +43,7 @@ function chunkPairs<T>(items: T[]): [T, T | undefined][] {
 type EventCellProps = {
   event: EventItem;
   isFeatured: boolean;
+  locale: Locale;
 };
 
 function eventCoverSrc(event: EventItem): string | null {
@@ -54,11 +56,11 @@ function eventCoverSrc(event: EventItem): string | null {
     .url();
 }
 
-function EventCell({ event, isFeatured }: EventCellProps) {
+function EventCell({ event, isFeatured, locale }: EventCellProps) {
   const desc = (event.description ?? "").trim();
   const excerpt = isFeatured && desc ? truncateExcerpt(desc, 160) : null;
   const dateStr = formatListingDate(event.date);
-  const href = event.registrationUrl?.trim();
+  const slug = event.slug?.current?.trim();
   const coverSrc = eventCoverSrc(event);
 
   const titleClass = cn(
@@ -73,7 +75,7 @@ function EventCell({ event, isFeatured }: EventCellProps) {
       <div className="relative aspect-[631/380] w-full max-w-[631px] overflow-hidden bg-neutral-200">
         <Image
           src={coverSrc}
-          alt={href ? "" : event.title}
+          alt={event.title}
           fill
           className="object-cover transition-opacity group-hover:opacity-95"
           sizes="(max-width: 1024px) 100vw, 631px"
@@ -81,22 +83,22 @@ function EventCell({ event, isFeatured }: EventCellProps) {
       </div>
     ) : null;
 
+  const detailInner = (
+    <>
+      {coverBlock}
+      {titleInner}
+    </>
+  );
+
   return (
     <div className="group flex min-w-0 flex-col gap-11 lg:max-w-[670px]">
-      {href ? (
-        <a
-          href={href}
-          className="flex w-full max-w-[631px] flex-col gap-6"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {coverBlock}
-          {titleInner}
-        </a>
+      {slug ? (
+        <Link href={`/${locale}/events/${slug}`} className="flex w-full max-w-[631px] flex-col gap-6">
+          {detailInner}
+        </Link>
       ) : (
         <div className="flex max-w-[631px] flex-col gap-6">
-          {coverBlock}
-          {titleInner}
+          {detailInner}
         </div>
       )}
       <p className={cn(robotoMono.className, "text-[14px] font-normal leading-[26px] text-[#212121]")}>
@@ -116,7 +118,7 @@ function EventCell({ event, isFeatured }: EventCellProps) {
   );
 }
 
-export function EventList({ locale: _locale, events }: EventListProps) {
+export function EventList({ locale, events }: EventListProps) {
   const globalFeaturedIndex = events.findIndex((e) => (e.description ?? "").trim().length > 0);
   const rows = chunkPairs(events);
 
@@ -136,8 +138,12 @@ export function EventList({ locale: _locale, events }: EventListProps) {
               <div key={left._id}>
                 <div className="h-px w-full bg-[#303ccf]/25" aria-hidden />
                 <div className="grid grid-cols-1 gap-y-12 pt-[30px] pb-12 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-0 lg:pb-14">
-                  <EventCell event={left} isFeatured={leftFeatured} />
-                  {right ? <EventCell event={right} isFeatured={rightFeatured} /> : <div className="hidden lg:block" aria-hidden />}
+                  <EventCell event={left} isFeatured={leftFeatured} locale={locale} />
+                  {right ? (
+                    <EventCell event={right} isFeatured={rightFeatured} locale={locale} />
+                  ) : (
+                    <div className="hidden lg:block" aria-hidden />
+                  )}
                 </div>
               </div>
             );

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ContactSections } from "../../../components/sections/ContactSections";
 import { locales, type Locale } from "../../../i18n/config";
+import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
 type TeamPageProps = {
   params: {
@@ -14,10 +15,10 @@ export async function generateMetadata({ params }: TeamPageProps): Promise<Metad
   const locale = params.locale as Locale;
   const t = await getTranslations({ locale, namespace: "contact" });
 
-  return {
+  return withLocaleSeo(locale, "/team", {
     title: t("metaTitle"),
     description: t("metaDescription")
-  };
+  });
 }
 
 export default async function TeamPage({ params }: TeamPageProps) {

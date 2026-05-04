@@ -191,7 +191,15 @@
     "heroTitle": "events",
     "heroLine1": "upcoming",
     "heroLine2": "events",
-    "empty": "No events published yet. Check back soon."
+    "empty": "No events published yet. Check back soon.",
+    "eventKind": "Event",
+    "online": "Online",
+    "locationTbd": "Location TBA",
+    "shareEventAria": "Share this event",
+    "backToEvents": "Back to events",
+    "registerExternal": "Register / open link",
+    "registerExternalAria": "Open registration or external event link in a new tab",
+    "fallbackBody": "More about this event will appear here when you add details in the CMS."
   },
   "contact": {
     "metaTitle": "Contact — Activate Rights",

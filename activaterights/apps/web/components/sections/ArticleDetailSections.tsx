@@ -5,11 +5,16 @@ import { notFound } from "next/navigation";
 import { Roboto_Mono } from "next/font/google";
 import type { Image as SanityImage } from "sanity";
 import { ArticlePdfEmbed } from "../ArticlePdfEmbed";
-import { ArticlePortableBody } from "../ArticlePortableBody";
+import {
+  ArticlePortableBody,
+  articleWritingParagraphClassName,
+  articleWritingWrapClassName
+} from "../ArticlePortableBody";
 import { AboutFooter } from "../layout/AboutFooter";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { mapArticleToCardRow } from "../../lib/articles/mapArticleCard";
+import { plainTextToParagraphs } from "../../lib/plainTextParagraphs";
 import { getArticleBySlug } from "../../lib/sanity/queries";
 import { urlFor } from "../../lib/sanity/image";
 import { ArticleShareButton } from "./ArticleShareButton";
@@ -124,13 +129,13 @@ export async function ArticleDetailSections({ locale, slug }: ArticleDetailSecti
           </div>
 
           {excerptText ? (
-            <p
-              className={cn(
-                "mt-8 border-l-[3px] border-[#303ccf]/35 bg-white/80 py-1 pl-5 text-[clamp(17px,2.8vw,20px)] font-normal leading-[1.55] text-neutral-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[2px] md:mt-10 md:pl-6 md:leading-[1.6]"
-              )}
-            >
-              {excerptText}
-            </p>
+            <div className={cn(articleWritingWrapClassName, "mt-8 md:mt-10")}>
+              {plainTextToParagraphs(excerptText).map((para, i) => (
+                <p key={i} className={articleWritingParagraphClassName}>
+                  {para}
+                </p>
+              ))}
+            </div>
           ) : null}
 
           {/* Body — long-form readable column */}
@@ -165,9 +170,9 @@ export async function ArticleDetailSections({ locale, slug }: ArticleDetailSecti
               </div>
             ) : null}
             {showBodyFallback ? (
-              <p className="font-[\'Stack Sans Notch\',sans-serif] text-[18px] leading-relaxed text-neutral-600">
-                {t("fallbackBody")}
-              </p>
+              <div className={articleWritingWrapClassName}>
+                <p className={articleWritingParagraphClassName}>{t("fallbackBody")}</p>
+              </div>
             ) : null}
           </div>
         </article>

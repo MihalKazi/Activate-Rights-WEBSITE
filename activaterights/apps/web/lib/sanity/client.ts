@@ -5,11 +5,12 @@ const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 const apiVersion = "2024-01-01";
 
 /**
- * Non-public datasets need a token for server-side GROQ. Prefer a read-only Viewer token
- * in `SANITY_API_TOKEN`; `SANITY_API_WRITE_TOKEN` is only used as a fallback when unset.
+ * Server-side GROQ: use a **Viewer** (read-only) token in `SANITY_API_TOKEN`.
+ * Do not fall back to `SANITY_API_WRITE_TOKEN` — editor tokens can be tied to a Sanity user;
+ * if that user was removed from the project, API returns "project user not found" and pages 500.
+ * Public datasets work with no token. Private datasets require `SANITY_API_TOKEN`.
  */
-const serverReadToken =
-  (process.env.SANITY_API_TOKEN ?? "").trim() || (process.env.SANITY_API_WRITE_TOKEN ?? "").trim() || undefined;
+const serverReadToken = (process.env.SANITY_API_TOKEN ?? "").trim() || undefined;
 
 export const sanityClient = createClient({
   projectId,

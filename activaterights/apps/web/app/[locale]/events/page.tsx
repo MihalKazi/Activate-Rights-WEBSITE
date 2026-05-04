@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { EventsSections } from "../../../components/sections/EventsSections";
 import { locales, type Locale } from "../../../i18n/config";
+import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
 export const dynamic = "force-dynamic";
 
@@ -16,10 +17,10 @@ export async function generateMetadata({ params }: EventsPageProps): Promise<Met
   const locale = params.locale as Locale;
   const t = await getTranslations({ locale, namespace: "events" });
 
-  return {
+  return withLocaleSeo(locale, "/events", {
     title: t("metaTitle"),
     description: t("metaDescription")
-  };
+  });
 }
 
 export default async function EventsPage({ params }: EventsPageProps) {
