@@ -9,8 +9,14 @@ export type ArticlePdfLabels = {
   download: string;
 };
 
-const writingWrap =
+/** Shared prose column (portable text + plain multiline descriptions). */
+export const articleWritingWrapClassName =
   "article-writing space-y-7 font-[\'Stack Sans Notch\',sans-serif] text-[clamp(17px,2.65vw,21px)] leading-[1.72] tracking-[0.011em] text-[#2d2d2d] selection:bg-[#303ccf]/12 selection:text-[#1e1b4b] md:leading-[1.75]";
+
+export const articleWritingParagraphClassName =
+  "text-pretty whitespace-pre-line text-[1em] leading-[inherit] text-[#2d2d2d] [&_strong]:text-[#1a1a1a]";
+
+const writingWrap = articleWritingWrapClassName;
 
 function makeComponents(labels: ArticlePdfLabels): PortableTextComponents {
   return {
@@ -29,7 +35,7 @@ function makeComponents(labels: ArticlePdfLabels): PortableTextComponents {
           );
         }
         return (
-          <p className="text-pretty text-[1em] leading-[inherit] text-[#2d2d2d] [&_strong]:text-[#1a1a1a]">
+          <p className={articleWritingParagraphClassName}>
             {children}
           </p>
         );

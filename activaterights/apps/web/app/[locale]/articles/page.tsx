@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ArticlesSections } from "../../../components/sections/ArticlesSections";
 import { locales, type Locale } from "../../../i18n/config";
+import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
 /** Always fetch fresh article list from Sanity (avoid stale static shell). */
 export const dynamic = "force-dynamic";
@@ -17,10 +18,10 @@ export async function generateMetadata({ params }: ArticlesPageProps): Promise<M
   const locale = params.locale as Locale;
   const t = await getTranslations({ locale, namespace: "articles" });
 
-  return {
+  return withLocaleSeo(locale, "/articles", {
     title: t("metaTitle"),
     description: t("metaDescription")
-  };
+  });
 }
 
 export default async function ArticlesPage({ params }: ArticlesPageProps) {

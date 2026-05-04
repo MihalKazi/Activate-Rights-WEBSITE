@@ -74,6 +74,11 @@ export type EventItem = {
   coverImage: SanityImage;
 };
 
+export type EventDetail = EventItem & {
+  body: unknown[] | null;
+  pdfAttachments?: ArticlePdfAttachment[];
+};
+
 export type CampaignItem = {
   _id: string;
   title: string;
@@ -233,14 +238,53 @@ const allTeamMembersQuery = groq`
   }
 `;
 
+const localizedEventDescription = `
+select(
+  $locale == "en" && defined(description.en) && description.en != "" => description.en,
+  $locale == "en" && defined(description.bn) && description.bn != "" => description.bn,
+  $locale == "bn" && defined(description.bn) && description.bn != "" => description.bn,
+  $locale == "bn" && defined(description.en) && description.en != "" => description.en,
+  defined(description.en) && description.en != "" => description.en,
+  defined(description.bn) && description.bn != "" => description.bn,
+  ""
+)
+`.trim();
+
+const localizedEventBody = `
+select(
+  $locale == "en" && count(coalesce(body.en, [])) > 0 => body.en,
+  $locale == "en" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.bn, [])) > 0 => body.bn,
+  []
+)
+`.trim();
+
+const localizedEventLocation = `
+coalesce(
+  select(
+    $locale == "en" && defined(location.en) && location.en != "" => location.en,
+    $locale == "en" && defined(location.bn) && location.bn != "" => location.bn,
+    $locale == "bn" && defined(location.bn) && location.bn != "" => location.bn,
+    $locale == "bn" && defined(location.en) && location.en != "" => location.en,
+    defined(location.en) && location.en != "" => location.en,
+    defined(location.bn) && location.bn != "" => location.bn,
+    ""
+  ),
+  ""
+)
+`.trim();
+
 const upcomingEventsQuery = groq`
   *[_type == "event" && date >= now()] | order(date asc) {
     _id,
     "title": coalesce(title[$locale], title.en, title.bn, ""),
     slug,
-    "description": description[$locale],
+    "description": ${localizedEventDescription},
     date,
-    "location": location[$locale],
+    "location": ${localizedEventLocation},
     isOnline,
     registrationUrl,
     coverImage
@@ -253,14 +297,39 @@ const listedEventsQuery = groq`
     _id,
     "title": coalesce(title[$locale], title.en, title.bn, ""),
     slug,
-    "description": description[$locale],
+    "description": ${localizedEventDescription},
     date,
-    "location": location[$locale],
+    "location": ${localizedEventLocation},
     isOnline,
     registrationUrl,
     coverImage
   }
 `;
+
+const eventBySlugQuery = groq`
+  *[_type == "event" && slug.current == $slug][0] {
+    _id,
+    "title": coalesce(title[$locale], title.en, title.bn, ""),
+    slug,
+    "description": ${localizedEventDescription},
+    "body": ${localizedEventBody},
+    "pdfAttachments": pdfAttachments[]{
+      title,
+      "url": file.asset->url
+    },
+    date,
+    "location": ${localizedEventLocation},
+    isOnline,
+    registrationUrl,
+    coverImage
+  }
+`;
+
+const allEventSlugsQuery = groq`*[_type == "event" && defined(slug.current)].slug.current`;
+
+const allProjectSlugsQuery = groq`*[_type == "project" && defined(slug.current)].slug.current`;
+
+const allCampaignSlugsQuery = groq`*[_type == "campaign" && defined(slug.current)].slug.current`;
 
 const activeCampaignsQuery = groq`
   *[_type == "campaign" && status == "active"] | order(startDate desc) {
@@ -333,6 +402,15 @@ export async function getListedEvents(locale: Locale): Promise<EventItem[]> {
   return sanityClient.fetch(listedEventsQuery, { locale });
 }
 
+export async function getEventBySlug(slug: string, locale: Locale): Promise<EventDetail | null> {
+  const normalized = normalizeArticleSlugParam(slug);
+  return sanityClient.fetch(eventBySlugQuery, { slug: normalized, locale });
+}
+
+export async function getAllEventSlugs(): Promise<string[]> {
+  return sanityClient.fetch(allEventSlugsQuery);
+}
+
 export async function getActiveCampaigns(locale: Locale): Promise<CampaignItem[]> {
   return sanityClient.fetch(activeCampaignsQuery, { locale });
 }
@@ -343,4 +421,12 @@ export async function getSiteSettings(locale: Locale): Promise<SiteSettings | nu
 
 export async function getAllArticleSlugs(): Promise<string[]> {
   return sanityClient.fetch(allArticleSlugsQuery);
+}
+
+export async function getAllProjectSlugs(): Promise<string[]> {
+  return sanityClient.fetch(allProjectSlugsQuery);
+}
+
+export async function getAllCampaignSlugs(): Promise<string[]> {
+  return sanityClient.fetch(allCampaignSlugsQuery);
 }

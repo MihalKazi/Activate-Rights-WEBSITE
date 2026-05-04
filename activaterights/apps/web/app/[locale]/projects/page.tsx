@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { ProjectsSections } from "../../../components/sections/ProjectsSections";
 import { locales, type Locale } from "../../../i18n/config";
+import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
 type ProjectsPageProps = {
   params: {
@@ -16,10 +17,10 @@ export async function generateMetadata({
   const locale = params.locale as Locale;
   const t = await getTranslations({ locale, namespace: "projects" });
 
-  return {
+  return withLocaleSeo(locale, "/projects", {
     title: t("metaTitle"),
     description: t("metaDescription")
-  };
+  });
 }
 
 export default async function ProjectsPage({ params }: ProjectsPageProps) {

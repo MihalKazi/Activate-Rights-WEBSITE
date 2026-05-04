@@ -28,22 +28,23 @@ export async function HomeEventsStrip({ locale }: HomeEventsStripProps) {
       <div className="mx-auto flex max-w-[1440px] flex-col gap-2 text-[13px] text-white/95 md:flex-row md:items-center md:justify-between md:gap-4 md:text-[14px]">
         <p className="shrink-0 font-medium uppercase tracking-wide text-white/85">{t("recentEvents")}</p>
         <ul className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 md:justify-center">
-          {events.map((e) => (
-            <li key={e._id} className="min-w-0 max-w-[min(100%,220px)] truncate md:max-w-[280px]">
-              {e.registrationUrl ? (
-                <a
-                  href={e.registrationUrl}
-                  className="underline decoration-white/35 underline-offset-2 hover:decoration-white"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {e.title}
-                </a>
-              ) : (
-                <span className="truncate opacity-95">{e.title}</span>
-              )}
-            </li>
-          ))}
+          {events.map((e) => {
+            const slug = e.slug?.current?.trim();
+            return (
+              <li key={e._id} className="min-w-0 max-w-[min(100%,220px)] truncate md:max-w-[280px]">
+                {slug ? (
+                  <Link
+                    href={`/${locale}/events/${slug}`}
+                    className="underline decoration-white/35 underline-offset-2 hover:decoration-white"
+                  >
+                    {e.title}
+                  </Link>
+                ) : (
+                  <span className="truncate opacity-95">{e.title}</span>
+                )}
+              </li>
+            );
+          })}
         </ul>
         <Link
           href={`/${locale}/events`}
