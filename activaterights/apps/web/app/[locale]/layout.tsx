@@ -47,9 +47,14 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <div className={`${inter.variable} ${notoSansBengali.variable} ${localeFontClass} min-h-screen`}>
-        {children}
-      </div>
+      <>
+        <div
+          className={`${inter.variable} ${notoSansBengali.variable} ${localeFontClass} min-h-screen`}
+        >
+          {children}
+        </div>
+        <div className="site-film-grain" aria-hidden />
+      </>
     </NextIntlClientProvider>
   );
 }
