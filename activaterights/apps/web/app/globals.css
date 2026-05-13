@@ -8,6 +8,10 @@
   --color-text-primary: #ffffff;
   --color-text-secondary: #d6efe9;
   --color-border: rgba(255, 255, 255, 0.35);
+
+  /* Global grain tile size (match Figma speck scale) */
+  --site-grain-tile: 480px auto;
+  --site-grain-tile-wide: 560px auto;
 }
 
 @tailwind base;
@@ -42,6 +46,319 @@ a {
   @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
+/*
+ * Film grain (non-home routes): `home-texture-grain-figma.png` + saturate(0) + soft-light.
+ * Home hides this layer (`main[data-home]`) — home uses `.home-paper-*` tiles instead.
+ */
+.site-film-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+  background-image: url("/images/home-texture-grain-figma.png");
+  background-size: var(--site-grain-tile);
+  background-repeat: repeat;
+  background-position: 0 0;
+  filter: saturate(0);
+  opacity: var(--site-grain-opacity, 0.26);
+  mix-blend-mode: soft-light;
+}
+
+body:has(main[data-home]) .site-film-grain {
+  display: none;
+}
+
+@media (min-width: 1920px) {
+  .site-film-grain {
+    background-size: var(--site-grain-tile-wide);
+  }
+}
+
+/* Home — paper tiles repeat at intrinsic size (no stretch).
+ * `.home-paper-section` — published reports + blog (original `home-paper-texture-tile.png`).
+ * `.home-paper-marketing-section` — what we do, projects, partners (`home-white-section-tile.png`). */
+.home-paper-section {
+  background-color: #eceae5;
+  background-image: url("/images/home-paper-texture-tile.png");
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
+.home-paper-marketing-section {
+  background-color: #f5f4f2;
+  background-image: url("/images/home-white-section-tile.png");
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
+/* Home initiatives — dark tile + visible grain (Figma header strip). */
+.home-initiatives-section {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background-color: #1a1a1a;
+  background-image: url("/images/home-initiatives-dark-tile.png");
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
+.home-initiatives-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("/images/home-texture-grain-figma.png");
+  background-size: 480px auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+  filter: saturate(0);
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
+}
+
+/* “Digital rights…” marquee — same dark tile + grain as `.home-initiatives-section`. */
+.home-rights-marquee {
+  --rights-marquee-gap: clamp(1rem, 3.5vw, 2.75rem);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-top: 2px solid #05b557;
+  background-color: #1a1a1a;
+  background-image: url("/images/home-initiatives-dark-tile.png");
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
+.home-rights-marquee::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("/images/home-texture-grain-figma.png");
+  background-size: 480px auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+  filter: saturate(0);
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
+}
+
+.home-rights-marquee__icon-frame {
+  background-color: #1a1a1a;
+}
+
+.home-rights-marquee__track {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: max-content;
+  /* Move by exactly one sequence width = seamless tile; many copies → no empty viewport */
+  animation: home-rights-marquee-scroll 50s linear infinite;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.home-rights-marquee__sequence {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  column-gap: var(--rights-marquee-gap);
+  /* Half-gap each side → seam between copies matches internal column-gap */
+  padding-inline: calc(var(--rights-marquee-gap) / 2);
+}
+
+@keyframes home-rights-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-100% / var(--rights-marquee-loops, 8)), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-rights-marquee__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: min(100%, 1200px);
+    margin-inline: auto;
+    row-gap: 0.5rem;
+  }
+
+  .home-rights-marquee__track > .home-rights-marquee__sequence:not(:first-child) {
+    display: none;
+  }
+}
+
+/* Home “we have worked with” — same seamless loop math as `.home-rights-marquee`. */
+.home-partners-marquee {
+  --partners-marquee-gap: clamp(1.5rem, 3.5vw, 2.5rem);
+  overflow: hidden;
+}
+
+.home-partners-marquee__track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: max-content;
+  animation: home-partners-marquee-scroll 42s linear infinite;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.home-partners-marquee__sequence {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  column-gap: var(--partners-marquee-gap);
+  padding-inline: calc(var(--partners-marquee-gap) / 2);
+}
+
+@keyframes home-partners-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-100% / var(--partners-marquee-loops, 8)), 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-partners-marquee__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+    width: 100%;
+    max-width: min(100%, 1100px);
+    margin-inline: auto;
+  }
+
+  .home-partners-marquee__track > .home-partners-marquee__sequence:not(:first-child) {
+    display: none;
+  }
+}
+
+/* Home blue band — footer uses `home-texture-target` tile. Collective: uniform grain tile (Figma ref) under birds. */
+.home-footer,
+.home-collective-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.home-footer {
+  background-color: #2d74fd;
+  background-image: url("/images/home-texture-target.png");
+  background-size: 560px auto;
+  background-repeat: repeat;
+  background-position: left top;
+}
+
+.home-collective-section {
+  background-color: #2b65ec;
+  /* Uniform electric-blue grain — ref asset tiles at intrinsic size (no cover blur / no L→R strip). */
+  background-image: url("/images/home-collective-blue-grain-ref.png");
+  background-size: 178px 109px;
+  background-repeat: repeat;
+  background-position: 0 0;
+}
+
+/* Collective birds (`home-collective-blue-birds.png`) — ref: flock lower-left → upper-right, heavy grain in art. */
+.home-collective-section .home-collective-art-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home-collective-section .home-collective-art-img {
+  object-fit: cover;
+  /* Anchor on dense flock (lower-left in ref); nudge for tall viewports */
+  object-position: 32% 58%;
+  opacity: 1;
+}
+
+@media (min-width: 768px) {
+  .home-collective-section .home-collective-art-img {
+    object-position: 30% 55%;
+  }
+}
+
+/* Zine collective — horizontal scan + film grain over birds, type, and inserts (Figma ref). */
+.home-collective-section.home-collective-zine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+  opacity: 0.16;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 3px,
+    rgba(0, 0, 0, 0.28) 3px,
+    rgba(0, 0, 0, 0.28) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+.home-collective-section.home-collective-zine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 22;
+  pointer-events: none;
+  background-image: url("/images/home-texture-grain-figma.png");
+  background-size: 480px auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+}
+
+.home-collective-zine__stack {
+  position: relative;
+  z-index: 10;
+}
+
+.home-collective-zine__picWrap,
+.home-collective-zine__picWrap--narrow {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  /* Figma layout — inserts locked 1:1 (96.72 × 96.72) */
+  width: 96.72px;
+  height: 96.72px;
+  flex-shrink: 0;
+  vertical-align: bottom;
+}
+
+/* Ear + lips flush as one block (Figma); space from words comes from parent `gap-x`. */
+.home-collective-zine__picsPair {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.home-footer-ascii-banner {
+  filter: contrast(1.45) brightness(1.12)
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.75))
+    drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+}
+
 .texture-overlay {
   position: relative;
 }
@@ -51,10 +368,13 @@ a {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: url("/images/home-texture.png");
-  background-size: cover;
-  background-position: center;
-  opacity: 1;
+  background-image: url("/images/home-texture-grain-figma.png");
+  background-size: 480px auto;
+  background-repeat: repeat;
+  background-position: 0 0;
+  filter: saturate(0);
+  opacity: 0.15;
+  mix-blend-mode: soft-light;
 }
 
 /*
@@ -90,29 +410,15 @@ a {
 }
 
 .projects-grain-blue {
-  /* Figma 34:585 */
+  /* Figma 34:585 — tile stacks on fill without color blend */
   background-color: #2d74fd;
   background-image: url("/images/home-texture-target.png");
   background-size: 560px auto;
   background-repeat: repeat;
   background-position: left top;
-  background-blend-mode: soft-light;
 }
 
-/* Blue section hero — keep subtle PNG grain on top of solid blue */
-.projects-grain-blue::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("/images/home-texture-grain.png");
-  background-size: 560px auto;
-  background-repeat: repeat;
-  background-position: left top;
-  opacity: 0.2;
-  mix-blend-mode: soft-light;
-}
+/* Film grain: only `.site-film-grain` — avoid stacking extra dark PNG layers here */
 
 /* Events listing — Figma 34:1337: #212121 hero + texture (not photo-backed green) */
 .events-hero-dark {
@@ -123,41 +429,13 @@ a {
   background-size: 560px auto;
   background-repeat: repeat;
   background-position: left top;
-  background-blend-mode: soft-light;
 }
 
-.events-hero-dark::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("/images/home-texture-grain.png");
-  background-size: 560px auto;
-  background-repeat: repeat;
-  background-position: left top;
-  opacity: 0.18;
-  mix-blend-mode: soft-light;
-}
-
-/* Reports 34:740 — optional grain on #fafcff grid (lighter than hero) */
-.reports-body-grain {
-  background-image: url("/images/home-texture-grain.png");
-  background-size: 560px auto;
-  background-repeat: repeat;
-  background-position: left top;
-  opacity: 0.12;
-  mix-blend-mode: multiply;
-}
-
-/* Articles listing — soft grain on #fafcff (multiply was reading as flat gray) */
+/* Reports / articles listing: decorative layers kept for markup; grain comes from `.site-film-grain` only */
+.reports-body-grain,
 .articles-listing-grain {
-  background-image: url("/images/home-texture-grain.png");
-  background-size: 560px auto;
-  background-repeat: repeat;
-  background-position: left top;
-  opacity: 0.12;
-  mix-blend-mode: soft-light;
+  background-image: none;
+  opacity: 0;
 }
 
 /* Figma 34:583 — Stack Sans Notch SemiBold headline */
@@ -219,11 +497,6 @@ a {
 @media (min-width: 1920px) {
   .projects-grain-blue,
   .events-hero-dark {
-    background-size: 600px auto;
-  }
-
-  .projects-grain-blue::after,
-  .events-hero-dark::after {
     background-size: 600px auto;
   }
 

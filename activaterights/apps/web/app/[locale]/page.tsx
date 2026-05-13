@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Navbar } from "../../components/layout/Navbar";
 import { HomeJsonLd } from "../../components/seo/HomeJsonLd";
-import { Hero } from "../../components/sections/Hero";
+import { HomeFullLayout } from "../../components/sections/HomeFullLayout";
 import { locales, type Locale } from "../../i18n/config";
 import { withLocaleSeo } from "../../lib/seo/buildPageMetadata";
 
@@ -41,10 +40,9 @@ export default async function HomePage({ params }: HomePageProps) {
   }
 
   return (
-    <main className="home-surface flex h-screen min-h-0 flex-col overflow-x-clip overflow-y-visible">
+    <>
       <HomeJsonLd locale={locale} />
-      <Navbar locale={locale} />
-      <Hero />
-    </main>
+      <HomeFullLayout locale={locale} />
+    </>
   );
 }
