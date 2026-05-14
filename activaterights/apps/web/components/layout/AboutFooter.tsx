@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
 import { cn } from "../../lib/utils";
 import type { Locale } from "../../i18n/config";
+import { BrandLogo } from "../brand/BrandLogo";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -17,7 +18,7 @@ type AboutFooterProps = {
   instagramLabel: string;
   /** e.g. Projects mockup uses pure white footer */
   className?: string;
-  /** Wordmark color (defaults to #06b85c) */
+  /** Optional extra classes on the logo link (e.g. `text-white` on dark footers). */
   brandClassName?: string;
   /** Email + social row (defaults to #303ccf) */
   linksClassName?: string;
@@ -59,20 +60,11 @@ export function AboutFooter({
         <Link
           href={`/${locale}`}
           className={cn(
-            "font-extrabold leading-none tracking-tight hover:opacity-90",
-            brandClassName ?? "text-[#06b85c]"
+            "inline-block shrink-0 outline-none hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2",
+            brandClassName
           )}
         >
-          <span
-            className={cn("block lowercase", compact ? "text-[12px] md:text-[14px]" : "text-[14px] md:text-[16px]")}
-          >
-            activate
-          </span>
-          <span
-            className={cn("block lowercase", compact ? "text-[12px] md:text-[14px]" : "text-[14px] md:text-[16px]")}
-          >
-            rights//
-          </span>
+          <BrandLogo size={compact ? "compact" : "nav"} />
         </Link>
 
         <div
