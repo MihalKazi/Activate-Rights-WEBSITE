@@ -9,13 +9,16 @@ import { ScrollToTopButton } from "../../components/layout/ScrollToTopButton";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap"
+  display: "swap",
+  adjustFontFallback: true,
+  preload: true
 });
 
 const notoSansBengali = Noto_Sans_Bengali({
   subsets: ["bengali"],
   variable: "--font-bn",
-  display: "swap"
+  display: "swap",
+  adjustFontFallback: true
 });
 
 type LocaleLayoutProps = Readonly<{

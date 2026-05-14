@@ -5,7 +5,7 @@ import { EventsSections } from "../../../components/sections/EventsSections";
 import { locales, type Locale } from "../../../i18n/config";
 import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 type EventsPageProps = {
   params: {

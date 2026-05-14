@@ -5,8 +5,8 @@ import { ArticlesSections } from "../../../components/sections/ArticlesSections"
 import { locales, type Locale } from "../../../i18n/config";
 import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
-/** Always fetch fresh article list from Sanity (avoid stale static shell). */
-export const dynamic = "force-dynamic";
+/** ISR: fast edge cache; revalidate pulls fresh list from Sanity periodically. */
+export const revalidate = 120;
 
 type ArticlesPageProps = {
   params: {
