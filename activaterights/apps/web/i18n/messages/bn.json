@@ -77,6 +77,7 @@
     ],
     "partnersTitle1": "আমরা কাজ",
     "partnersTitle2": "করেছি",
+    "partnersMarqueeAria": "যেসব সংস্থার সঙ্গে আমরা কাজ করেছি",
     "partnerEngageMediaAlt": "এনগেজমিডিয়া",
     "ctaHeading1": "আমাদের সঙ্গে কাজ করতে চান",
     "ctaHeading2": "ডিজিটাল স্বাধীনতার এই লড়াইয়ে?",
@@ -179,7 +180,7 @@
   "nav": {
     "home": "হোম",
     "about": "আমাদের সম্পর্কে",
-    "articles": "আর্টিকেল",
+    "articles": "আপডেট",
     "projects": "প্রকল্প",
     "reports": "প্রতিবেদন",
     "team": "টিম",

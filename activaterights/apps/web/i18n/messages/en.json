@@ -77,6 +77,7 @@
     ],
     "partnersTitle1": "we have",
     "partnersTitle2": "worked with",
+    "partnersMarqueeAria": "Organizations we have worked with",
     "partnerEngageMediaAlt": "EngageMedia",
     "ctaHeading1": "want to work with us",
     "ctaHeading2": "on our fight for digital freedom?",
@@ -179,7 +180,7 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "articles": "Articles",
+    "articles": "Updates",
     "projects": "Projects",
     "reports": "Reports",
     "team": "Team",

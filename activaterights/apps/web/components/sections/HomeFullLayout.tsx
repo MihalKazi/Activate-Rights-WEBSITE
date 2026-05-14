@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Roboto_Mono, Space_Mono } from "next/font/google";
 import { useTranslations } from "next-intl";
 import type { HomeArticleCard } from "../../lib/articles/mapArticleCard";
+import { PartnersMarquee } from "../marquee/PartnersMarquee";
 import { cn } from "../../lib/utils";
 
 const robotoMono = Roboto_Mono({
@@ -65,12 +66,6 @@ const missionRows = [
   }
 ] as const;
 
-const partners = [
-  { name: "Cinemata", src: "/images/home/partners/cinemata.png" },
-  { name: "Tech Tales Youth", src: "/images/home/partners/tech-tales-youth.png" },
-  { name: "EngageMedia", src: "/images/home/partners/engagemedia.png" }
-] as const;
-
 /** xl+ = Figma 155px inset; tighter on tablet / small laptop so content stays usable. */
 const HOME_PAD_155 = "px-4 sm:px-6 md:px-10 lg:px-16 xl:px-[155px]";
 const HOME_NEG_155 = "-mx-4 sm:-mx-6 md:-mx-10 lg:-mx-16 xl:-mx-[155px]";
@@ -83,8 +78,6 @@ function withLocale(locale: "en" | "bn", href: string): string {
 
 /** How many identical strips in a row — keeps wide viewports full; loop moves by 1 strip width. */
 const RIGHTS_MARQUEE_LOOP_COUNT = 8;
-
-const PARTNERS_MARQUEE_LOOP_COUNT = 8;
 
 /** Pixel icons (square PNGs w/ black padding). Order: before DIGITAL, then between word groups. */
 const RIGHTS_MARQUEE_ICONS = [
@@ -106,27 +99,6 @@ function RightsMarqueeIcon({ src }: { src: string | null }) {
         <span className="m-auto block h-[52%] w-[52%] rounded-sm bg-white/15" />
       )}
     </span>
-  );
-}
-
-function PartnersMarqueeSequence({ items }: { items: readonly { name: string; src: string }[] }) {
-  return (
-    <div className="home-partners-marquee__sequence">
-      {items.map((partner) => (
-        <div
-          key={partner.name}
-          className="flex h-[72px] w-[min(220px,38vw)] shrink-0 items-center justify-center md:h-[88px] md:w-[260px]"
-        >
-          <Image
-            src={partner.src}
-            alt={partner.name}
-            width={280}
-            height={100}
-            className="max-h-16 w-auto object-contain md:max-h-[76px]"
-          />
-        </div>
-      ))}
-    </div>
   );
 }
 
@@ -162,6 +134,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
     { label: t("about"), href: "/about" },
     { label: t("projects"), href: "/projects" },
     { label: t("reports"), href: "/reports" },
+    { label: t("events"), href: "/events" },
     { label: t("articles"), href: "/articles" },
     { label: t("contact"), href: "/team" }
   ] as const;
@@ -608,20 +581,10 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             <span className="block">we have</span>
             <span className="block">worked with</span>
           </h2>
-          <div
-            className={`home-partners-marquee ${HOME_NEG_155} mt-8 md:mt-10`}
-            role="region"
-            aria-label="Organizations we have worked with"
-            style={
-              { "--partners-marquee-loops": String(PARTNERS_MARQUEE_LOOP_COUNT) } as CSSProperties
-            }
-          >
-            <div className="home-partners-marquee__track">
-              {Array.from({ length: PARTNERS_MARQUEE_LOOP_COUNT }, (_, i) => (
-                <PartnersMarqueeSequence key={`partners-marquee-${i}`} items={partners} />
-              ))}
-            </div>
-          </div>
+          <PartnersMarquee
+            className={`${HOME_NEG_155} mt-8 md:mt-10`}
+            ariaLabel="Organizations we have worked with"
+          />
         </div>
       </section>
 

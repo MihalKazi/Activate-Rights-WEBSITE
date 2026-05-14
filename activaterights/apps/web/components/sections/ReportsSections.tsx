@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
 import type { Image as SanityImage } from "sanity";
 import { getTranslations } from "next-intl/server";
-import { AboutFooter } from "../layout/AboutFooter";
+import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { formatReportCardDate } from "../../lib/reports/formatReportDate";
@@ -32,7 +32,6 @@ type ReportCard = {
 
 export async function ReportsSections({ locale }: ReportsSectionsProps) {
   const t = await getTranslations({ locale, namespace: "reports" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
 
   let items: ReportCard[] = [];
   try {
@@ -134,15 +133,7 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
         </div>
       </section>
 
-      <AboutFooter
-        locale={locale}
-        emailLabel={tAbout("footerEmail")}
-        facebookLabel={tAbout("footerFacebook")}
-        twitterLabel={tAbout("footerTwitter")}
-        instagramLabel={tAbout("footerInstagram")}
-        className="bg-[#fafcff]"
-        brandClassName="text-[#06b85c]"
-      />
+      <AboutPartnersClosing locale={locale} />
     </main>
   );
 }
