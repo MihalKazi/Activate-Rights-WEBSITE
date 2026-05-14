@@ -125,44 +125,7 @@
     "metaDescription": "Published reports on digital rights, internet shutdowns, and policy in Bangladesh.",
     "heroLine1": "published",
     "heroLine2": "reports",
-    "items": [
-      {
-        "slug": "shutdown-watch",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-2",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-slash",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": true,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-4",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-5",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-slash-2",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": true,
-        "date": "2024-02-19"
-      }
-    ]
+    "empty": "No reports published yet. Check back soon."
   },
   "articles": {
     "metaTitle": "Articles — Activate Rights",
@@ -175,6 +138,8 @@
     "filterFeature": "FEATURE",
     "filterBlah": "BLAH",
     "loadMore": "LOAD MORE",
+    "readAction": "Read",
+    "emptyHomeUpdates": "No articles yet. Add articles in Studio or view all updates.",
     "backToArticles": "Back to articles",
     "defaultPublished": "—",
     "shareArticleAria": "Share this article",
@@ -213,9 +178,12 @@
   },
   "nav": {
     "home": "Home",
+    "about": "About",
     "articles": "Articles",
     "projects": "Projects",
+    "reports": "Reports",
     "team": "Team",
+    "contact": "Contact",
     "events": "Events",
     "campaigns": "Campaigns"
   },

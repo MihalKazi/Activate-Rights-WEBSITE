@@ -25,6 +25,12 @@ export const projectSchema = defineType({
       }
     }),
     defineField({ name: "coverImage", type: "image", options: { hotspot: true } }),
+    defineField({
+      name: "launchDate",
+      title: "Card date",
+      type: "date",
+      description: "Shown on home and listings (e.g. 19/02/2024). Optional."
+    }),
     defineField({ name: "externalUrl", type: "url" }),
     defineField({ name: "order", type: "number", initialValue: 0 })
   ],

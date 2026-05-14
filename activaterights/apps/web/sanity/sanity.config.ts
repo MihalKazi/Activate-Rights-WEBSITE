@@ -1,8 +1,8 @@
-import { documentInternationalization } from "@sanity/document-internationalization";
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./schemas";
+import { REPORTS_ON_HOME_DOCUMENT_ID } from "./schemas/reportsOnHome";
 
 /** Injected by Next (`next.config.mjs` loads monorepo `.env` before bundling). Do not import Node `fs` here — Studio is browser-bundled. */
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "";
@@ -25,19 +25,22 @@ export default defineConfig({
               .id("events-root")
               .child(S.documentTypeList("event").title("Events").defaultOrdering([{ field: "date", direction: "desc" }])),
             S.divider(),
-            ...S.documentTypeListItems().filter((item) => item.getId() !== "event")
+            S.listItem()
+              .title("Reports & updates on Home")
+              .id("singleton-reports-on-home")
+              .child(
+                S.document()
+                  .schemaType("reportsOnHome")
+                  .documentId(REPORTS_ON_HOME_DOCUMENT_ID)
+                  .title("Reports & updates on Home")
+              ),
+            S.divider(),
+            ...S.documentTypeListItems().filter(
+              (item) => item.getId() !== "event" && item.getId() !== "reportsOnHome"
+            )
           ])
     }),
-    visionTool(),
-    documentInternationalization({
-      supportedLanguages: [
-        { id: "en", title: "English" },
-        { id: "bn", title: "Bangla" }
-      ],
-      // Document-level translations: each type should include a hidden `language` string (see plugin README).
-      // `event` uses field-level `localizedString` only — omit it so Studio lists events and API imports work.
-      schemaTypes: ["article", "project", "campaign", "teamMember", "siteSettings"]
-    })
+    visionTool()
   ],
   schema: {
     types: schemaTypes

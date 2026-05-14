@@ -20,6 +20,14 @@ export const siteSettingsSchema = defineType({
         })
       ]
     }),
+    defineField({
+      name: "homeFeaturedProjects",
+      title: "Projects on home page",
+      description: "Up to 3 projects shown in the home “our projects” row. Order here = order on the site.",
+      type: "array",
+      of: [defineArrayMember({ type: "reference", to: [{ type: "project" }] })],
+      validation: (rule) => rule.max(3)
+    }),
     defineField({ name: "footerText", type: "localizedText" }),
     defineField({
       name: "socialLinks",

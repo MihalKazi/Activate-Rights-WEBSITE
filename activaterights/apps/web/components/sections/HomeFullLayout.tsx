@@ -8,6 +8,9 @@ import type { CSSProperties } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Roboto_Mono, Space_Mono } from "next/font/google";
+import { useTranslations } from "next-intl";
+import type { HomeArticleCard } from "../../lib/articles/mapArticleCard";
+import { cn } from "../../lib/utils";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -21,13 +24,31 @@ const spaceMono = Space_Mono({
   display: "swap"
 });
 
-const topNav = [
-  { label: "AbouT", href: "/about" },
-  { label: "PRojects", href: "/projects" },
-  { label: "REPORTS", href: "/reports" },
-  { label: "ARTICLES", href: "/articles" },
-  { label: "CONTACT", href: "/team" }
-] as const;
+export type HomeFeaturedProjectCard = {
+  title: string;
+  href: string;
+  isExternal: boolean;
+  imageUrl: string | null;
+  dateLabel: string | null;
+};
+
+export type HomeFeaturedReportCard = {
+  slug: string;
+  title: string;
+  titleLeadingSlash: boolean;
+  dateLabel: string;
+  imageUrl: string | null;
+  excerpt: string | null;
+};
+
+type HomeFullLayoutProps = {
+  locale: "en" | "bn";
+  featuredProjects: HomeFeaturedProjectCard[];
+  /** Same list + fields as `/reports` (all published report documents). */
+  reports: HomeFeaturedReportCard[];
+  /** Latest articles for “updates and blog” — same CMS as `/articles`. */
+  articles: HomeArticleCard[];
+};
 
 const missionRows = [
   {
@@ -53,13 +74,8 @@ const partners = [
 /** xl+ = Figma 155px inset; tighter on tablet / small laptop so content stays usable. */
 const HOME_PAD_155 = "px-4 sm:px-6 md:px-10 lg:px-16 xl:px-[155px]";
 const HOME_NEG_155 = "-mx-4 sm:-mx-6 md:-mx-10 lg:-mx-16 xl:-mx-[155px]";
-const HOME_PL_155 = "pl-4 sm:pl-6 md:pl-10 lg:pl-16 xl:pl-[155px]";
 /** Published reports band uses a slightly narrower desktop inset in the design. */
 const HOME_PAD_112 = "px-4 sm:px-6 md:px-10 lg:px-14 xl:px-[112px]";
-
-type HomeFullLayoutProps = {
-  locale: "en" | "bn";
-};
 
 function withLocale(locale: "en" | "bn", href: string): string {
   return `/${locale}${href}`;
@@ -138,7 +154,20 @@ function RightsMarqueeSequence() {
   );
 }
 
-export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
+export function HomeFullLayout({ locale, featuredProjects, reports, articles }: HomeFullLayoutProps) {
+  const t = useTranslations("nav");
+  const tArticles = useTranslations("articles");
+  const navItems = [
+    { label: t("home"), href: "/" },
+    { label: t("about"), href: "/about" },
+    { label: t("projects"), href: "/projects" },
+    { label: t("reports"), href: "/reports" },
+    { label: t("articles"), href: "/articles" },
+    { label: t("contact"), href: "/team" }
+  ] as const;
+
+  const cardLinkClass =
+    "group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]";
   return (
     <main data-home className="bg-[#248f6b] text-white">
       <section className="relative min-h-svh overflow-hidden bg-[url('/images/home-background.png')] bg-cover bg-center md:min-h-[1024px]">
@@ -164,9 +193,9 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
             <nav
               className={`flex flex-wrap justify-start gap-2 sm:justify-end sm:gap-1 md:gap-1 ${robotoMono.className}`}
             >
-              {topNav.map((item) => (
+              {navItems.map((item) => (
                 <Link
-                  key={item.label}
+                  key={item.href}
                   href={withLocale(locale, item.href)}
                   className="border border-white bg-white px-3 py-2 text-[11px] uppercase text-black transition hover:bg-transparent hover:text-white sm:px-[14px] sm:py-[9px] sm:text-[12px] md:px-[18px] md:py-[10px] md:text-[14px]"
                 >
@@ -296,14 +325,10 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
       <section className="home-paper-marketing-section pt-12 pb-10 text-black sm:pt-16 md:pb-12 md:pt-24 xl:pt-[150px]">
         <div className={`mx-auto max-w-[1440px] ${HOME_PAD_155}`}>
           <div className="grid grid-cols-1 items-start gap-8 xl:grid-cols-[1fr_420px] xl:gap-8">
-            <h2 className="home-headline-font text-[clamp(40px,9vw,96px)] lowercase leading-[0.92] text-[#05b557] xl:text-[96px]">
+            <h2 className="home-headline-font text-[clamp(40px,9vw,96px)] lowercase leading-[0.92] text-[#212121] xl:text-[96px]">
               our projects
             </h2>
-            <div className="relative">
-              <div className="absolute -top-2 right-0 hidden items-center gap-4 md:flex" aria-hidden>
-                <span className="inline-block h-5 w-8 shrink-0 border-b-2 border-l-2 border-black -rotate-45" />
-                <span className="inline-block h-5 w-8 shrink-0 border-b-2 border-r-2 border-black rotate-45" />
-              </div>
+            <div>
               <p className="text-[18px] leading-[1.4] sm:text-[20px] md:text-[22px] md:leading-[1.35]">
                 We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
                 access and hold authorities accountable.
@@ -317,21 +342,53 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
             </div>
           </div>
 
-          <div className={`${HOME_NEG_155} mt-12 overflow-hidden sm:mt-16 md:mt-20 ${HOME_PL_155}`}>
-            <div className="flex w-max gap-6 sm:gap-8">
-              {["Shutdown Watch", "Disinfo Watch", "Disinfo Watch"].map((title, index) => (
-                <article key={`${title}-${index}`} className="w-[min(100vw-2rem,598px)] shrink-0 sm:w-[min(92vw,598px)]">
-                  <div className="aspect-[598/468] w-full bg-[#e6e6e6] bg-[url('/images/home-background.png')] bg-cover bg-center" />
-                  <h3 className="mt-6 text-[clamp(28px,7vw,48px)] leading-none sm:mt-10 xl:text-[48px]">
-                    {title}
+          <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 sm:grid-cols-2 sm:gap-8 lg:mt-20 xl:grid-cols-3 xl:gap-10">
+            {featuredProjects.map((p) => {
+              const figure = (
+                <>
+                  <div className="relative aspect-[598/468] w-full overflow-hidden bg-[#d9d9d9] transition-colors group-hover:bg-[#cfcfcf]">
+                    {p.imageUrl ? (
+                      <Image
+                        src={p.imageUrl}
+                        alt={p.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <h3 className="home-headline-font mt-6 text-[clamp(24px,4vw,36px)] font-bold leading-none tracking-tight text-[#212121] sm:mt-8 xl:text-[36px]">
+                    {p.title}
                   </h3>
-                  <p className="mt-4 max-w-[495px] text-[17px] leading-[1.35] sm:mt-5 sm:text-[20px] md:text-[22px]">
-                    We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
-                    access and hold authorities accountable.
-                  </p>
+                  {p.dateLabel ? (
+                    <p
+                      className={`mt-2 text-[14px] leading-none text-[#212121]/50 sm:mt-3 sm:text-[15px] ${robotoMono.className}`}
+                    >
+                      {p.dateLabel}
+                    </p>
+                  ) : null}
+                </> 
+              );
+
+              return (
+                <article key={`${p.title}-${p.href}`} className="min-w-0">
+                  {p.isExternal ? (
+                    <a
+                      href={p.href}
+                      className={cardLinkClass}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {figure}
+                    </a>
+                  ) : (
+                    <Link href={p.href} className={cardLinkClass}>
+                      {figure}
+                    </Link>
+                  )}
                 </article>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -351,7 +408,6 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
           </h2>
 
           <div className="mt-14 space-y-20 md:mt-20 md:space-y-28">
-            {/* First: band + copy aligned to the left of the section */}
             <article>
               <div className="w-[min(100%,1100px)]">
                 <div
@@ -373,7 +429,6 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
               </div>
             </article>
 
-            {/* Second: same width band + copy, pushed to the right */}
             <article>
               <div className="ml-auto w-[min(100%,1100px)]">
                 <div
@@ -413,19 +468,50 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
                 href={withLocale(locale, "/reports")}
                 className={`mt-8 inline-block bg-[#303ccf] px-5 py-4 text-[14px] uppercase text-white ${robotoMono.className}`}
               >
-                View All Projects
+                View All Reports
               </Link>
             </div>
           </div>
 
           <div className="mt-12 grid grid-cols-1 gap-10 sm:mt-16 md:grid-cols-2 md:gap-8 xl:mt-20 xl:grid-cols-3 xl:gap-10">
-            {new Array(3).fill(null).map((_, index) => (
-              <article key={`report-${index}`}>
-                <div className="aspect-[313/424] w-full max-w-[313px] bg-[#ff4fab] bg-[url('/images/home-background.png')] bg-cover bg-center sm:max-w-none" />
-                <h3 className="mt-6 text-[clamp(26px,5vw,36px)] xl:mt-10 xl:text-[36px]">Shutdown Watch</h3>
-                <p className="mt-2 text-[14px] uppercase tracking-[0.08em] text-black/70">
-                  19/02/2024
-                </p>
+            {reports.map((report) => (
+              <article key={report.slug}>
+                <Link
+                  href={withLocale(locale, `/reports/${report.slug}`)}
+                  className={cardLinkClass}
+                >
+                  <div className="relative aspect-[313/424] w-full max-w-[313px] overflow-hidden bg-[#d9d9d9] sm:max-w-none">
+                    {report.imageUrl ? (
+                      <Image
+                        src={report.imageUrl}
+                        alt=""
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : null}
+                  </div>
+                  <h3 className="mt-6 text-[clamp(26px,5vw,36px)] xl:mt-10 xl:text-[36px]">
+                    {report.titleLeadingSlash ? (
+                      <>
+                        <span className="text-[#05b557]">/</span>
+                        <span>{` ${report.title}`}</span>
+                      </>
+                    ) : (
+                      report.title
+                    )}
+                  </h3>
+                  <p className={`mt-2 text-[14px] uppercase tracking-[0.08em] text-black/70 ${robotoMono.className}`}>
+                    {report.dateLabel}
+                  </p>
+                  {report.excerpt ? (
+                    <p
+                      className={`mt-4 line-clamp-5 text-[17px] leading-[1.35] text-black/80 sm:text-[18px] ${spaceMono.className}`}
+                    >
+                      {report.excerpt}
+                    </p>
+                  ) : null}
+                </Link>
               </article>
             ))}
           </div>
@@ -442,25 +528,65 @@ export function HomeFullLayout({ locale }: HomeFullLayoutProps) {
           </h2>
 
           <div className="mt-10 space-y-8 sm:mt-12 md:mt-16 md:space-y-10">
-            {new Array(3).fill(null).map((_, index) => (
-              <article key={`blog-row-${index}`} className="border-b border-black/25 pb-8 md:pb-10">
-                <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,321px)_1fr] lg:gap-10">
-                  <div className="aspect-[321/195] w-full max-w-[321px] bg-[#ffd034] bg-[url('/images/home-background.png')] bg-cover bg-center lg:max-w-none" />
-                  <div className="min-w-0">
-                    <h3 className="text-[clamp(22px,4.5vw,38px)] leading-[1.15] xl:text-[38px]">
-                      DRAPAC 2024 Highlights: Digitally Right Navigates AI, Disinformation, and
-                      Data Protection Challenges
-                    </h3>
-                    <p className="mt-5 text-[17px] leading-[1.35] text-black/80 sm:mt-6 sm:text-[18px] md:mt-8 md:text-[20px]">
-                      We measure and monitor internet shutdowns in Bangladesh to fight for
-                      uninterrupted access and hold authorities accountable.
-                    </p>
-                    <div className="mt-8 flex items-center justify-between text-[14px] uppercase">
-                      <p>Blog / John Doe</p>
-                      <p>Read</p>
+            {articles.length === 0 ? (
+              <p className={`text-center text-[17px] text-black/75 ${robotoMono.className}`}>
+                {tArticles("emptyHomeUpdates")}
+              </p>
+            ) : null}
+            {articles.map((item) => (
+              <article key={item.slug} className="border-b border-black/25 pb-8 md:pb-10">
+                <Link
+                  href={withLocale(locale, `/articles/${item.slug}`)}
+                  className={`${cardLinkClass} block`}
+                >
+                  <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,321px)_1fr] lg:gap-10">
+                    <div className="relative aspect-[321/195] w-full max-w-[321px] overflow-hidden bg-[#ffd034] lg:max-w-none">
+                      {item.coverSrc ? (
+                        <Image
+                          src={item.coverSrc}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 321px"
+                        />
+                      ) : (
+                        <span
+                          className="absolute inset-0 bg-[url('/images/home-background.png')] bg-cover bg-center opacity-90"
+                          aria-hidden
+                        />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <h3
+                        className={cn(
+                          "home-headline-font text-[clamp(22px,4.5vw,38px)] leading-[1.15] xl:text-[38px]",
+                          item.accentTitle ? "text-[#303ccf]" : "text-black"
+                        )}
+                      >
+                        {item.title}
+                      </h3>
+                      {item.excerpt ? (
+                        <p className="mt-5 text-[17px] leading-[1.35] text-black/80 sm:mt-6 sm:text-[18px] md:mt-8 md:text-[20px]">
+                          {item.excerpt}
+                        </p>
+                      ) : null}
+                      <div
+                        className={`mt-8 flex items-center justify-between gap-4 text-[14px] uppercase ${robotoMono.className}`}
+                      >
+                        <p className="min-w-0 text-black/90">
+                          <span>{item.metaCategory}</span>
+                          <span className="mx-2 text-black/50" aria-hidden>
+                            /
+                          </span>
+                          <span className={item.accentTitle ? "text-[#1423cb]" : "text-black/90"}>
+                            {item.author}
+                          </span>
+                        </p>
+                        <span className="shrink-0 text-black/80">{tArticles("readAction")}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </article>
             ))}
           </div>

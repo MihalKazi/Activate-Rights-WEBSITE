@@ -70,7 +70,8 @@ export function Footer({ locale }: FooterProps) {
       </div>
       <div className="relative z-10 border-t border-white/20">
         <div className="container-shell py-5 text-xs text-white/70">
-          © {year} Activate Rights. All rights reserved.
+          ©{" "}
+          <span suppressHydrationWarning>{year}</span> Activate Rights. All rights reserved.
         </div>
       </div>
     </footer>
