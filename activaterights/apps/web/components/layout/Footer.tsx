@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "../ui/Button";
+import { BrandLogoLink } from "../brand/BrandLogo";
 
 type FooterProps = {
   locale: "en" | "bn";
@@ -26,7 +27,7 @@ export function Footer({ locale }: FooterProps) {
     <footer className="texture-overlay relative border-t border-white/30 bg-[#0d1116] text-white">
       <div className="container-shell relative z-10 grid gap-12 py-16 lg:grid-cols-4">
         <div className="lg:col-span-2">
-          <p className="text-3xl font-extrabold leading-none uppercase">activate rights//</p>
+          <BrandLogoLink href={`/${locale}`} size="footer" linkClassName="hover:opacity-90" />
           <p className="mt-4 max-w-md text-sm text-white/80">
             A digital rights organization in Bangladesh defending an open, safe, and rights-respecting internet.
           </p>

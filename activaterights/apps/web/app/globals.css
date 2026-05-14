@@ -134,9 +134,11 @@ body:has(main[data-home]) .site-film-grain {
 
 /* “Digital rights…” marquee — same dark tile + grain as `.home-initiatives-section`. */
 .home-rights-marquee {
-  --rights-marquee-gap: clamp(1rem, 3.5vw, 2.75rem);
+  --rights-marquee-gap: clamp(0.65rem, 2vw, 1.25rem);
   position: relative;
   isolation: isolate;
+  display: flex;
+  align-items: center;
   overflow: hidden;
   border-top: 2px solid #05b557;
   background-color: #1a1a1a;
@@ -171,6 +173,7 @@ body:has(main[data-home]) .site-film-grain {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  flex: 0 0 auto;
   width: max-content;
   /* Move by exactly one sequence width = seamless tile; many copies → no empty viewport */
   animation: home-rights-marquee-scroll 50s linear infinite;
@@ -448,6 +451,20 @@ body:has(main[data-home]) .site-film-grain {
 .articles-listing-grain {
   background-image: none;
   opacity: 0;
+}
+
+/* Home “we have / worked with” — two-line stack, tight leading, left (Figma ref). */
+.home-partners-heading {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.home-partners-heading > span {
+  line-height: 0.92;
+}
+
+.home-partners-heading > span + span {
+  margin-top: -0.09em;
 }
 
 /* Figma 34:583 — Stack Sans Notch SemiBold headline */

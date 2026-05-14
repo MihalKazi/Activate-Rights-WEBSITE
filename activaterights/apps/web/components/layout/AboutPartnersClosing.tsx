@@ -31,7 +31,7 @@ export async function AboutPartnersClosing({ locale, footerCompact = false }: Ab
         <div className="mx-auto max-w-[1440px]">
           <h2
             className={cn(
-              "home-headline-font mb-6 max-w-[min(100%,720px)] text-[clamp(40px,5.2vw,72px)] font-normal leading-[0.92] tracking-tight text-[#fafcff] md:mb-8",
+              "home-headline-font home-partners-heading mb-6 max-w-[min(100%,720px)] text-left text-[clamp(40px,5.2vw,72px)] font-bold text-[#fafcff] md:mb-8",
               locale === "en" && "lowercase"
             )}
           >
@@ -64,7 +64,6 @@ export async function AboutPartnersClosing({ locale, footerCompact = false }: Ab
         facebookLabel={t("footerFacebook")}
         twitterLabel={t("footerTwitter")}
         instagramLabel={t("footerInstagram")}
-        brandClassName="text-[#06b85c]"
         compact={footerCompact}
       />
     </>

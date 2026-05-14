@@ -20,6 +20,7 @@ export function HomeJsonLd({ locale }: HomeJsonLdProps) {
         "@id": `${base}/#organization`,
         name: "Activate Rights",
         url: base,
+        logo: `${base}/images/brand-logo.png`,
         description: locale === "bn" ? descriptionBn : descriptionEn,
         areaServed: { "@type": "Country", name: "Bangladesh" },
         knowsAbout: [

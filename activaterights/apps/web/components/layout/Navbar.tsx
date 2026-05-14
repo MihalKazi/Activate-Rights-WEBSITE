@@ -6,6 +6,7 @@ import { Roboto_Mono } from "next/font/google";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { cn } from "../../lib/utils";
+import { BrandLogo } from "../brand/BrandLogo";
 
 /** Matches Figma Home nav (Roboto Mono Regular, 14px, uppercase). */
 const robotoMono = Roboto_Mono({
@@ -95,12 +96,14 @@ export function Navbar({
         <Link
           href={withLocale(locale, "/")}
           className={cn(
-            "font-extrabold leading-none tracking-tight",
-            onHero ? "text-[#dff6ff] drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]" : "text-white"
+            "inline-block shrink-0 leading-none outline-none hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-white/90",
+            onHero && "focus-visible:ring-offset-transparent"
           )}
         >
-          <span className="block text-[14px] lowercase md:text-[16px]">activate</span>
-          <span className="block text-[14px] lowercase md:text-[16px]">rights//</span>
+          <BrandLogo
+            size="nav"
+            className={cn(onHero && "drop-shadow-[0_1px_2px_rgba(0,0,0,0.45)]")}
+          />
         </Link>
 
         <button

@@ -234,15 +234,12 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
         </div>
       </section>
 
-      {/* Dotted rule — Figma 34:145 */}
+      {/* Dotted rule before “who we are” — 1px dark green dotted (Figma ref), full content width */}
       <div className="bg-[#fafcff] px-6 md:px-10 lg:px-[40px]">
-        <div className="mx-auto max-w-[1360px]">
-          <Image
-            src="/images/about/dotted-rule.png"
-            alt=""
-            width={1354}
-            height={4}
-            className="h-auto w-full max-h-[6px] object-cover opacity-80"
+        <div className="mx-auto max-w-[1440px]">
+          <hr
+            className="w-full border-0 border-t border-dotted border-[#006837]"
+            aria-hidden
           />
         </div>
       </div>
