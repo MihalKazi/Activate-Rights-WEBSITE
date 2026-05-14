@@ -129,30 +129,51 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       {/* Hero — Figma 34:77 blue band — same grain tile as Projects `.projects-grain-blue` */}
       <section className="projects-grain-blue relative overflow-hidden pb-0 pt-2 md:pb-0">
         <div className="relative mx-auto max-w-[1440px] px-6 lg:px-[40px]">
-          <div className="relative pb-12 pt-5 md:pb-14 md:pt-7 lg:pb-14 lg:pt-8">
-            <h1 className="home-headline-font relative z-10 max-w-[min(100%,52rem)] text-[clamp(26px,3.6vw+0.45rem,50px)] font-bold leading-[0.96] tracking-tight text-white xl:max-w-[48rem]">
-              <span className="block whitespace-pre-wrap">
+          <div className="relative pb-16 pt-5 md:pb-20 md:pt-7 lg:pb-24 lg:pt-8">
+            <h1 className="home-headline-font home-collective-zine__type relative z-10 max-w-[min(100%,1180px)] text-[clamp(40px,6.5vw,96px)] font-bold lowercase leading-[0.98] tracking-[-0.02em] text-white">
+              <span className="home-collective-zine__line m-0 block whitespace-pre-wrap">
                 <span className="text-white">// </span>
                 {t("heroLine1")}
               </span>
-              {/* Reference: "fighting for" then grey + green boxes on one line */}
-              <span className="mt-0 flex flex-wrap items-baseline gap-2 md:gap-3">
-                <span>{t("heroLine2")}</span>
-                <span className="inline-flex shrink-0 items-center gap-1.5 md:gap-2" aria-hidden>
-                  <span className="inline-block size-[34px] bg-neutral-300 sm:size-[38px] md:size-[40px]" />
-                  <span className="inline-block size-[34px] bg-[#06b85c] sm:size-[38px] md:size-[40px]" />
+              <span className="home-collective-zine__line home-collective-zine__line--fighting m-0 mt-[0.08em] flex flex-wrap items-end gap-x-[min(0.45em,16px)] gap-y-3 md:gap-x-[0.5em]">
+                <span className="shrink-0">{t("heroLine2")}</span>
+                <span className="home-collective-zine__picsPair shrink-0" aria-hidden>
+                  <span className="home-collective-zine__picWrap">
+                    <Image
+                      src="/images/home-collective-zine-ear.png"
+                      alt=""
+                      fill
+                      sizes="97px"
+                      className="object-cover object-center"
+                    />
+                  </span>
+                  <span className="home-collective-zine__picWrap">
+                    <Image
+                      src="/images/home-collective-zine-mouth.png"
+                      alt=""
+                      fill
+                      sizes="97px"
+                      className="object-cover object-center"
+                    />
+                  </span>
                 </span>
               </span>
-              {/* Reference: "free speech, human rights," alone on one line */}
-              <span className="mt-1 block">{t("heroLine3")}</span>
-              {/* Reference: "and" + grey box + "an open internet" */}
-              <span className="mt-1 flex flex-wrap items-baseline gap-2 md:gap-3">
-                <span>{t("heroLine4Start")}</span>
+              <span className="home-collective-zine__line m-0 mt-[0.06em] block">{t("heroLine3")}</span>
+              <span className="home-collective-zine__line home-collective-zine__line--open m-0 mt-[0.06em] flex flex-wrap items-end gap-x-[min(0.45em,16px)] gap-y-3 md:gap-x-[0.5em]">
+                <span className="shrink-0">{t("heroLine4Start")}</span>
                 <span
-                  className="inline-block size-[34px] shrink-0 self-center bg-neutral-300 sm:size-[38px] md:size-[40px]"
+                  className="home-collective-zine__picWrap home-collective-zine__picWrap--narrow shrink-0"
                   aria-hidden
-                />
-                <span>{t("heroLine4End")}</span>
+                >
+                  <Image
+                    src="/images/home-collective-zine-eye.png"
+                    alt=""
+                    fill
+                    sizes="97px"
+                    className="object-cover object-center"
+                  />
+                </span>
+                <span className="shrink-0">{t("heroLine4End")}</span>
               </span>
             </h1>
           </div>
