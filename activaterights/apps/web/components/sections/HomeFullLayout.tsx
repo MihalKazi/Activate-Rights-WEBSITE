@@ -305,19 +305,20 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
       <section className="home-paper-marketing-section pt-12 pb-10 text-black sm:pt-16 md:pb-12 md:pt-24 xl:pt-[200px]">
         <div className={`mx-auto max-w-[1440px] ${HOME_PAD_155}`}>
           <div className="grid grid-cols-1 items-start gap-8 xl:grid-cols-[1fr_372px] xl:gap-8">
-            <h2 className="home-headline-font text-[clamp(40px,9vw,109px)] lowercase leading-[0.92] text-[#05b557] xl:text-[109px]">
-              our projects
+            <h2 className="home-headline-font text-[clamp(40px,9vw,109px)] lowercase leading-[0.92] xl:text-[109px]">
+              <span className="block text-[#05b557]">our</span>
+              <span className="block text-[#05b557]">projects</span>
             </h2>
-            <div>
+            <div className="xl:pt-[0.42em]">
               <p className="text-[18px] leading-[1.4] sm:text-[20px] md:text-[22px] md:leading-[1.35]">
                 We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
                 access and hold authorities accountable.
               </p>
               <Link
                 href={withLocale(locale, "/projects")}
-                className={`mt-8 inline-block bg-[#303ccf] px-5 py-4 text-[14px] uppercase text-white ${robotoMono.className}`}
+                className={`mt-8 inline-block bg-[#303ccf] px-5 py-4 text-[14px] uppercase tracking-wide text-white ${robotoMono.className}`}
               >
-                View All Projects
+                View all projects
               </Link>
             </div>
           </div>
