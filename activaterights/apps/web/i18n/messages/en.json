@@ -2,7 +2,7 @@
   "about": {
     "metaTitle": "About — Activate Rights",
     "metaDescription": "We are a collective fighting for free speech, human rights, and an open internet in Bangladesh.",
-    "heroLine1": "      we are a collective",
+    "heroLine1": "       we are a collective",
     "heroLine2": "fighting for",
     "heroLine3": "free speech, human rights,",
     "heroLine4Start": "and",
@@ -201,6 +201,8 @@
     "readMore": "Read more",
     "viewAll": "View all",
     "loading": "Loading...",
-    "error": "Something went wrong."
+    "error": "Something went wrong.",
+    "scrollToTop": "Top",
+    "scrollToTopAria": "Scroll to top of page"
   }
 }
