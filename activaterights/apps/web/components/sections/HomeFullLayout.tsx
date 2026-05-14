@@ -91,11 +91,11 @@ const RIGHTS_MARQUEE_ICONS = [
 function RightsMarqueeIcon({ src }: { src: string | null }) {
   return (
     <span
-      className="home-rights-marquee__icon-frame relative flex h-[clamp(40px,8vw,60px)] w-[clamp(40px,8vw,60px)] shrink-0 overflow-hidden rounded-full"
+      className="home-rights-marquee__icon-frame relative flex h-[clamp(40px,9vw,56px)] w-[clamp(40px,9vw,56px)] shrink-0 overflow-hidden rounded-full"
       aria-hidden
     >
       {src ? (
-        <Image src={src} alt="" fill sizes="60px" className="object-cover" />
+        <Image src={src} alt="" fill sizes="56px" className="object-cover" />
       ) : (
         <span className="m-auto block h-[52%] w-[52%] rounded-sm bg-white/15" />
       )}
@@ -108,19 +108,19 @@ function RightsMarqueeSequence() {
   return (
     <div className="home-rights-marquee__sequence">
       <RightsMarqueeIcon src={iconGreen.src} />
-      <span className="home-headline-font whitespace-nowrap text-[clamp(28px,4.5vw,60px)] font-black uppercase leading-none tracking-tight text-white">
+      <span className="home-headline-font whitespace-nowrap text-[clamp(26px,4.2vw,56px)] font-black uppercase leading-none tracking-tight text-white">
         DIGITAL
       </span>
       <RightsMarqueeIcon src={iconYellow.src} />
-      <span className="home-headline-font whitespace-nowrap text-[clamp(28px,4.5vw,60px)] font-black uppercase leading-none tracking-tight text-white">
+      <span className="home-headline-font whitespace-nowrap text-[clamp(26px,4.2vw,56px)] font-black uppercase leading-none tracking-tight text-white">
         RIGHTS
       </span>
       <RightsMarqueeIcon src={iconBlue.src} />
-      <span className="home-headline-font whitespace-nowrap text-[clamp(28px,4.5vw,60px)] font-black uppercase leading-none tracking-tight text-white">
+      <span className="home-headline-font whitespace-nowrap text-[clamp(26px,4.2vw,56px)] font-black uppercase leading-none tracking-tight text-white">
         ARE HUMAN
       </span>
       <RightsMarqueeIcon src={iconRed.src} />
-      <span className="home-headline-font whitespace-nowrap text-[clamp(28px,4.5vw,60px)] font-black uppercase leading-none tracking-tight text-white">
+      <span className="home-headline-font whitespace-nowrap text-[clamp(26px,4.2vw,56px)] font-black uppercase leading-none tracking-tight text-white">
         RIGHTS
       </span>
     </div>
@@ -204,7 +204,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
       </section>
 
       <div
-        className="home-rights-marquee min-h-[163px] pt-0 pb-[clamp(1.25rem,3.5vw,2.375rem)] md:min-h-[163px]"
+        className="home-rights-marquee py-5 md:py-6"
         role="region"
         aria-label="Digital rights are human rights"
         style={
