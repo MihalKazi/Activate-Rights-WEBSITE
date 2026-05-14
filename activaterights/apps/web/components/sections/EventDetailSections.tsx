@@ -14,6 +14,7 @@ import { AboutFooter } from "../layout/AboutFooter";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { plainTextToParagraphs } from "../../lib/plainTextParagraphs";
+import { formatCalendarDayMonthYear, formatCalendarDdMmYyyyUtc } from "../../lib/datetime/formatCalendarDisplay";
 import { getEventBySlug } from "../../lib/sanity/queries";
 import { urlFor } from "../../lib/sanity/image";
 import { ArticleShareButton } from "./ArticleShareButton";
@@ -33,13 +34,7 @@ type EventDetailSectionsProps = {
 function formatEventDate(iso: string, locale: Locale): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "—";
-  if (locale === "bn") {
-    return d.toLocaleDateString("bn-BD", { day: "2-digit", month: "2-digit", year: "numeric" });
-  }
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  return `${dd}.${mm}.${yyyy}`;
+  return locale === "bn" ? formatCalendarDayMonthYear(iso, "bn") : formatCalendarDdMmYyyyUtc(iso);
 }
 
 function locationDisplayText(

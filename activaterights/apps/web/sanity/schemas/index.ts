@@ -3,6 +3,8 @@ import { articleSchema } from "./article";
 import { campaignSchema } from "./campaign";
 import { eventSchema } from "./event";
 import { projectSchema } from "./project";
+import { reportSchema } from "./report";
+import { reportsOnHomeSchema } from "./reportsOnHome";
 import { siteSettingsSchema } from "./siteSettings";
 import { teamMemberSchema } from "./teamMember";
 
@@ -52,6 +54,8 @@ export const schemaTypes = [
   localizedPortableText,
   articleSchema,
   projectSchema,
+  reportSchema,
+  reportsOnHomeSchema,
   eventSchema,
   campaignSchema,
   teamMemberSchema,

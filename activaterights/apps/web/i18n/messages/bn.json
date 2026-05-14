@@ -125,44 +125,7 @@
     "metaDescription": "বাংলাদেশে ডিজিটাল অধিকার, ইন্টারনেট বন্ধ ও নীতি সংক্রান্ত প্রকাশিত প্রতিবেদন।",
     "heroLine1": "প্রকাশিত",
     "heroLine2": "প্রতিবেদন",
-    "items": [
-      {
-        "slug": "shutdown-watch",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-2",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-slash",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": true,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-4",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-5",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": false,
-        "date": "2024-02-19"
-      },
-      {
-        "slug": "shutdown-watch-slash-2",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": true,
-        "date": "2024-02-19"
-      }
-    ]
+    "empty": "এখনও কোনো প্রতিবেদন প্রকাশিত হয়নি। শীঘ্রই আবার দেখুন।"
   },
   "articles": {
     "metaTitle": "আর্টিকেল — অ্যাক্টিভেট রাইটস",
@@ -175,6 +138,8 @@
     "filterFeature": "ফিচার",
     "filterBlah": "অন্যান্য",
     "loadMore": "আরও লোড",
+    "readAction": "পড়ুন",
+    "emptyHomeUpdates": "এখনও কোনো আর্টিকেল নেই। স্টুডিওতে যোগ করুন বা সব আপডেট দেখুন।",
     "backToArticles": "আর্টিকেল তালিকায় ফিরে যান",
     "defaultPublished": "—",
     "shareArticleAria": "এই নিবন্ধ শেয়ার করুন",
@@ -213,9 +178,12 @@
   },
   "nav": {
     "home": "হোম",
+    "about": "আমাদের সম্পর্কে",
     "articles": "আর্টিকেল",
     "projects": "প্রকল্প",
+    "reports": "প্রতিবেদন",
     "team": "টিম",
+    "contact": "যোগাযোগ",
     "events": "ইভেন্ট",
     "campaigns": "ক্যাম্পেইন"
   },

@@ -1,20 +1,13 @@
 import type { Image } from "sanity";
 import type { Locale } from "../../i18n/config";
+import { formatCalendarDayMonthYear, formatCalendarDdMmYyyyUtc } from "../datetime/formatCalendarDisplay";
 import { articleCategoryToFilter, formatArticleCategory } from "./articleCategories";
 import { urlFor } from "../sanity/image";
 import type { ArticleListItem } from "../sanity/queries";
 import type { ArticleListItem as ArticleCardRow } from "../../components/sections/ArticlesListClient";
 
 function formatPublished(iso: string, locale: Locale): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  if (locale === "bn") {
-    return d.toLocaleDateString("bn-BD", { day: "2-digit", month: "2-digit", year: "numeric" });
-  }
-  const dd = String(d.getDate()).padStart(2, "0");
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const yyyy = d.getFullYear();
-  return `${dd}.${mm}.${yyyy}`;
+  return locale === "bn" ? formatCalendarDayMonthYear(iso, "bn") : formatCalendarDdMmYyyyUtc(iso);
 }
 
 export function mapArticleToCardRow(row: ArticleListItem, locale: Locale): ArticleCardRow {
@@ -47,5 +40,41 @@ export function mapArticleToCardRow(row: ArticleListItem, locale: Locale): Artic
     accentTitle: Boolean(row.featured),
     coverSrc,
     publishedAt: formatPublished(row.publishedAt, locale)
+  };
+}
+
+/** Home “updates and blog” row — same CMS data as /articles, with excerpt + larger cover. */
+export type HomeArticleCard = {
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  coverSrc: string | null;
+  metaCategory: string;
+  author: string;
+  accentTitle: boolean;
+};
+
+export function mapArticleToHomeRow(row: ArticleListItem, locale: Locale): HomeArticleCard {
+  const card = mapArticleToCardRow(row, locale);
+  const excerpt =
+    row.excerpt && typeof row.excerpt === "string" && row.excerpt.trim().length > 0
+      ? row.excerpt.trim()
+      : null;
+  const coverSrc = row.coverImage?.asset?._ref
+    ? urlFor(row.coverImage as Image)
+        .width(642)
+        .height(390)
+        .fit("crop")
+        .auto("format")
+        .url()
+    : null;
+  return {
+    slug: card.slug,
+    title: card.title,
+    excerpt,
+    coverSrc,
+    metaCategory: card.metaCategory,
+    author: card.author,
+    accentTitle: card.accentTitle
   };
 }

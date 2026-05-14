@@ -19,7 +19,6 @@
     "@portabletext/react": "^3.0.0",
     "@sanity/block-tools": "^3.70.0",
     "@sanity/client": "^7.22.0",
-    "@sanity/document-internationalization": "^3.0.0",
     "@sanity/image-url": "^1.0.0",
     "@sanity/vision": "^3.0.0",
     "jsdom": "^29.1.1",

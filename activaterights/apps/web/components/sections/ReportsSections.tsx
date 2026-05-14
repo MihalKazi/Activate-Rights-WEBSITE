@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
+import type { Image as SanityImage } from "sanity";
 import { getTranslations } from "next-intl/server";
 import { AboutFooter } from "../layout/AboutFooter";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
+import { formatReportCardDate } from "../../lib/reports/formatReportDate";
+import { urlFor } from "../../lib/sanity/image";
+import { getAllReports } from "../../lib/sanity/queries";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -20,37 +24,51 @@ type ReportCard = {
   slug: string;
   title: string;
   titleLeadingSlash: boolean;
-  /** ISO date string */
+  /** YYYY-MM-DD */
   date: string;
-  /** Optional cover under `/public`; omit for placeholder block */
-  coverSrc?: string;
+  coverUrl: string | null;
+  excerpt: string | null;
 };
-
-function formatReportDate(iso: string, locale: Locale): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString(locale === "bn" ? "bn-BD" : "en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-  });
-}
 
 export async function ReportsSections({ locale }: ReportsSectionsProps) {
   const t = await getTranslations({ locale, namespace: "reports" });
   const tAbout = await getTranslations({ locale, namespace: "about" });
 
-  const rawItems = t.raw("items");
-  const items: ReportCard[] = Array.isArray(rawItems)
-    ? (rawItems as ReportCard[]).filter(
-        (item) =>
-          item &&
-          typeof item.slug === "string" &&
-          typeof item.title === "string" &&
-          typeof item.date === "string" &&
-          typeof item.titleLeadingSlash === "boolean"
+  let items: ReportCard[] = [];
+  try {
+    const rows = await getAllReports(locale);
+    items = rows
+      .filter(
+        (r) =>
+          r?.slug?.current &&
+          typeof r.title === "string" &&
+          typeof r.publishedDate === "string"
       )
-    : [];
+      .map((r) => {
+        const coverUrl =
+          r.coverImage?.asset?._ref != null
+            ? urlFor(r.coverImage as SanityImage)
+                .width(626)
+                .height(848)
+                .fit("crop")
+                .auto("format")
+                .quality(85)
+                .url()
+            : null;
+        const excerpt =
+          typeof r.excerpt === "string" && r.excerpt.trim().length > 0 ? r.excerpt.trim() : null;
+        return {
+          slug: r.slug.current,
+          title: r.title.trim() || "Report",
+          titleLeadingSlash: Boolean(r.titleLeadingSlash),
+          date: r.publishedDate,
+          coverUrl,
+          excerpt
+        };
+      });
+  } catch {
+    items = [];
+  }
 
   return (
     <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
@@ -70,6 +88,11 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
       <section className="relative px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
         <div className="reports-body-grain pointer-events-none absolute inset-0 z-0" aria-hidden />
         <div className="relative z-10 mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-[92px] lg:gap-y-16">
+          {items.length === 0 ? (
+            <p className={`col-span-full text-center text-[17px] text-[#212121]/80 ${robotoMono.className}`}>
+              {t("empty")}
+            </p>
+          ) : null}
           {items.map((item, index) => (
             <article key={`${item.slug}-${index}`} className="min-w-0">
               <Link
@@ -77,9 +100,9 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
                 className="group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]"
               >
                 <div className="relative aspect-[313/424] w-full overflow-hidden bg-[#d9d9d9] transition-colors group-hover:bg-[#cfcfcf]">
-                  {item.coverSrc ? (
+                  {item.coverUrl ? (
                     <Image
-                      src={item.coverSrc}
+                      src={item.coverUrl}
                       alt=""
                       fill
                       className="object-cover"
@@ -100,8 +123,11 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
                 <p
                   className={`${robotoMono.className} mt-4 text-[14px] font-normal leading-[26px] text-[#a6a6a6]`}
                 >
-                  {formatReportDate(item.date, locale)}
+                  {formatReportCardDate(item.date, locale)}
                 </p>
+                {item.excerpt ? (
+                  <p className="mt-4 text-[16px] leading-[1.45] text-[#212121]/85">{item.excerpt}</p>
+                ) : null}
               </Link>
             </article>
           ))}

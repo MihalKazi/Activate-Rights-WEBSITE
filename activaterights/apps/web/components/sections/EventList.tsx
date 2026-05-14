@@ -6,6 +6,7 @@ import { cn } from "../../lib/utils";
 import { urlFor } from "../../lib/sanity/image";
 import type { EventItem } from "../../lib/sanity/queries";
 import type { Locale } from "../../i18n/config";
+import { formatCalendarDdMmYyyyUtc } from "../../lib/datetime/formatCalendarDisplay";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -19,11 +20,7 @@ type EventListProps = {
 };
 
 function formatListingDate(iso: string): string {
-  const d = new Date(iso);
-  const day = String(d.getDate()).padStart(2, "0");
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const year = d.getFullYear();
-  return `${day}.${month}.${year}`;
+  return formatCalendarDdMmYyyyUtc(iso);
 }
 
 function truncateExcerpt(text: string, max: number): string {

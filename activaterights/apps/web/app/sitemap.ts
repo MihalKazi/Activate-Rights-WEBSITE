@@ -5,7 +5,8 @@ import {
   getAllArticleSlugs,
   getAllCampaignSlugs,
   getAllEventSlugs,
-  getAllProjectSlugs
+  getAllProjectSlugs,
+  getAllReportSlugs
 } from "../lib/sanity/queries";
 
 /** Fresh URLs for crawlers when Sanity is available at request time. */
@@ -32,11 +33,12 @@ async function safeSlugs(fetcher: () => Promise<string[]>): Promise<string[]> {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = getSiteUrl();
-  const [articleSlugs, eventSlugs, projectSlugs, campaignSlugs] = await Promise.all([
+  const [articleSlugs, eventSlugs, projectSlugs, campaignSlugs, reportSlugs] = await Promise.all([
     safeSlugs(getAllArticleSlugs),
     safeSlugs(getAllEventSlugs),
     safeSlugs(getAllProjectSlugs),
-    safeSlugs(getAllCampaignSlugs)
+    safeSlugs(getAllCampaignSlugs),
+    safeSlugs(getAllReportSlugs)
   ]);
 
   const entries: MetadataRoute.Sitemap = [];
@@ -85,6 +87,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.65
+      });
+    }
+
+    for (const slug of reportSlugs) {
+      entries.push({
+        url: `${base}/${locale}/reports/${encodeURIComponent(slug)}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.72
       });
     }
   }

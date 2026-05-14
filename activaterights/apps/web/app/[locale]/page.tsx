@@ -1,8 +1,22 @@
 import type { Metadata } from "next";
+import type { Image as SanityImage } from "sanity";
 import { notFound } from "next/navigation";
 import { HomeJsonLd } from "../../components/seo/HomeJsonLd";
-import { HomeFullLayout } from "../../components/sections/HomeFullLayout";
+import {
+  HomeFullLayout,
+  type HomeFeaturedProjectCard,
+  type HomeFeaturedReportCard
+} from "../../components/sections/HomeFullLayout";
 import { locales, type Locale } from "../../i18n/config";
+import { mapArticleToHomeRow, type HomeArticleCard } from "../../lib/articles/mapArticleCard";
+import { formatCalendarDayMonthYear } from "../../lib/datetime/formatCalendarDisplay";
+import { urlFor } from "../../lib/sanity/image";
+import { formatReportCardDate } from "../../lib/reports/formatReportDate";
+import {
+  getArticlesForHome,
+  getHomePageProjects,
+  getReportsForHome
+} from "../../lib/sanity/queries";
 import { withLocaleSeo } from "../../lib/seo/buildPageMetadata";
 
 type HomePageProps = {
@@ -10,6 +24,76 @@ type HomePageProps = {
     locale: string;
   };
 };
+
+function formatLaunchDate(iso: string | null | undefined, locale: Locale): string | null {
+  if (!iso || typeof iso !== "string") return null;
+  const trimmed = iso.trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return null;
+  const label = formatCalendarDayMonthYear(`${trimmed}T12:00:00Z`, locale);
+  return label === "—" ? null : label;
+}
+
+function toHomeReportCards(
+  locale: Locale,
+  reports: Awaited<ReturnType<typeof getReportsForHome>>
+): HomeFeaturedReportCard[] {
+  return reports
+    .filter(
+      (r) =>
+        r?.slug?.current &&
+        typeof r.title === "string" &&
+        typeof r.publishedDate === "string"
+    )
+    .map((r) => {
+      const slug = r.slug.current.trim();
+      const imageUrl =
+        r.coverImage?.asset?._ref != null
+          ? urlFor(r.coverImage as SanityImage)
+              .width(626)
+              .height(848)
+              .fit("crop")
+              .auto("format")
+              .quality(85)
+              .url()
+          : null;
+      const excerpt =
+        typeof r.excerpt === "string" && r.excerpt.trim().length > 0 ? r.excerpt.trim() : null;
+      return {
+        slug,
+        title: (r.title && String(r.title).trim()) || "Report",
+        titleLeadingSlash: Boolean(r.titleLeadingSlash),
+        dateLabel: formatReportCardDate(r.publishedDate, locale),
+        imageUrl,
+        excerpt
+      };
+    });
+}
+
+function toFeaturedProjectCards(locale: Locale, projects: Awaited<ReturnType<typeof getHomePageProjects>>): HomeFeaturedProjectCard[] {
+  return projects.map((p) => {
+    const slug = p.slug?.current?.trim();
+    const ext = p.externalUrl?.trim();
+    const imageUrl =
+      p.coverImage?.asset?._ref != null
+        ? urlFor(p.coverImage as SanityImage)
+            .width(1200)
+            .height(936)
+            .fit("crop")
+            .auto("format")
+            .quality(85)
+            .url()
+        : null;
+    const isExternal = Boolean(ext);
+    const href = ext ?? (slug ? `/${locale}/projects/${slug}` : `/${locale}/projects`);
+    return {
+      title: (p.title && String(p.title).trim()) || "Project",
+      href,
+      isExternal,
+      imageUrl,
+      dateLabel: formatLaunchDate(p.launchDate, locale)
+    };
+  });
+}
 
 export async function generateMetadata({
   params
@@ -39,10 +123,41 @@ export default async function HomePage({ params }: HomePageProps) {
     notFound();
   }
 
+  let featuredProjects: HomeFeaturedProjectCard[] = [];
+  try {
+    const rows = await getHomePageProjects(locale);
+    featuredProjects = toFeaturedProjectCards(locale, rows);
+  } catch {
+    featuredProjects = [];
+  }
+
+  let homeReports: HomeFeaturedReportCard[] = [];
+  try {
+    const reportRows = await getReportsForHome(locale);
+    homeReports = toHomeReportCards(locale, reportRows);
+  } catch {
+    homeReports = [];
+  }
+
+  let homeArticles: HomeArticleCard[] = [];
+  try {
+    const articleRows = await getArticlesForHome(locale);
+    homeArticles = articleRows
+      .filter((r) => r.slug?.current && String(r.slug.current).trim().length > 0)
+      .map((r) => mapArticleToHomeRow(r, locale));
+  } catch {
+    homeArticles = [];
+  }
+
   return (
     <>
       <HomeJsonLd locale={locale} />
-      <HomeFullLayout locale={locale} />
+      <HomeFullLayout
+        locale={locale}
+        featuredProjects={featuredProjects}
+        reports={homeReports}
+        articles={homeArticles}
+      />
     </>
   );
 }

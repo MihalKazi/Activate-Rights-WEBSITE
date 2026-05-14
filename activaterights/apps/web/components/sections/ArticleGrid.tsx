@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { formatCalendarDayMonthYear } from "../../lib/datetime/formatCalendarDisplay";
 import type { ArticleListItem } from "../../lib/sanity/queries";
 import { Card } from "../ui/Card";
 
@@ -30,7 +31,7 @@ export function ArticleGrid({ locale, articles }: ArticleGridProps) {
               />
             </div>
             <p className="mb-2 text-xs uppercase text-white/70">
-              {new Date(article.publishedAt).toLocaleDateString(locale)}
+              {formatCalendarDayMonthYear(article.publishedAt, locale)}
             </p>
             <h3 className="mb-3 text-xl font-bold">{article.title}</h3>
             <p className="line-clamp-3 text-sm text-white/80">{article.excerpt}</p>

@@ -1,5 +1,6 @@
 import { groq } from "next-sanity";
 import { normalizeArticleSlugParam } from "../articles/slug";
+import { REPORTS_ON_HOME_DOCUMENT_ID } from "../../sanity/schemas/reportsOnHome";
 import { sanityClient } from "./client";
 import type { Locale } from "../../i18n/config";
 
@@ -48,6 +49,19 @@ export type ProjectItem = {
   coverImage: SanityImage;
   externalUrl?: string;
   order: number;
+  /** ISO date string (YYYY-MM-DD) from Sanity `date` type */
+  launchDate?: string | null;
+};
+
+export type ReportItem = {
+  _id: string;
+  title: string;
+  slug: Slug;
+  /** YYYY-MM-DD from Sanity `date` */
+  publishedDate: string;
+  coverImage: SanityImage;
+  titleLeadingSlash?: boolean;
+  excerpt?: string | null;
 };
 
 export type TeamMember = {
@@ -156,6 +170,21 @@ const articleListQuery = groq`
   }
 `;
 
+/** Home “updates and blog” preview — same fields as article list, newest first. */
+const homeLatestArticlesQuery = groq`
+  *[_type == "article"] | order(publishedAt desc)[0...3] {
+    _id,
+    "title": ${localizedArticleTitle},
+    slug,
+    "excerpt": ${localizedArticleExcerpt},
+    coverImage,
+    publishedAt,
+    category,
+    featured,
+    "authorName": coalesce(author->name[$locale], author->name.en, author->name.bn, guestAuthor)
+  }
+`;
+
 const articleBySlugQuery = groq`
   *[_type == "article" && slug.current == $slug][0] {
     _id,
@@ -209,7 +238,8 @@ const allProjectsQuery = groq`
     status,
     coverImage,
     externalUrl,
-    order
+    order,
+    launchDate
   }
 `;
 
@@ -222,8 +252,82 @@ const projectBySlugQuery = groq`
     status,
     coverImage,
     externalUrl,
-    order
+    order,
+    launchDate
   }
+`;
+
+/** Curated list from Site Settings; order = CMS array order. */
+const homePageProjectsQuery = groq`
+  *[_type == "siteSettings"][0]{
+    "projects": coalesce(homeFeaturedProjects[]->{
+      _id,
+      "title": coalesce(title[$locale], title.en, title.bn, ""),
+      slug,
+      "description": description[$locale],
+      status,
+      coverImage,
+      externalUrl,
+      order,
+      launchDate
+    }, [])
+  }.projects
+`;
+
+const localizedReportExcerpt = `
+select(
+  $locale == "en" && defined(excerpt.en) && excerpt.en != "" => excerpt.en,
+  $locale == "en" && defined(excerpt.bn) && excerpt.bn != "" => excerpt.bn,
+  $locale == "bn" && defined(excerpt.bn) && excerpt.bn != "" => excerpt.bn,
+  $locale == "bn" && defined(excerpt.en) && excerpt.en != "" => excerpt.en,
+  defined(excerpt.en) && excerpt.en != "" => excerpt.en,
+  defined(excerpt.bn) && excerpt.bn != "" => excerpt.bn,
+  ""
+)
+`.trim();
+
+const allReportsQuery = groq`
+  *[_type == "report"] | order(publishedDate desc) {
+    _id,
+    "title": coalesce(title[$locale], title.en, title.bn, ""),
+    slug,
+    publishedDate,
+    coverImage,
+    titleLeadingSlash,
+    "excerpt": ${localizedReportExcerpt}
+  }
+`;
+
+/** Singleton `reportsOnHome` — curated order for home; empty picks → use all reports. */
+const reportsOnHomePickedQuery = groq`
+  *[_type == "reportsOnHome" && _id == $reportsOnHomeId][0]{
+    "reports": coalesce(reports[]->{
+      _id,
+      "title": coalesce(title[$locale], title.en, title.bn, ""),
+      slug,
+      publishedDate,
+      coverImage,
+      titleLeadingSlash,
+      "excerpt": ${localizedReportExcerpt}
+    }, [])
+  }.reports
+`;
+
+/** Same singleton — curated articles for home “updates and blog”; empty → 3 newest articles. */
+const reportsOnHomePickedArticlesQuery = groq`
+  *[_type == "reportsOnHome" && _id == $reportsOnHomeId][0]{
+    "articles": coalesce(articles[]->{
+      _id,
+      "title": ${localizedArticleTitle},
+      slug,
+      "excerpt": ${localizedArticleExcerpt},
+      coverImage,
+      publishedAt,
+      category,
+      featured,
+      "authorName": coalesce(author->name[$locale], author->name.en, author->name.bn, guestAuthor)
+    }, [])
+  }.articles
 `;
 
 const allTeamMembersQuery = groq`
@@ -329,6 +433,8 @@ const allEventSlugsQuery = groq`*[_type == "event" && defined(slug.current)].slu
 
 const allProjectSlugsQuery = groq`*[_type == "project" && defined(slug.current)].slug.current`;
 
+const allReportSlugsQuery = groq`*[_type == "report" && defined(slug.current)].slug.current`;
+
 const allCampaignSlugsQuery = groq`*[_type == "campaign" && defined(slug.current)].slug.current`;
 
 const activeCampaignsQuery = groq`
@@ -367,6 +473,31 @@ export async function getAllArticles(locale: Locale): Promise<ArticleListItem[]>
   return sanityClient.fetch(articleListQuery, { locale });
 }
 
+export async function getLatestArticlesForHome(locale: Locale): Promise<ArticleListItem[]> {
+  return sanityClient.fetch(homeLatestArticlesQuery, { locale });
+}
+
+/** Home “updates and blog”: order from Reports on Home singleton if set, else 3 newest articles. */
+export async function getArticlesForHome(locale: Locale): Promise<ArticleListItem[]> {
+  const picked = await sanityClient.fetch<ArticleListItem[] | null>(reportsOnHomePickedArticlesQuery, {
+    locale,
+    reportsOnHomeId: REPORTS_ON_HOME_DOCUMENT_ID
+  });
+  const list = Array.isArray(picked) ? picked : [];
+  const cleaned = list.filter(
+    (a) =>
+      a &&
+      typeof a._id === "string" &&
+      a.slug &&
+      typeof a.slug.current === "string" &&
+      a.slug.current.trim().length > 0
+  );
+  if (cleaned.length > 0) {
+    return cleaned.slice(0, 3);
+  }
+  return getLatestArticlesForHome(locale);
+}
+
 export async function getArticleBySlug(
   slug: string,
   locale: Locale
@@ -381,6 +512,51 @@ export async function getFeaturedArticles(locale: Locale): Promise<ArticleListIt
 
 export async function getAllProjects(locale: Locale): Promise<ProjectItem[]> {
   return sanityClient.fetch(allProjectsQuery, { locale });
+}
+
+/** Up to 3 projects for the home page: Site Settings picks, else first 3 by `order`. */
+export async function getHomePageProjects(locale: Locale): Promise<ProjectItem[]> {
+  const picked = await sanityClient.fetch<ProjectItem[] | null>(homePageProjectsQuery, { locale });
+  const list = Array.isArray(picked) ? picked : [];
+  const cleaned = list.filter(
+    (p) =>
+      p &&
+      typeof p._id === "string" &&
+      p.slug &&
+      typeof p.slug.current === "string" &&
+      p.slug.current.length > 0
+  );
+  if (cleaned.length > 0) {
+    return cleaned.slice(0, 3);
+  }
+  const all = await getAllProjects(locale);
+  return all.slice(0, 3);
+}
+
+export async function getAllReports(locale: Locale): Promise<ReportItem[]> {
+  return sanityClient.fetch(allReportsQuery, { locale });
+}
+
+/** Home published-reports band: order from Reports on Home singleton if set, else all reports by date. */
+export async function getReportsForHome(locale: Locale): Promise<ReportItem[]> {
+  const picked = await sanityClient.fetch<ReportItem[] | null>(reportsOnHomePickedQuery, {
+    locale,
+    reportsOnHomeId: REPORTS_ON_HOME_DOCUMENT_ID
+  });
+  const list = Array.isArray(picked) ? picked : [];
+  const cleaned = list.filter(
+    (r) =>
+      r &&
+      typeof r._id === "string" &&
+      r.slug &&
+      typeof r.slug.current === "string" &&
+      r.slug.current.trim().length > 0 &&
+      typeof r.publishedDate === "string"
+  );
+  if (cleaned.length > 0) {
+    return cleaned.slice(0, 3);
+  }
+  return getAllReports(locale);
 }
 
 export async function getProjectBySlug(
@@ -425,6 +601,10 @@ export async function getAllArticleSlugs(): Promise<string[]> {
 
 export async function getAllProjectSlugs(): Promise<string[]> {
   return sanityClient.fetch(allProjectSlugsQuery);
+}
+
+export async function getAllReportSlugs(): Promise<string[]> {
+  return sanityClient.fetch(allReportSlugsQuery);
 }
 
 export async function getAllCampaignSlugs(): Promise<string[]> {
