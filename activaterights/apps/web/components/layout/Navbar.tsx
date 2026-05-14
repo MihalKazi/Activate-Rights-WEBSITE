@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Roboto_Mono } from "next/font/google";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { cn } from "../../lib/utils";
 
@@ -29,14 +30,14 @@ type NavbarProps = {
   variant?: "default" | "heroOverlay";
 };
 
-const navItems = [
-  { label: "HOME", href: "/" },
-  { label: "ABOUT", href: "/about" },
-  { label: "PROJECTS", href: "/projects" },
-  { label: "REPORTS", href: "/reports" },
-  { label: "ARTICLES", href: "/articles" },
-  { label: "EVENTS", href: "/events" },
-  { label: "CONTACT", href: "/team" }
+const navDefs = [
+  { key: "home" as const, href: "/" },
+  { key: "about" as const, href: "/about" },
+  { key: "projects" as const, href: "/projects" },
+  { key: "reports" as const, href: "/reports" },
+  { key: "events" as const, href: "/events" },
+  { key: "articles" as const, href: "/articles" },
+  { key: "contact" as const, href: "/team" }
 ] as const;
 
 function withLocale(locale: "en" | "bn", href: string): string {
@@ -64,8 +65,9 @@ export function Navbar({
 }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("nav");
 
-  const links = showHomeLink ? navItems : navItems.filter((item) => item.label !== "HOME");
+  const links = showHomeLink ? navDefs : navDefs.filter((item) => item.key !== "home");
 
   const onHero = variant === "heroOverlay";
 
@@ -121,12 +123,12 @@ export function Navbar({
             const active = isNavActive(pathname, locale, item.href);
             return (
               <Link
-                key={item.label}
+                key={item.href}
                 href={withLocale(locale, item.href)}
                 aria-current={active ? "page" : undefined}
-                className={navPillClass(active)}
+                className={cn(navPillClass(active), "uppercase")}
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             );
           })}
@@ -139,13 +141,13 @@ export function Navbar({
             const active = isNavActive(pathname, locale, item.href);
             return (
               <Link
-                key={item.label}
+                key={item.href}
                 href={withLocale(locale, item.href)}
                 aria-current={active ? "page" : undefined}
-                className={navPillClass(active)}
+                className={cn(navPillClass(active), "uppercase")}
                 onClick={() => setIsOpen(false)}
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             );
           })}

@@ -1,8 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Roboto_Mono, Space_Mono } from "next/font/google";
 import { getTranslations } from "next-intl/server";
-import { AboutFooter } from "../layout/AboutFooter";
+import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import type { Locale } from "../../i18n/config";
 import { cardImageUrl } from "../../lib/sanity/image";
 import { getAllTeamMembers } from "../../lib/sanity/queries";
@@ -296,59 +295,7 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
         </div>
       </section>
 
-      {/* Partners — blue band + white logo rail (Figma 34:411–445) */}
-      <section className="projects-grain-blue px-6 py-10 md:px-10 md:py-14 lg:px-[40px] lg:py-16">
-        <div className="mx-auto max-w-[1440px]">
-          <h2 className="home-headline-font mb-6 max-w-[480px] text-[clamp(28px,4.8vw,62px)] font-normal leading-[0.96] tracking-tight text-[#fafcff] md:mb-8">
-            <span className="block">{t("partnersTitle1")}</span>
-            <span className="block">{t("partnersTitle2")}</span>
-          </h2>
-
-          <div className="overflow-x-auto bg-white px-5 py-8 md:px-8 md:py-9">
-            <div className="flex min-w-min flex-wrap items-center justify-center gap-8 md:gap-12 lg:justify-between lg:gap-6">
-              <div className="relative h-[54px] w-[210px] shrink-0 md:h-[58px] md:w-[230px]">
-                <Image
-                  src="/images/about/partner-frame.png"
-                  alt=""
-                  fill
-                  className="object-contain object-left"
-                />
-              </div>
-              <div className="relative h-[46px] w-[280px] shrink-0 md:h-[50px] md:w-[300px]">
-                <Image
-                  src="/images/about/partner-em.png"
-                  alt={t("partnerEngageMediaAlt")}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 md:mt-12">
-            <p className="home-headline-font text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.2] text-white">
-              <span className="block">{t("ctaHeading1")}</span>
-              <span className="block">{t("ctaHeading2")}</span>
-            </p>
-            <Link
-              href={`/${locale}/team`}
-              className={`${robotoMono.className} mt-5 inline-flex bg-white px-4 py-3.5 text-[14px] font-normal uppercase tracking-wide text-black transition-colors hover:bg-neutral-100 md:mt-6 md:px-5 md:py-4 md:text-[15px]`}
-            >
-              {t("ctaButton")}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <AboutFooter
-        locale={locale}
-        emailLabel={t("footerEmail")}
-        facebookLabel={t("footerFacebook")}
-        twitterLabel={t("footerTwitter")}
-        instagramLabel={t("footerInstagram")}
-        brandClassName="text-[#06b85c]"
-        compact
-      />
+      <AboutPartnersClosing locale={locale} footerCompact />
     </>
   );
 }

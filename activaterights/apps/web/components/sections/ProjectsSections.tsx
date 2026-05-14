@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
 import { getTranslations } from "next-intl/server";
-import { AboutFooter } from "../layout/AboutFooter";
+import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 
@@ -25,7 +24,6 @@ type ProjectCard = {
 
 export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
   const t = await getTranslations({ locale, namespace: "projects" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
 
   const rawItems = t.raw("items");
   const items: ProjectCard[] = Array.isArray(rawItems)
@@ -83,62 +81,7 @@ export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
         </div>
       </section>
 
-      <section className="projects-grain-blue px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
-        <div className="relative z-10 mx-auto max-w-[1440px]">
-          <h2 className="home-headline-font mb-10 max-w-[min(100%,720px)] text-left text-[clamp(52px,9vw,109px)] font-normal leading-[0.92] text-[#fafcff] md:mb-14">
-            <span className="block">{tAbout("partnersTitle1")}</span>
-            <span className="block">{tAbout("partnersTitle2")}</span>
-          </h2>
-
-          <div className="overflow-x-auto bg-white px-6 py-10 md:px-10">
-            <div className="mx-auto flex min-w-min max-w-[1145px] flex-wrap items-center justify-center gap-x-12 gap-y-10 md:gap-x-20 lg:justify-between lg:gap-x-[137px]">
-              <div className="relative h-[67px] w-[260px] shrink-0">
-                <Image
-                  src="/images/about/partner-frame.png"
-                  alt=""
-                  fill
-                  className="object-contain object-left"
-                />
-              </div>
-              <div className="home-headline-font flex min-h-[56px] shrink-0 flex-col justify-center text-center text-[11px] font-bold uppercase leading-[1.05] tracking-tight text-black sm:text-xs md:text-sm">
-                <span className="block">{t("partnerTechTalesLine1")}</span>
-                <span className="block">{t("partnerTechTalesLine2")}</span>
-              </div>
-              <div className="relative h-[57px] w-[350px] shrink-0">
-                <Image
-                  src="/images/about/partner-em.png"
-                  alt={tAbout("partnerEngageMediaAlt")}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-14 md:mt-20">
-            <p className="home-headline-font text-[clamp(24px,4vw,32px)] font-normal leading-snug text-white">
-              <span className="block">{tAbout("ctaHeading1")}</span>
-              <span className="block">{tAbout("ctaHeading2")}</span>
-            </p>
-            <Link
-              href={`/${locale}/team`}
-              className={`${robotoMono.className} mt-8 inline-flex bg-white px-5 py-5 text-[18px] font-normal uppercase text-black transition-colors hover:bg-neutral-100`}
-            >
-              {tAbout("ctaButton")}
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <AboutFooter
-        locale={locale}
-        emailLabel={tAbout("footerEmail")}
-        facebookLabel={tAbout("footerFacebook")}
-        twitterLabel={tAbout("footerTwitter")}
-        instagramLabel={tAbout("footerInstagram")}
-        className="bg-[#fafcff]"
-        brandClassName="text-[#06b85c]"
-      />
+      <AboutPartnersClosing locale={locale} />
     </main>
   );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import type { Locale } from "../../../../i18n/config";
+import { notFound } from "next/navigation";
+import { AboutPartnersClosing } from "../../../../components/layout/AboutPartnersClosing";
+import { locales, type Locale } from "../../../../i18n/config";
 import { withLocaleSeo } from "../../../../lib/seo/buildPageMetadata";
 
 type Props = {
@@ -20,12 +22,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default function ReportSlugPage({ params }: Props) {
+export default async function ReportSlugPage({ params }: Props) {
+  const locale = params.locale as Locale;
+  if (!locales.includes(locale)) {
+    notFound();
+  }
+
   return (
-    <main className="container-shell bg-[#fafcff] py-16 text-neutral-900">
-      <p className="text-neutral-600">
-        Report &quot;{params.slug}&quot; — full publication page coming soon.
-      </p>
-    </main>
+    <>
+      <main className="container-shell bg-[#fafcff] py-16 text-neutral-900">
+        <p className="text-neutral-600">
+          Report &quot;{params.slug}&quot; — full publication page coming soon.
+        </p>
+      </main>
+      <AboutPartnersClosing locale={locale} />
+    </>
   );
 }

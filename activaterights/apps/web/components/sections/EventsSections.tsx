@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { AboutFooter } from "../layout/AboutFooter";
+import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { getListedEvents } from "../../lib/sanity/queries";
@@ -11,7 +11,6 @@ type EventsSectionsProps = {
 
 export async function EventsSections({ locale }: EventsSectionsProps) {
   const t = await getTranslations({ locale, namespace: "events" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
   const events = await getListedEvents(locale);
 
   return (
@@ -37,15 +36,7 @@ export async function EventsSections({ locale }: EventsSectionsProps) {
         <EventList locale={locale} events={events} />
       )}
 
-      <AboutFooter
-        locale={locale}
-        emailLabel={tAbout("footerEmail")}
-        facebookLabel={tAbout("footerFacebook")}
-        twitterLabel={tAbout("footerTwitter")}
-        instagramLabel={tAbout("footerInstagram")}
-        className="bg-[#fafcff]"
-        brandClassName="text-[#06b85c]"
-      />
+      <AboutPartnersClosing locale={locale} />
     </main>
   );
 }

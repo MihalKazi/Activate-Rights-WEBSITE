@@ -10,7 +10,7 @@ import {
   articleWritingParagraphClassName,
   articleWritingWrapClassName
 } from "../ArticlePortableBody";
-import { AboutFooter } from "../layout/AboutFooter";
+import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { plainTextToParagraphs } from "../../lib/plainTextParagraphs";
@@ -52,7 +52,6 @@ function locationDisplayText(
 export async function EventDetailSections({ locale, slug }: EventDetailSectionsProps) {
   const t = await getTranslations({ locale, namespace: "events" });
   const tArticles = await getTranslations({ locale, namespace: "articles" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
 
   const event = await getEventBySlug(slug, locale);
   if (!event) {
@@ -213,15 +212,7 @@ export async function EventDetailSections({ locale, slug }: EventDetailSectionsP
 
       <div className="relative z-10 mx-auto w-full max-w-[1354px] border-t border-dashed border-[#c1bebe]/80 px-6 md:px-10 lg:px-[40px]" />
 
-      <AboutFooter
-        locale={locale}
-        emailLabel={tAbout("footerEmail")}
-        facebookLabel={tAbout("footerFacebook")}
-        twitterLabel={tAbout("footerTwitter")}
-        instagramLabel={tAbout("footerInstagram")}
-        className="bg-[#fafcff]"
-        brandClassName="text-[#06b85c]"
-      />
+      <AboutPartnersClosing locale={locale} />
     </main>
   );
 }

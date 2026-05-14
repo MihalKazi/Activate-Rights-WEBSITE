@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { AboutFooter } from "../layout/AboutFooter";
+import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { mapArticleToCardRow } from "../../lib/articles/mapArticleCard";
@@ -12,7 +12,6 @@ type ArticlesSectionsProps = {
 
 export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
   const t = await getTranslations({ locale, namespace: "articles" });
-  const tAbout = await getTranslations({ locale, namespace: "about" });
 
   const rows = await getAllArticles(locale);
   const items = rows
@@ -49,15 +48,7 @@ export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
         />
       </section>
 
-      <AboutFooter
-        locale={locale}
-        emailLabel={tAbout("footerEmail")}
-        facebookLabel={tAbout("footerFacebook")}
-        twitterLabel={tAbout("footerTwitter")}
-        instagramLabel={tAbout("footerInstagram")}
-        className="bg-[#fafcff]"
-        brandClassName="text-[#06b85c]"
-      />
+      <AboutPartnersClosing locale={locale} />
     </main>
   );
 }
