@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&display=swap");
-
 :root {
   /* Figma Home frame fill (Rectangle 38) */
   --color-bg: #248f6b;
@@ -32,6 +30,12 @@ body {
   color: #171717;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   font-family: var(--font-inter), Inter, sans-serif;
   background-color: #ffffff;
@@ -55,6 +59,8 @@ a {
   inset: 0;
   z-index: 45;
   pointer-events: none;
+  contain: strict;
+  transform: translateZ(0);
   background-image: url("/images/home-texture-grain-figma.png");
   background-size: var(--site-grain-tile);
   background-repeat: repeat;
@@ -62,6 +68,12 @@ a {
   filter: saturate(0);
   opacity: var(--site-grain-opacity, 0.26);
   mix-blend-mode: soft-light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-film-grain {
+    opacity: min(var(--site-grain-opacity, 0.26), 0.14);
+  }
 }
 
 body:has(main[data-home]) .site-film-grain {

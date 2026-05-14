@@ -84,6 +84,18 @@ export default async function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <html lang={htmlLang} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/*
+          Headline face (`.home-headline-font`). Subset weights vs full variable axis — smaller CSS + fewer files.
+          Self-hosted via next/font is unavailable for this family in Next 14; preconnect + link beats @import in CSS (no render block on first paint chain).
+        */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@400;600;700&display=swap"
+        />
+      </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
   );

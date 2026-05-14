@@ -8,7 +8,7 @@ import { withLocaleSeo } from "../../../../lib/seo/buildPageMetadata";
 import { urlFor } from "../../../../lib/sanity/image";
 import { getAllArticleSlugs, getArticleBySlug } from "../../../../lib/sanity/queries";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 type ArticleSlugPageProps = {
   params: {
