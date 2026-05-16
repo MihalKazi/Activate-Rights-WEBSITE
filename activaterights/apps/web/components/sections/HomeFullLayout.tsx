@@ -220,7 +220,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
         </div>
       </section>
 
-      <section className="home-collective-section home-collective-zine overflow-hidden px-4 py-10 text-white sm:px-6 sm:py-12 md:min-h-[850px] md:px-10 md:py-24 lg:px-16 lg:py-32 xl:px-[155px] xl:py-[180px]">
+      <section className="home-collective-section home-collective-zine overflow-hidden px-4 py-12 text-white sm:px-6 sm:py-14 md:px-10 md:py-20 lg:px-16 lg:py-24 xl:px-[155px] xl:py-28">
         <div className="home-collective-art-layer" aria-hidden>
           <Image
             src="/images/home-collective-blue-birds.png"
@@ -346,7 +346,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
         </div>
       </section>
 
-      <section className="home-initiatives-section pb-16 pt-0 text-white md:pb-[200px]">
+      <section className="home-initiatives-section pb-6 pt-0 text-white md:pb-8 lg:pb-10">
         <Image
           src="/images/home-initiatives-pixel-accent.png"
           alt=""
@@ -355,7 +355,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
           className="pointer-events-none absolute right-0 top-0 z-20 h-[clamp(40px,11vw,80px)] w-auto max-w-[min(315px,85vw)] object-contain object-right select-none sm:h-[min(80px,10vh)]"
           aria-hidden
         />
-        <div className="relative z-10 mx-auto max-w-[1440px] pt-14 sm:pt-20 md:pt-[160px] xl:pt-[200px]">
+        <div className="relative z-10 mx-auto max-w-[1440px] pt-8 sm:pt-9 md:pt-12 lg:pt-14 xl:pt-16">
           <h2
             className={cn(
               "home-headline-font text-[clamp(64px,8vw,109px)] lowercase leading-[0.92]",
@@ -365,14 +365,14 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             our initiatives
           </h2>
 
-          <div className="mt-10 space-y-12 px-4 sm:mt-14 sm:space-y-16 sm:px-6 md:mt-[clamp(3rem,8vw,9.375rem)] md:space-y-28 md:px-10 xl:px-10">
+          <div className="mt-4 space-y-6 px-4 sm:mt-5 sm:space-y-8 sm:px-6 md:mt-6 md:space-y-10 md:px-10 lg:mt-8 lg:space-y-12 xl:px-10">
             <article>
               <div className="w-full max-w-[1130px]">
                 <div
                   className="h-[min(380px,62vw)] w-full bg-[#d9d9d9] md:h-[626px]"
                   aria-hidden
                 />
-                <div className="mt-6 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-between md:gap-8">
+                <div className="mt-3 flex flex-col gap-4 md:mt-5 md:flex-row md:items-start md:justify-between md:gap-6">
                   <h3 className="shrink-0 text-[clamp(26px,2.8vw,30px)] font-semibold leading-[1.15] tracking-tight text-white">
                     Bangladesh Protest Archive
                   </h3>
@@ -393,7 +393,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                   className="h-[min(380px,62vw)] w-full bg-[#d9d9d9] md:h-[626px]"
                   aria-hidden
                 />
-                <div className="mt-6 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-between md:gap-8">
+                <div className="mt-3 flex flex-col gap-4 md:mt-5 md:flex-row md:items-start md:justify-between md:gap-6">
                   <h3 className="shrink-0 text-[clamp(26px,2.8vw,30px)] font-semibold leading-[1.15] tracking-tight text-white">
                     Archive &amp; Resist Archive
                   </h3>
