@@ -36,8 +36,7 @@ export type ArticleDetail = ArticleListItem & {
   guestAuthor?: string | null;
   /** Curated picks from Sanity; shown at bottom of article page */
   relatedArticles?: ArticleListItem[];
-  /** Uploaded PDFs from Studio */
-  pdfAttachments?: ArticlePdfAttachment[];
+  attachments?: PublicationFileAttachment[];
 };
 
 export type ProjectItem = {
@@ -53,6 +52,11 @@ export type ProjectItem = {
   launchDate?: string | null;
 };
 
+export type ProjectDetail = ProjectItem & {
+  body: unknown[] | null;
+  attachments?: PublicationFileAttachment[];
+};
+
 export type ReportItem = {
   _id: string;
   title: string;
@@ -62,6 +66,19 @@ export type ReportItem = {
   coverImage: SanityImage;
   titleLeadingSlash?: boolean;
   excerpt?: string | null;
+};
+
+export type PublicationFileAttachment = {
+  title?: string | null;
+  kind?: string | null;
+  url: string | null;
+  mimeType?: string | null;
+  filename?: string | null;
+};
+
+export type ReportDetail = ReportItem & {
+  body: unknown[] | null;
+  attachments?: PublicationFileAttachment[];
 };
 
 export type TeamMember = {
@@ -90,7 +107,7 @@ export type EventItem = {
 
 export type EventDetail = EventItem & {
   body: unknown[] | null;
-  pdfAttachments?: ArticlePdfAttachment[];
+  attachments?: PublicationFileAttachment[];
 };
 
 export type CampaignItem = {
@@ -156,6 +173,33 @@ select(
 )
 `.trim();
 
+const publicationAttachmentProjection = `
+  title,
+  kind,
+  "url": file.asset->url,
+  "mimeType": file.asset->mimeType,
+  "filename": file.asset->originalFilename
+`;
+
+const publicationAttachmentsGroq = `
+"attachments": select(
+  count(coalesce(attachments, [])) > 0 => attachments[]{${publicationAttachmentProjection}},
+  pdfAttachments[]{${publicationAttachmentProjection}}
+)
+`.trim();
+
+const localizedProjectBody = `
+select(
+  $locale == "en" && count(coalesce(body.en, [])) > 0 => body.en,
+  $locale == "en" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.bn, [])) > 0 => body.bn,
+  []
+)
+`.trim();
+
 const articleListQuery = groq`
   *[_type == "article"] | order(publishedAt desc) {
     _id,
@@ -198,10 +242,7 @@ const articleBySlugQuery = groq`
     featured,
     guestAuthor,
     "authorName": coalesce(author->name[$locale], author->name.en, author->name.bn, guestAuthor),
-    "pdfAttachments": pdfAttachments[]{
-      title,
-      "url": file.asset->url
-    },
+    ${publicationAttachmentsGroq},
     "relatedArticles": relatedArticles[]->{
       _id,
       "title": ${localizedArticleTitle},
@@ -249,11 +290,13 @@ const projectBySlugQuery = groq`
     "title": title[$locale],
     slug,
     "description": description[$locale],
+    "body": ${localizedProjectBody},
     status,
     coverImage,
     externalUrl,
     order,
-    launchDate
+    launchDate,
+    ${publicationAttachmentsGroq}
   }
 `;
 
@@ -286,6 +329,18 @@ select(
 )
 `.trim();
 
+const localizedReportBody = `
+select(
+  $locale == "en" && count(coalesce(body.en, [])) > 0 => body.en,
+  $locale == "en" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.bn, [])) > 0 => body.bn,
+  $locale == "bn" && count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.en, [])) > 0 => body.en,
+  count(coalesce(body.bn, [])) > 0 => body.bn,
+  []
+)
+`.trim();
+
 const allReportsQuery = groq`
   *[_type == "report"] | order(publishedDate desc) {
     _id,
@@ -295,6 +350,20 @@ const allReportsQuery = groq`
     coverImage,
     titleLeadingSlash,
     "excerpt": ${localizedReportExcerpt}
+  }
+`;
+
+const reportBySlugQuery = groq`
+  *[_type == "report" && slug.current == $slug][0] {
+    _id,
+    "title": coalesce(title[$locale], title.en, title.bn, ""),
+    slug,
+    publishedDate,
+    coverImage,
+    titleLeadingSlash,
+    "excerpt": ${localizedReportExcerpt},
+    "body": ${localizedReportBody},
+    ${publicationAttachmentsGroq}
   }
 `;
 
@@ -417,10 +486,7 @@ const eventBySlugQuery = groq`
     slug,
     "description": ${localizedEventDescription},
     "body": ${localizedEventBody},
-    "pdfAttachments": pdfAttachments[]{
-      title,
-      "url": file.asset->url
-    },
+    ${publicationAttachmentsGroq},
     date,
     "location": ${localizedEventLocation},
     isOnline,
@@ -537,6 +603,11 @@ export async function getAllReports(locale: Locale): Promise<ReportItem[]> {
   return sanityClient.fetch(allReportsQuery, { locale });
 }
 
+export async function getReportBySlug(slug: string, locale: Locale): Promise<ReportDetail | null> {
+  const normalized = normalizeArticleSlugParam(slug);
+  return sanityClient.fetch(reportBySlugQuery, { slug: normalized, locale });
+}
+
 /** Home published-reports band: order from Reports on Home singleton if set, else all reports by date. */
 export async function getReportsForHome(locale: Locale): Promise<ReportItem[]> {
   const picked = await sanityClient.fetch<ReportItem[] | null>(reportsOnHomePickedQuery, {
@@ -562,8 +633,9 @@ export async function getReportsForHome(locale: Locale): Promise<ReportItem[]> {
 export async function getProjectBySlug(
   slug: string,
   locale: Locale
-): Promise<ProjectItem | null> {
-  return sanityClient.fetch(projectBySlugQuery, { slug, locale });
+): Promise<ProjectDetail | null> {
+  const normalized = normalizeArticleSlugParam(slug);
+  return sanityClient.fetch(projectBySlugQuery, { slug: normalized, locale });
 }
 
 export async function getAllTeamMembers(locale: Locale): Promise<TeamMember[]> {

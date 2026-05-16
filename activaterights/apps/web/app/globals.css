@@ -685,6 +685,14 @@ body:has(main[data-home]) .site-film-grain {
   font-style: normal;
 }
 
+/* Figma — mission labels, article meta (UPDATE / AUTHOR, READ) */
+.home-mission-label-font,
+.home-article-meta-font {
+  font-family: "Stack Sans Headline", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
 .home-hero-freedom-wrap {
   width: 100%;
   max-width: none;

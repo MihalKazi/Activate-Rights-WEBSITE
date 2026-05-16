@@ -204,7 +204,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                 key={row.line1AfterSlashes}
                 className="grid grid-cols-1 gap-5 sm:grid-cols-[minmax(0,320px)_1fr] sm:gap-x-8 md:grid-cols-[minmax(0,360px)_1fr] md:gap-x-10"
               >
-                <p className="home-headline-font m-0 text-[clamp(22px,2.8vw,30px)] font-semibold uppercase leading-[1.1] tracking-[0.02em] text-[#303ccf]">
+                <p className="home-mission-label-font m-0 text-[clamp(22px,2.8vw,30px)] font-semibold uppercase leading-[1.1] tracking-[0.02em] text-[#303ccf]">
                   <span className="text-[#05b557]">{"// "}</span>
                   {`${row.line1AfterSlashes} ${row.line2}`}
                 </p>
@@ -534,13 +534,11 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                         {item.title}
                       </h3>
                       {item.excerpt ? (
-                        <p className="mt-3 line-clamp-4 text-[15px] leading-[1.4] text-black/80 sm:mt-5 sm:line-clamp-none sm:text-[16px] md:mt-6">
+                        <p className="mt-3 line-clamp-4 font-sans text-[15px] leading-[1.4] text-black/80 sm:mt-5 sm:line-clamp-none sm:text-[16px] md:mt-6">
                           {item.excerpt}
                         </p>
                       ) : null}
-                      <div
-                        className={`mt-4 flex flex-col gap-2 text-[13px] uppercase sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-[14px] md:mt-8 ${robotoMono.className}`}
-                      >
+                      <div className="home-article-meta-font mt-4 flex flex-col gap-2 text-[13px] font-normal uppercase sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-[14px] md:mt-8">
                         <p className="min-w-0 break-words text-black/90">
                           <span>{item.metaCategory}</span>
                           <span className="mx-2 text-black/50" aria-hidden>

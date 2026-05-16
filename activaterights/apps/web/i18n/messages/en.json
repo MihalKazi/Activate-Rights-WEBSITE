@@ -94,6 +94,18 @@
     "heroLine2": "projects",
     "partnerTechTalesLine1": "TECH TALES",
     "partnerTechTalesLine2": "YOUTH",
+    "statusActive": "Active project",
+    "statusCompleted": "Completed project",
+    "statusOngoing": "Ongoing project",
+    "shareProjectAria": "Share this project",
+    "backToProjects": "Back to projects",
+    "externalLink": "Visit project",
+    "externalLinkAria": "Open project link in a new tab",
+    "fallbackBody": "Add project details and file attachments in Sanity Studio to publish the full project page here.",
+    "attachmentImage": "Image",
+    "attachmentVideo": "Video",
+    "attachmentAudio": "Audio",
+    "attachmentFile": "File download",
     "items": [
       {
         "slug": "shutdown-watch",
@@ -126,7 +138,15 @@
     "metaDescription": "Published reports on digital rights, internet shutdowns, and policy in Bangladesh.",
     "heroLine1": "published",
     "heroLine2": "reports",
-    "empty": "No reports published yet. Check back soon."
+    "empty": "No reports published yet. Check back soon.",
+    "reportKind": "Report",
+    "shareReportAria": "Share this report",
+    "backToReports": "Back to reports",
+    "fallbackBody": "Add the report text and file attachments in Sanity Studio to publish the full report here.",
+    "attachmentImage": "Image",
+    "attachmentVideo": "Video",
+    "attachmentAudio": "Audio",
+    "attachmentFile": "File download"
   },
   "articles": {
     "metaTitle": "Articles — Activate Rights",
@@ -144,7 +164,11 @@
     "backToArticles": "Back to articles",
     "defaultPublished": "—",
     "shareArticleAria": "Share this article",
-    "fallbackBody": "This article’s full text will appear here when connected to the CMS.",
+    "fallbackBody": "Add the article text and file attachments in Sanity Studio to publish the full article here.",
+    "attachmentImage": "Image",
+    "attachmentVideo": "Video",
+    "attachmentAudio": "Audio",
+    "attachmentFile": "File download",
     "pdfDocument": "PDF attachment",
     "pdfOpen": "Open",
     "pdfDownload": "Download",
@@ -165,7 +189,11 @@
     "backToEvents": "Back to events",
     "registerExternal": "Register / open link",
     "registerExternalAria": "Open registration or external event link in a new tab",
-    "fallbackBody": "More about this event will appear here when you add details in the CMS."
+    "fallbackBody": "Add event details and file attachments in Sanity Studio to publish more here.",
+    "attachmentImage": "Image",
+    "attachmentVideo": "Video",
+    "attachmentAudio": "Audio",
+    "attachmentFile": "File download"
   },
   "contact": {
     "metaTitle": "Contact — Activate Rights",

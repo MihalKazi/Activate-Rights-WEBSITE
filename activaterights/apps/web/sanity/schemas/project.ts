@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { publicationFileAttachmentMember } from "./publicationFileAttachment";
 
 export const projectSchema = defineType({
   name: "project",
@@ -13,6 +14,19 @@ export const projectSchema = defineType({
       validation: (rule) => rule.required()
     }),
     defineField({ name: "description", type: "localizedText" }),
+    defineField({
+      name: "body",
+      title: "Details",
+      type: "localizedPortableText",
+      description: "Long-form project page content shown below the short description."
+    }),
+    defineField({
+      name: "attachments",
+      title: "Files & media",
+      description: "PDFs, images, videos, audio, and other files on the project page.",
+      type: "array",
+      of: [publicationFileAttachmentMember]
+    }),
     defineField({
       name: "status",
       type: "string",

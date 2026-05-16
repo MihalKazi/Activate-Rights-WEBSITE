@@ -3,6 +3,7 @@ import {
   ARTICLE_CATEGORY_KEYS,
   ARTICLE_CATEGORY_LABELS
 } from "../../lib/articles/articleCategories";
+import { publicationFileAttachmentMember } from "./publicationFileAttachment";
 
 const articleCategoryOptions = ARTICLE_CATEGORY_KEYS.map((key) => ({
   title: ARTICLE_CATEGORY_LABELS[key].en,
@@ -24,47 +25,12 @@ export const articleSchema = defineType({
     defineField({ name: "excerpt", type: "localizedText" }),
     defineField({ name: "body", type: "localizedPortableText" }),
     defineField({
-      name: "pdfAttachments",
-      title: "PDF attachments",
+      name: "attachments",
+      title: "Files & media",
       description:
-        "Upload PDF files here to show embedded viewers below the article text (in addition to any PDF links inside the body).",
+        "PDFs, images, videos, audio, and other files below the article (in addition to links inside the body).",
       type: "array",
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "articlePdf",
-          title: "PDF",
-          fields: [
-            defineField({
-              name: "title",
-              title: "Display title",
-              type: "string",
-              description: "Optional; defaults to the file name."
-            }),
-            defineField({
-              name: "file",
-              title: "PDF file",
-              type: "file",
-              options: {
-                accept: "application/pdf"
-              },
-              validation: (rule) => rule.required()
-            })
-          ],
-          preview: {
-            select: {
-              title: "title",
-              filename: "file.asset.originalFilename"
-            },
-            prepare({ title, filename }) {
-              return {
-                title: title || filename || "PDF",
-                subtitle: "PDF attachment"
-              };
-            }
-          }
-        })
-      ]
+      of: [publicationFileAttachmentMember]
     }),
     defineField({ name: "coverImage", type: "image", options: { hotspot: true } }),
     defineField({

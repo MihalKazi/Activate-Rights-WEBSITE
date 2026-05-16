@@ -92,8 +92,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           Self-hosted via next/font is unavailable for this family in Next 14; preconnect + link beats @import in CSS (no render block on first paint chain).
         */}
         <link
+          rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@400;600;700&family=Stack+Sans+Notch:wght@400;600;700&display=swap"
+        />
+        <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@400;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@400;600;700&family=Stack+Sans+Notch:wght@400;600;700&display=swap"
         />
       </head>
       <body suppressHydrationWarning>{children}</body>

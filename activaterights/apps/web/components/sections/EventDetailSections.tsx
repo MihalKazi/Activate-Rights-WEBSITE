@@ -4,7 +4,10 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Roboto_Mono } from "next/font/google";
 import type { Image as SanityImage } from "sanity";
-import { ArticlePdfEmbed } from "../ArticlePdfEmbed";
+import {
+  hasPublicationAttachments,
+  PublicationAttachmentsList
+} from "../PublicationAttachmentsList";
 import {
   ArticlePortableBody,
   articleWritingParagraphClassName,
@@ -67,12 +70,17 @@ export async function EventDetailSections({ locale, slug }: EventDetailSectionsP
   const hasBody = Array.isArray(event.body) && event.body.length > 0;
   const excerptText = (event.description ?? "").trim();
   const regUrl = event.registrationUrl?.trim();
-  const pdfFromStudio = (event.pdfAttachments ?? []).filter(
-    (p): p is { title?: string | null; url: string } =>
-      Boolean(p?.url && typeof p.url === "string")
-  );
-  const hasPdfAttachments = pdfFromStudio.length > 0;
-  const showBodyFallback = !hasBody && !hasPdfAttachments && !excerptText;
+  const hasAttachments = hasPublicationAttachments(event.attachments);
+  const showBodyFallback = !hasBody && !hasAttachments && !excerptText;
+  const attachmentLabels = {
+    pdfDocument: tArticles("pdfDocument"),
+    imageDocument: t("attachmentImage"),
+    videoDocument: t("attachmentVideo"),
+    audioDocument: t("attachmentAudio"),
+    fileDocument: t("attachmentFile"),
+    open: tArticles("pdfOpen"),
+    download: tArticles("pdfDownload")
+  };
 
   return (
     <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-[#212121]">
@@ -131,7 +139,7 @@ export async function EventDetailSections({ locale, slug }: EventDetailSectionsP
             </div>
           </div>
 
-          {(excerptText || hasBody || hasPdfAttachments || showBodyFallback) && (
+          {(excerptText || hasBody || hasAttachments || showBodyFallback) && (
             <div
               className={cn(
                 "mt-8 space-y-10 md:mt-11 md:space-y-12 [&_figure_a]:no-underline [&_figure_a:hover]:no-underline",
@@ -157,20 +165,11 @@ export async function EventDetailSections({ locale, slug }: EventDetailSectionsP
                   }}
                 />
               ) : null}
-              {hasPdfAttachments ? (
-                <div className={cn(hasBody ? "mt-10 space-y-10 md:mt-12 md:space-y-12" : "")}>
-                  {pdfFromStudio.map((pdf, i) => (
-                    <ArticlePdfEmbed
-                      key={`${pdf.url}-${i}`}
-                      url={pdf.url}
-                      headingTitle={pdf.title?.trim() || undefined}
-                      documentLabel={tArticles("pdfDocument")}
-                      openLabel={tArticles("pdfOpen")}
-                      downloadLabel={tArticles("pdfDownload")}
-                    />
-                  ))}
-                </div>
-              ) : null}
+              <PublicationAttachmentsList
+                attachments={event.attachments}
+                labels={attachmentLabels}
+                spacedBelowBody={hasBody}
+              />
               {showBodyFallback ? (
                 <div className={articleWritingWrapClassName}>
                   <p className={articleWritingParagraphClassName}>{t("fallbackBody")}</p>
