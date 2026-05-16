@@ -73,12 +73,7 @@ export function RelatedWritings({ locale, items, sectionTitle }: RelatedWritings
                   >
                     {card.title}
                   </h3>
-                  <div
-                    className={cn(
-                      robotoMono.className,
-                      "flex flex-wrap items-center gap-2 text-[12px] font-normal leading-normal text-[#212121] md:text-[13px]"
-                    )}
-                  >
+                  <div className="home-article-meta-font flex flex-wrap items-center gap-2 text-[12px] font-normal leading-normal text-[#212121] md:text-[13px]">
                     <span className="text-neutral-500">{card.publishedAt}</span>
                     <span aria-hidden className="text-neutral-300">
                       /

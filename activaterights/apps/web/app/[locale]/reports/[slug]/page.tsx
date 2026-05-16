@@ -1,24 +1,55 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AboutPartnersClosing } from "../../../../components/layout/AboutPartnersClosing";
+import { getTranslations } from "next-intl/server";
+import type { Image as SanityImage } from "sanity";
+import { ReportDetailSections } from "../../../../components/sections/ReportDetailSections";
 import { locales, type Locale } from "../../../../i18n/config";
 import { withLocaleSeo } from "../../../../lib/seo/buildPageMetadata";
+import { urlFor } from "../../../../lib/sanity/image";
+import { getAllReportSlugs, getReportBySlug } from "../../../../lib/sanity/queries";
+
+export const revalidate = 120;
 
 type Props = {
   params: { locale: string; slug: string };
 };
 
+export async function generateStaticParams() {
+  const slugs = await getAllReportSlugs();
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = params.locale as Locale;
-  const title = locale === "bn" ? `রিপোর্ট — ${params.slug}` : `Report — ${params.slug}`;
+  if (!locales.includes(locale)) {
+    return { title: "Report" };
+  }
+
+  const t = await getTranslations({ locale, namespace: "reports" });
+  const report = await getReportBySlug(params.slug, locale);
+
+  if (!report) {
+    return withLocaleSeo(locale, `/reports/${params.slug}`, {
+      title: t("metaTitle"),
+      description: t("metaDescription")
+    });
+  }
+
   const description =
-    locale === "bn"
-      ? "অ্যাক্টিভেট রাইটসের রিপোর্ট ও প্রকাশনা।"
-      : "Reports and publications from Activate Rights.";
+    report.excerpt?.replace(/\s+/g, " ").trim().slice(0, 200) || t("metaDescription");
+
+  const ogImage = report.coverImage?.asset?._ref
+    ? urlFor(report.coverImage as SanityImage).width(1200).height(630).fit("crop").auto("format").url()
+    : undefined;
 
   return withLocaleSeo(locale, `/reports/${params.slug}`, {
-    title,
-    description
+    title: `${report.title} — Activate Rights`,
+    description,
+    ogImage,
+    openGraph: {
+      type: "article",
+      publishedTime: report.publishedDate
+    }
   });
 }
 
@@ -28,14 +59,5 @@ export default async function ReportSlugPage({ params }: Props) {
     notFound();
   }
 
-  return (
-    <>
-      <main className="container-shell bg-[#fafcff] py-16 text-neutral-900">
-        <p className="text-neutral-600">
-          Report &quot;{params.slug}&quot; — full publication page coming soon.
-        </p>
-      </main>
-      <AboutPartnersClosing locale={locale} />
-    </>
-  );
+  return <ReportDetailSections locale={locale} slug={params.slug} />;
 }

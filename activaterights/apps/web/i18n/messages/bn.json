@@ -94,6 +94,18 @@
     "heroLine2": "প্রকল্প",
     "partnerTechTalesLine1": "TECH TALES",
     "partnerTechTalesLine2": "YOUTH",
+    "statusActive": "সক্রিয় প্রকল্প",
+    "statusCompleted": "সম্পন্ন প্রকল্প",
+    "statusOngoing": "চলমান প্রকল্প",
+    "shareProjectAria": "এই প্রকল্প শেয়ার করুন",
+    "backToProjects": "প্রকল্প তালিকায় ফিরে যান",
+    "externalLink": "প্রকল্প দেখুন",
+    "externalLinkAria": "নতুন ট্যাবে প্রকল্প লিংক খুলুন",
+    "fallbackBody": "সম্পূর্ণ প্রকল্প পেজ দেখাতে Sanity Studio-তে বিবরণ ও ফাইল সংযুক্তি যোগ করুন।",
+    "attachmentImage": "ছবি",
+    "attachmentVideo": "ভিডিও",
+    "attachmentAudio": "অডিও",
+    "attachmentFile": "ফাইল ডাউনলোড",
     "items": [
       {
         "slug": "shutdown-watch",
@@ -126,7 +138,15 @@
     "metaDescription": "বাংলাদেশে ডিজিটাল অধিকার, ইন্টারনেট বন্ধ ও নীতি সংক্রান্ত প্রকাশিত প্রতিবেদন।",
     "heroLine1": "প্রকাশিত",
     "heroLine2": "প্রতিবেদন",
-    "empty": "এখনও কোনো প্রতিবেদন প্রকাশিত হয়নি। শীঘ্রই আবার দেখুন।"
+    "empty": "এখনও কোনো প্রতিবেদন প্রকাশিত হয়নি। শীঘ্রই আবার দেখুন।",
+    "reportKind": "প্রতিবেদন",
+    "shareReportAria": "এই প্রতিবেদন শেয়ার করুন",
+    "backToReports": "প্রতিবেদন তালিকায় ফিরে যান",
+    "fallbackBody": "সম্পূর্ণ প্রতিবেদন দেখাতে Sanity Studio-তে লেখা ও ফাইল সংযুক্তি যোগ করুন।",
+    "attachmentImage": "ছবি",
+    "attachmentVideo": "ভিডিও",
+    "attachmentAudio": "অডিও",
+    "attachmentFile": "ফাইল ডাউনলোড"
   },
   "articles": {
     "metaTitle": "আর্টিকেল — অ্যাক্টিভেট রাইটস",
@@ -144,7 +164,11 @@
     "backToArticles": "আর্টিকেল তালিকায় ফিরে যান",
     "defaultPublished": "—",
     "shareArticleAria": "এই নিবন্ধ শেয়ার করুন",
-    "fallbackBody": "সিএমএস সংযোগের পর সম্পূর্ণ লেখা এখানে দেখানো হবে।",
+    "fallbackBody": "সম্পূর্ণ আর্টিকেল দেখাতে Sanity Studio-তে লেখা ও ফাইল সংযুক্তি যোগ করুন।",
+    "attachmentImage": "ছবি",
+    "attachmentVideo": "ভিডিও",
+    "attachmentAudio": "অডিও",
+    "attachmentFile": "ফাইল ডাউনলোড",
     "pdfDocument": "পিডিএফ সংযুক্তি",
     "pdfOpen": "খুলুন",
     "pdfDownload": "ডাউনলোড",
@@ -165,7 +189,11 @@
     "backToEvents": "ইভেন্টে ফিরে যান",
     "registerExternal": "নিবন্ধন / লিংক খুলুন",
     "registerExternalAria": "নতুন ট্যাবে নিবন্ধন বা বাইরের ইভেন্ট লিংক খুলুন",
-    "fallbackBody": "সিএমএসে বিবরণ যোগ করলে এই ইভেন্ট সম্পর্কে আরও তথ্য এখানে দেখানো হবে।"
+    "fallbackBody": "আরও তথ্য দেখাতে Sanity Studio-তে বিবরণ ও ফাইল সংযুক্তি যোগ করুন।",
+    "attachmentImage": "ছবি",
+    "attachmentVideo": "ভিডিও",
+    "attachmentAudio": "অডিও",
+    "attachmentFile": "ফাইল ডাউনলোড"
   },
   "contact": {
     "metaTitle": "যোগাযোগ — অ্যাক্টিভেট রাইটস",

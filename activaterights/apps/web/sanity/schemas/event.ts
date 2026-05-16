@@ -1,4 +1,5 @@
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { defineField, defineType } from "sanity";
+import { publicationFileAttachmentMember } from "./publicationFileAttachment";
 
 export const eventSchema = defineType({
   name: "event",
@@ -20,39 +21,12 @@ export const eventSchema = defineType({
       type: "localizedPortableText"
     }),
     defineField({
-      name: "pdfAttachments",
-      title: "PDF attachments",
+      name: "attachments",
+      title: "Files & media",
       description:
-        "Upload PDFs to show embedded viewers below the details (same as articles; in addition to any PDF links inside the body).",
+        "PDFs, images, videos, audio, and other files on the event page (in addition to links inside the body).",
       type: "array",
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "eventPdf",
-          title: "PDF",
-          fields: [
-            defineField({
-              name: "title",
-              title: "Display title",
-              type: "string",
-              description: "Optional; defaults to the file name."
-            }),
-            defineField({
-              name: "file",
-              title: "PDF file",
-              type: "file",
-              options: { accept: "application/pdf" },
-              validation: (rule) => rule.required()
-            })
-          ],
-          preview: {
-            select: { title: "title", filename: "file.asset.originalFilename" },
-            prepare({ title, filename }) {
-              return { title: title || filename || "PDF", subtitle: "PDF attachment" };
-            }
-          }
-        })
-      ]
+      of: [publicationFileAttachmentMember]
     }),
     defineField({ name: "date", type: "datetime" }),
     defineField({ name: "location", type: "localizedString" }),

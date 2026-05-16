@@ -115,12 +115,7 @@ export function ArticlesListClient({ locale, items, labels }: ArticlesListClient
                 >
                   {item.title}
                 </h2>
-                <div
-                  className={cn(
-                    robotoMono.className,
-                    "flex flex-wrap items-center gap-[18px] text-[14px] font-normal leading-[26px] text-[#212121]"
-                  )}
-                >
+                <div className="home-article-meta-font flex flex-wrap items-center gap-[18px] text-[14px] font-normal leading-[26px] text-[#212121]">
                   <span>{item.metaCategory}</span>
                   <span aria-hidden>/</span>
                   <span className={item.accentTitle ? "text-[#1423cb]" : "text-[#212121]"}>

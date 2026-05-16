@@ -29,7 +29,19 @@ type TeamMemberEntry = {
   role: string;
   imageAscii: string;
   imagePhoto: string;
+  linkedInUrl?: string;
 };
+
+function linkedInUrlFromSocialLinks(
+  socialLinks?: { platform?: string; url?: string }[]
+): string | undefined {
+  if (!socialLinks?.length) return undefined;
+  for (const { platform, url } of socialLinks) {
+    if (!url) continue;
+    if (/linkedin/i.test(platform ?? "") || /linkedin\.com/i.test(url)) return url;
+  }
+  return undefined;
+}
 
 function teamCardBorderClass(index: number) {
   return index % 3 === 2 ? "border-[#212121]" : "border-[#1e64eb]";
@@ -84,7 +96,8 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       name: m.name,
       role: m.role,
       imageAscii,
-      imagePhoto
+      imagePhoto,
+      linkedInUrl: linkedInUrlFromSocialLinks(m.socialLinks)
     });
   }
 
@@ -108,14 +121,20 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
 
   const rawTeam = t.raw("teamMembers");
   const fromTranslations: TeamMemberEntry[] = Array.isArray(rawTeam)
-    ? (rawTeam as TeamMemberEntry[]).filter(
-        (m) =>
-          m &&
-          typeof m.name === "string" &&
-          typeof m.role === "string" &&
-          typeof m.imageAscii === "string" &&
-          typeof m.imagePhoto === "string"
-      )
+    ? (rawTeam as TeamMemberEntry[])
+        .filter(
+          (m) =>
+            m &&
+            typeof m.name === "string" &&
+            typeof m.role === "string" &&
+            typeof m.imageAscii === "string" &&
+            typeof m.imagePhoto === "string"
+        )
+        .map((m) => ({
+          ...m,
+          linkedInUrl:
+            typeof m.linkedInUrl === "string" && m.linkedInUrl.length > 0 ? m.linkedInUrl : undefined
+        }))
     : [];
 
   const source = fromSanity.length > 0 ? fromSanity : fromTranslations;
@@ -214,11 +233,11 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
                   className="flex flex-col gap-4 border-b border-[#303ccf]/15 pb-7 last:border-0 last:pb-0 md:flex-row md:items-start md:justify-between md:gap-5"
                 >
                   <div className="shrink-0 uppercase">
-                    <p className="home-headline-font text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.12]">
+                    <p className="home-mission-label-font text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.12]">
                       <span className="text-[#05b557]">// </span>
                       <span>{row.title1}</span>
                     </p>
-                    <p className="home-headline-font mt-0.5 text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.12]">
+                    <p className="home-mission-label-font mt-0.5 text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.12]">
                       {row.title2}
                     </p>
                   </div>
@@ -276,6 +295,17 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
                       className="object-cover opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100 group-focus-within:opacity-100 group-active:opacity-100"
                       sizes="(max-width:768px) 100vw, (max-width:1280px) 50vw, 25vw"
                     />
+                    {member.linkedInUrl ? (
+                      <a
+                        href={member.linkedInUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${robotoMono.className} absolute bottom-3 right-3 z-10 inline-flex h-9 min-w-9 items-center justify-center border border-[#303ccf] bg-[#fafcff]/95 px-2 text-[13px] font-normal leading-none text-[#303ccf] opacity-0 transition-opacity duration-300 ease-out hover:bg-[#303ccf] hover:text-white focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100 group-active:opacity-100`}
+                        aria-label={`${member.name} on LinkedIn`}
+                      >
+                        in
+                      </a>
+                    ) : null}
                   </div>
                 </div>
                 <div className="mt-4 px-3 md:mt-5 md:px-4">

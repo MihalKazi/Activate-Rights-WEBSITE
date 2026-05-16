@@ -1,24 +1,51 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AboutPartnersClosing } from "../../../../components/layout/AboutPartnersClosing";
+import { getTranslations } from "next-intl/server";
+import type { Image as SanityImage } from "sanity";
+import { ProjectDetailSections } from "../../../../components/sections/ProjectDetailSections";
 import { locales, type Locale } from "../../../../i18n/config";
 import { withLocaleSeo } from "../../../../lib/seo/buildPageMetadata";
+import { urlFor } from "../../../../lib/sanity/image";
+import { getAllProjectSlugs, getProjectBySlug } from "../../../../lib/sanity/queries";
+
+export const revalidate = 120;
 
 type Props = {
   params: { locale: string; slug: string };
 };
 
+export async function generateStaticParams() {
+  const slugs = await getAllProjectSlugs();
+  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = params.locale as Locale;
-  const title = locale === "bn" ? `প্রকল্প — ${params.slug}` : `Project — ${params.slug}`;
+  if (!locales.includes(locale)) {
+    return { title: "Project" };
+  }
+
+  const t = await getTranslations({ locale, namespace: "projects" });
+  const project = await getProjectBySlug(params.slug, locale);
+
+  if (!project) {
+    return withLocaleSeo(locale, `/projects/${params.slug}`, {
+      title: t("metaTitle"),
+      description: t("metaDescription")
+    });
+  }
+
   const description =
-    locale === "bn"
-      ? "অ্যাক্টিভেট রাইটসের প্রকল্প ও উদ্যোগ।"
-      : "Projects and initiatives from Activate Rights in Bangladesh.";
+    project.description?.replace(/\s+/g, " ").trim().slice(0, 200) || t("metaDescription");
+
+  const ogImage = project.coverImage?.asset?._ref
+    ? urlFor(project.coverImage as SanityImage).width(1200).height(630).fit("crop").auto("format").url()
+    : undefined;
 
   return withLocaleSeo(locale, `/projects/${params.slug}`, {
-    title,
-    description
+    title: `${project.title} — Activate Rights`,
+    description,
+    ogImage
   });
 }
 
@@ -28,14 +55,5 @@ export default async function ProjectSlugPage({ params }: Props) {
     notFound();
   }
 
-  return (
-    <>
-      <main className="container-shell bg-[#fafcff] py-16 text-neutral-900">
-        <p className="text-text-secondary">
-          Project &quot;{params.slug}&quot; coming soon.
-        </p>
-      </main>
-      <AboutPartnersClosing locale={locale} />
-    </>
-  );
+  return <ProjectDetailSections locale={locale} slug={params.slug} />;
 }

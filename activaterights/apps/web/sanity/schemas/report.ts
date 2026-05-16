@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { publicationFileAttachmentMember } from "./publicationFileAttachment";
 
 export const reportSchema = defineType({
   name: "report",
@@ -30,6 +31,15 @@ export const reportSchema = defineType({
       title: "Summary",
       type: "localizedText",
       description: "Optional. Shown on the reports listing and on the home page cards."
+    }),
+    defineField({ name: "body", type: "localizedPortableText" }),
+    defineField({
+      name: "attachments",
+      title: "Files & media",
+      description:
+        "PDFs, images, videos, audio, and other files shown on the report page (in addition to links inside the body).",
+      type: "array",
+      of: [publicationFileAttachmentMember]
     })
   ],
   preview: {
