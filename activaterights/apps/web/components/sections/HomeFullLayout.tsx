@@ -13,6 +13,7 @@ import type { HomeArticleCard } from "../../lib/articles/mapArticleCard";
 import { PartnersMarquee } from "../marquee/PartnersMarquee";
 import { cn } from "../../lib/utils";
 import { BrandLogoLink } from "../brand/BrandLogo";
+import { HomeHeroNav } from "./HomeHeroNav";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -128,25 +129,14 @@ function RightsMarqueeSequence() {
 }
 
 export function HomeFullLayout({ locale, featuredProjects, reports, articles }: HomeFullLayoutProps) {
-  const t = useTranslations("nav");
   const tArticles = useTranslations("articles");
-  const navItems = [
-    { label: t("home"), href: "/" },
-    { label: t("about"), href: "/about" },
-    { label: t("projects"), href: "/projects" },
-    { label: t("reports"), href: "/reports" },
-    { label: t("events"), href: "/events" },
-    { label: t("articles"), href: "/articles" },
-    { label: t("contact"), href: "/team" }
-  ] as const;
-
   const cardLinkClass =
     "group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]";
   return (
     <main data-home className="bg-[#248f6b] text-white">
-      <section className="relative overflow-hidden bg-[url('/images/home-background.png')] bg-cover bg-center">
+      <section className="home-mobile-first-fold-hero relative overflow-hidden bg-[url('/images/home-background.png')] bg-cover bg-center">
         <div
-          className="pointer-events-none absolute left-1/2 top-[176px] z-10 hidden h-[846px] w-[616px] -translate-x-1/2 mix-blend-soft-light md:block"
+          className="home-hero-ascii-art pointer-events-none absolute left-1/2 z-[1] h-[min(44svh,440px)] w-[min(90vw,400px)] -translate-x-1/2 mix-blend-soft-light md:top-[176px] md:h-[846px] md:w-[616px]"
           aria-hidden
         >
           <Image
@@ -154,50 +144,34 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             alt=""
             width={616}
             height={846}
-            className="pointer-events-none h-full w-full object-cover"
+            className="pointer-events-none h-full w-full object-contain object-center md:object-cover"
+            sizes="(max-width: 767px) 90vw, 616px"
             priority
           />
         </div>
-        <div className="mx-auto max-w-[1440px] px-4 pt-6 sm:px-6 sm:pt-7 md:px-10 md:pt-10">
-          <header className="flex flex-col gap-8 sm:gap-10 md:flex-row md:items-start md:justify-between">
-            <BrandLogoLink
-              href={withLocale(locale, "/")}
-              size="homeHeader"
-              priority
-              linkClassName="hover:opacity-90 focus-visible:ring-offset-[#248f6b]"
-            />
-            <nav
-              className={`flex flex-wrap justify-start gap-2 sm:justify-end sm:gap-1 md:gap-1 ${robotoMono.className}`}
-            >
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={withLocale(locale, item.href)}
-                  className="border border-white bg-white px-3 py-2 text-[11px] uppercase text-black transition hover:bg-transparent hover:text-white sm:px-[14px] sm:py-[9px] sm:text-[12px] md:px-[18px] md:py-[10px] md:text-[14px]"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </header>
+        <div className="home-hero-nav-wrap w-full mx-auto max-w-[1440px] px-4 pt-6 sm:px-6 sm:pt-7 md:px-10 md:pt-10">
+          <HomeHeroNav locale={locale} />
         </div>
 
-        <div className="home-hero-freedom-wrap">
+        <div className="home-mobile-hero-art">
+          <div className="home-hero-freedom-wrap">
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index} className="home-hero-freedom-line">
-              internet demands freedom
+              <span className="home-hero-freedom-line__part">internet demands </span>
+              <span className="home-hero-freedom-line__part">freedom</span>
             </div>
           ))}
-        </div>
+          </div>
 
-        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 md:px-10">
-          <div className="mt-4 pb-0 sm:mt-10 md:mt-[52px]">
-            <div className="h-4 bg-white" />
-            <div className="mt-3 h-[75px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
+          <div className="home-hero-stripes-wrap mx-auto max-w-[1440px] px-4 sm:px-6 md:px-10">
+            <div className="home-hero-stripes mt-4 pb-0 sm:mt-10 md:mt-[52px]">
+              <div className="home-hero-stripe-thick h-4 bg-white" />
+              <div className="home-hero-stripe-thin mt-3 h-[75px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
+            </div>
           </div>
         </div>
         <div
-          className="pointer-events-none h-[clamp(8px,1.25vw,14px)] w-full bg-[#248f6b]"
+          className="home-hero-bottom-green-bar pointer-events-none h-[clamp(8px,1.25vw,14px)] w-full bg-[#248f6b]"
           aria-hidden
         />
       </section>
@@ -246,7 +220,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
         </div>
       </section>
 
-      <section className="home-collective-section home-collective-zine min-h-[min(100svh,850px)] overflow-hidden px-4 py-16 text-white sm:px-6 sm:py-20 md:min-h-[850px] md:px-10 md:py-24 lg:px-16 lg:py-32 xl:px-[155px] xl:py-[180px]">
+      <section className="home-collective-section home-collective-zine overflow-hidden px-4 py-10 text-white sm:px-6 sm:py-12 md:min-h-[850px] md:px-10 md:py-24 lg:px-16 lg:py-32 xl:px-[155px] xl:py-[180px]">
         <div className="home-collective-art-layer" aria-hidden>
           <Image
             src="/images/home-collective-blue-birds.png"
@@ -257,19 +231,18 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
           />
         </div>
         <div className="home-collective-zine__stack max-w-[min(100%,1180px)]">
-          <div className="home-headline-font home-collective-zine__type text-[clamp(40px,5.4vw,77px)] font-bold lowercase leading-[0.98] tracking-[-0.02em] text-white">
-            <p className="home-collective-zine__line m-0">// we are a collective</p>
-            <p className="home-collective-zine__line home-collective-zine__line--fighting m-0 mt-[0.08em] flex flex-wrap items-end gap-x-[min(0.45em,16px)] gap-y-3 md:gap-x-[0.5em]">
-              <span className="shrink-0">fighting</span>
-              <span className="shrink-0">for</span>
-              <span className="home-collective-zine__picsPair shrink-0" aria-hidden>
+          <div className="home-headline-font home-collective-zine__type text-[clamp(40px,5.4vw,77px)] font-bold lowercase tracking-[-0.02em] text-white">
+            <p className="home-collective-zine__line">// we are a collective</p>
+            <p className="home-collective-zine__line home-collective-zine__line--fighting mt-[0.08em]">
+              fighting for{" "}
+              <span className="home-collective-zine__picsPair" aria-hidden>
                 <span className="home-collective-zine__picWrap">
                   <Image
                     src="/images/home-collective-zine-ear.png"
                     alt=""
                     fill
-                    sizes="97px"
-                    className="object-cover object-center"
+                    sizes="2em"
+                    className="object-contain object-center"
                   />
                 </span>
                 <span className="home-collective-zine__picWrap">
@@ -277,25 +250,25 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                     src="/images/home-collective-zine-mouth.png"
                     alt=""
                     fill
-                    sizes="97px"
-                    className="object-cover object-center"
+                    sizes="2em"
+                    className="object-contain object-center"
                   />
                 </span>
               </span>
             </p>
-            <p className="home-collective-zine__line m-0 mt-[0.06em]">free speech, human rights,</p>
-            <p className="home-collective-zine__line home-collective-zine__line--open m-0 mt-[0.06em] flex flex-wrap items-end gap-x-[min(0.45em,16px)] gap-y-3 md:gap-x-[0.5em]">
-              <span className="shrink-0">and</span>
-              <span className="home-collective-zine__picWrap home-collective-zine__picWrap--narrow shrink-0" aria-hidden>
+            <p className="home-collective-zine__line mt-[0.06em]">free speech, human rights,</p>
+            <p className="home-collective-zine__line home-collective-zine__line--open mt-[0.06em]">
+              and{" "}
+              <span className="home-collective-zine__picWrap home-collective-zine__picWrap--narrow" aria-hidden>
                 <Image
                   src="/images/home-collective-zine-eye.png"
                   alt=""
                   fill
-                  sizes="97px"
-                  className="object-cover object-center"
+                  sizes="2em"
+                  className="object-contain object-center"
                 />
-              </span>
-              <span className="shrink-0">an open internet</span>
+              </span>{" "}
+              an open internet
             </p>
           </div>
         </div>
@@ -373,7 +346,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
         </div>
       </section>
 
-      <section className="home-initiatives-section pb-[200px] pt-0 text-white">
+      <section className="home-initiatives-section pb-16 pt-0 text-white md:pb-[200px]">
         <Image
           src="/images/home-initiatives-pixel-accent.png"
           alt=""
@@ -382,7 +355,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
           className="pointer-events-none absolute right-0 top-0 z-20 h-[clamp(40px,11vw,80px)] w-auto max-w-[min(315px,85vw)] object-contain object-right select-none sm:h-[min(80px,10vh)]"
           aria-hidden
         />
-        <div className="relative z-10 mx-auto max-w-[1440px] pt-[120px] sm:pt-[140px] md:pt-[160px] xl:pt-[200px]">
+        <div className="relative z-10 mx-auto max-w-[1440px] pt-14 sm:pt-20 md:pt-[160px] xl:pt-[200px]">
           <h2
             className={cn(
               "home-headline-font text-[clamp(64px,8vw,109px)] lowercase leading-[0.92]",
@@ -392,14 +365,14 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             our initiatives
           </h2>
 
-          <div className="mt-[clamp(3rem,8vw,9.375rem)] space-y-20 px-4 sm:px-6 md:space-y-28 md:px-10 xl:px-10">
+          <div className="mt-10 space-y-12 px-4 sm:mt-14 sm:space-y-16 sm:px-6 md:mt-[clamp(3rem,8vw,9.375rem)] md:space-y-28 md:px-10 xl:px-10">
             <article>
               <div className="w-full max-w-[1130px]">
                 <div
                   className="h-[min(380px,62vw)] w-full bg-[#d9d9d9] md:h-[626px]"
                   aria-hidden
                 />
-                <div className="mt-10 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-between md:gap-8">
+                <div className="mt-6 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-between md:gap-8">
                   <h3 className="shrink-0 text-[clamp(26px,2.8vw,30px)] font-semibold leading-[1.15] tracking-tight text-white">
                     Bangladesh Protest Archive
                   </h3>
@@ -420,7 +393,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                   className="h-[min(380px,62vw)] w-full bg-[#d9d9d9] md:h-[626px]"
                   aria-hidden
                 />
-                <div className="mt-10 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-between md:gap-8">
+                <div className="mt-6 flex flex-col gap-6 md:mt-12 md:flex-row md:items-start md:justify-between md:gap-8">
                   <h3 className="shrink-0 text-[clamp(26px,2.8vw,30px)] font-semibold leading-[1.15] tracking-tight text-white">
                     Archive &amp; Resist Archive
                   </h3>
@@ -511,15 +484,15 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
         </div>
       </section>
 
-      <section className="home-paper-section pb-24 text-black md:pb-32 xl:pb-[220px]">
+      <section className="home-paper-section pb-16 text-black md:pb-32 xl:pb-[220px]">
         <div className={`mx-auto max-w-[1440px] ${HOME_PAD_155}`}>
           {/* Figma: “updates and blog” 109px, centered; list block 1130px wide @ 155 inset */}
-          <h2 className="home-headline-font text-center text-[clamp(40px,9vw,109px)] lowercase leading-[0.92] xl:text-[109px]">
+          <h2 className="home-headline-font text-center text-[clamp(36px,10vw,109px)] lowercase leading-[0.92] xl:text-[109px]">
             <span className="block">updates</span>
             <span className="block">and blog</span>
           </h2>
 
-          <div className="mx-auto mt-24 w-full max-w-[1130px] xl:mt-[140px]">
+          <div className="mx-auto mt-10 w-full max-w-[1130px] sm:mt-16 md:mt-24 xl:mt-[140px]">
             {articles.length === 0 ? (
               <p className={`text-center text-[17px] text-black/75 ${robotoMono.className}`}>
                 {tArticles("emptyHomeUpdates")}
@@ -528,14 +501,14 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             {articles.map((item) => (
               <article
                 key={item.slug}
-                className="border-b border-black/25 pt-[30px] first:pt-0 last:border-b-0"
+                className="border-b border-black/20 py-8 last:border-b-0 md:py-0 md:pt-[30px] md:first:pt-0"
               >
                 <Link
                   href={withLocale(locale, `/articles/${item.slug}`)}
                   className={`${cardLinkClass} block`}
                 >
-                  <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,321px)_minmax(0,720px)] lg:gap-10">
-                    <div className="relative aspect-[321/195] w-full max-w-[321px] overflow-hidden bg-[#ffd034] lg:max-w-none">
+                  <div className="grid grid-cols-1 gap-4 sm:gap-8 lg:grid-cols-[minmax(0,321px)_minmax(0,720px)] lg:gap-10">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#ffd034] sm:aspect-[321/195] sm:max-w-[321px] lg:max-w-none">
                       {item.coverSrc ? (
                         <Image
                           src={item.coverSrc}
@@ -551,24 +524,24 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                         />
                       )}
                     </div>
-                    <div className="min-w-0 max-w-[720px]">
+                    <div className="min-w-0 lg:max-w-[720px]">
                       <h3
                         className={cn(
-                          "home-headline-font text-[clamp(22px,4vw,30px)] leading-[1.2] xl:text-[30px]",
+                          "home-headline-font break-words text-[clamp(22px,5.5vw,30px)] leading-[1.15] xl:text-[30px]",
                           item.accentTitle ? "text-[#303ccf]" : "text-black"
                         )}
                       >
                         {item.title}
                       </h3>
                       {item.excerpt ? (
-                        <p className="mt-4 text-[16px] leading-[1.35] text-black/80 sm:mt-5 md:mt-6">
+                        <p className="mt-3 line-clamp-4 text-[15px] leading-[1.4] text-black/80 sm:mt-5 sm:line-clamp-none sm:text-[16px] md:mt-6">
                           {item.excerpt}
                         </p>
                       ) : null}
                       <div
-                        className={`mt-6 flex items-center justify-between gap-4 text-[14px] uppercase md:mt-8 ${robotoMono.className}`}
+                        className={`mt-4 flex flex-col gap-2 text-[13px] uppercase sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-[14px] md:mt-8 ${robotoMono.className}`}
                       >
-                        <p className="min-w-0 text-black/90">
+                        <p className="min-w-0 break-words text-black/90">
                           <span>{item.metaCategory}</span>
                           <span className="mx-2 text-black/50" aria-hidden>
                             /
@@ -586,7 +559,7 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-8 text-center md:mt-12">
             <Link
               href={withLocale(locale, "/articles")}
               className={`inline-flex min-h-[53px] w-full items-center justify-center bg-[#303ccf] px-5 py-4 text-[18px] uppercase text-white sm:w-auto sm:min-w-[127px] ${robotoMono.className}`}
