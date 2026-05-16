@@ -167,6 +167,138 @@ body:has(main[data-home]) .site-film-grain {
   background-color: #1a1a1a;
 }
 
+.home-mobile-hero-art {
+  display: contents;
+}
+
+/* Mobile first fold — green hero fills viewport; ~half rights marquee peeks at fold */
+@media (max-width: 767px) {
+  main[data-home] {
+    --home-rights-marquee-mobile-height: 88px;
+    --home-rights-marquee-mobile-peek: 44px;
+  }
+
+  .home-mobile-first-fold-hero {
+    height: calc(100svh - var(--home-rights-marquee-mobile-peek));
+    min-height: calc(100svh - var(--home-rights-marquee-mobile-peek));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .home-hero-nav-wrap {
+    flex: 0 0 auto;
+    align-self: stretch;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .home-mobile-hero-art {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    padding-top: clamp(4px, 1svh, 10px);
+    padding-bottom: clamp(10px, 2svh, 18px);
+  }
+
+  .home-hero-ascii-art {
+    top: clamp(108px, 21svh, 172px);
+    height: min(40svh, 400px);
+    opacity: 1;
+  }
+
+  .home-mobile-first-fold-hero .home-hero-freedom-wrap {
+    position: relative;
+    z-index: 2;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    padding-top: clamp(6px, 1.4svh, 14px);
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 0;
+    overflow-x: clip;
+    transform: none !important;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: clamp(14px, 2.8svh, 28px);
+  }
+
+  /* Two lines per row: “internet demands” / “freedom” — size to the longer first line */
+  .home-mobile-first-fold-hero .home-hero-freedom-line {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    gap: clamp(6px, 1.2svh, 12px);
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+
+    font-size: min(80px, calc((100vw - 32px) / 8.25));
+    line-height: 0.88;
+    letter-spacing: -0.08em;
+  }
+
+  .home-mobile-first-fold-hero .home-hero-freedom-line__part {
+    display: block;
+  }
+
+  .home-mobile-first-fold-hero .home-hero-stripes-wrap {
+    flex: 0 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+  }
+
+  .home-mobile-first-fold-hero .home-hero-stripes {
+    margin-top: clamp(8px, 1.6svh, 16px) !important;
+    padding-bottom: 0 !important;
+  }
+
+  .home-mobile-first-fold-hero .home-hero-stripe-thick {
+    height: clamp(12px, 2svh, 18px);
+  }
+
+  .home-mobile-first-fold-hero .home-hero-stripe-thin {
+    margin-top: clamp(8px, 1.2svh, 12px);
+    height: clamp(58px, 9svh, 86px);
+    background: repeating-linear-gradient(
+      to bottom,
+      #fff 0,
+      #fff 6px,
+      transparent 6px,
+      transparent 16px
+    );
+  }
+
+  .home-hero-bottom-green-bar {
+    flex: 0 0 auto;
+    height: 2px !important;
+  }
+
+  .home-mobile-hero-spacer {
+    display: none !important;
+  }
+
+  .home-rights-marquee {
+    height: var(--home-rights-marquee-mobile-height);
+    min-height: var(--home-rights-marquee-mobile-height);
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .home-rights-marquee__track {
+    min-height: var(--home-rights-marquee-mobile-height);
+    align-items: center;
+  }
+}
+
 .home-rights-marquee__track {
   position: relative;
   z-index: 2;
@@ -348,24 +480,98 @@ body:has(main[data-home]) .site-film-grain {
   z-index: 10;
 }
 
+.home-collective-zine__type {
+  line-height: 1.28;
+}
+
+.home-collective-zine__line {
+  display: block;
+  margin: 0;
+  white-space: nowrap;
+}
+
 .home-collective-zine__picWrap,
 .home-collective-zine__picWrap--narrow {
   position: relative;
   display: inline-block;
-  overflow: hidden;
-  /* Figma layout — inserts locked 1:1 (96.72 × 96.72) */
-  width: 96.72px;
-  height: 96.72px;
+  overflow: visible;
+  width: 0.88em;
+  height: 0.88em;
+  margin-inline: 0.1em;
+  vertical-align: -0.14em;
   flex-shrink: 0;
-  vertical-align: bottom;
 }
 
-/* Ear + lips flush as one block (Figma); space from words comes from parent `gap-x`. */
 .home-collective-zine__picsPair {
-  display: flex;
-  align-items: flex-end;
-  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 0.88em;
+  margin-inline: 0.1em;
+  vertical-align: -0.14em;
   gap: 0;
+}
+
+.home-collective-zine__picsPair .home-collective-zine__picWrap {
+  width: 0.88em;
+  height: 100%;
+  margin: 0;
+}
+
+.home-collective-zine__picWrap--narrow {
+  width: 0.88em;
+}
+
+.home-collective-zine__picWrap img,
+.home-collective-zine__picWrap--narrow img {
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 767px) {
+  .home-collective-section.home-collective-zine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: auto;
+  }
+
+  .home-collective-zine__stack {
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .home-collective-zine__type,
+  .home-collective-zine__line {
+    text-align: center;
+  }
+
+  .home-collective-zine__line {
+    white-space: normal;
+  }
+
+  .home-collective-zine__type {
+    line-height: 1.18;
+  }
+}
+
+@media (min-width: 1560px) {
+  .home-collective-section.home-collective-zine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-collective-zine__stack {
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .home-collective-zine__type,
+  .home-collective-zine__line {
+    text-align: center;
+  }
 }
 
 .home-footer-ascii-banner {
@@ -504,6 +710,19 @@ body:has(main[data-home]) .site-film-grain {
   color: #ffffff;
 }
 
+.home-hero-freedom-line__part {
+  display: inline;
+}
+
+@media (min-width: 1401px) {
+  .home-hero-freedom-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(clamp(18px, 3.2vw, 44px));
+  }
+}
+
 @media (min-width: 1440px) {
   .home-hero-freedom-line {
     font-size: clamp(112px, 7.75vw, 132px);
@@ -520,10 +739,35 @@ body:has(main[data-home]) .site-film-grain {
   .home-hero-freedom-wrap {
     padding-left: 18px;
     padding-right: 18px;
+    overflow: visible;
+    transform: translateY(clamp(10px, 2.8vw, 18px));
   }
 
   .home-hero-freedom-line {
-    font-size: clamp(42px, 10.8vw, 76px);
+    width: auto;
+    max-width: calc(100vw - 36px);
+    font-size: min(34px, max(18px, calc((100vw - 36px) / 11.75)));
+    letter-spacing: -0.05em;
+  }
+
+  .home-hero-stripes {
+    margin-top: 0.75rem;
+  }
+
+  .home-hero-stripe-thick {
+    height: 10px;
+  }
+
+  .home-hero-stripe-thin {
+    margin-top: 0.375rem;
+    height: 38px;
+    background: repeating-linear-gradient(
+      to bottom,
+      #fff 0,
+      #fff 5px,
+      transparent 5px,
+      transparent 14px
+    );
   }
 }
 
