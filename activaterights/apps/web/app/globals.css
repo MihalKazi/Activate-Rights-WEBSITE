@@ -479,6 +479,54 @@ body:has(main[data-home]) .site-film-grain {
   font-style: normal;
 }
 
+.home-hero-freedom-wrap {
+  width: 100%;
+  max-width: none;
+  padding-left: clamp(28px, 3.2vw, 48px);
+  padding-right: clamp(28px, 3.2vw, 48px);
+  overflow: hidden;
+  transform: translate(clamp(12px, 1.4vw, 22px), clamp(18px, 3.2vw, 44px));
+}
+
+.home-hero-freedom-line {
+  display: block;
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+
+  font-family: "Stack Sans Notch", var(--font-inter), Inter, sans-serif;
+  font-weight: 700;
+  font-size: clamp(72px, 7.95vw, 124px);
+  line-height: 0.92;
+  letter-spacing: -0.052em;
+  color: #ffffff;
+}
+
+@media (min-width: 1440px) {
+  .home-hero-freedom-line {
+    font-size: clamp(112px, 7.75vw, 132px);
+  }
+}
+
+@media (min-width: 1920px) {
+  .home-hero-freedom-line {
+    font-size: clamp(128px, 6.9vw, 148px);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-hero-freedom-wrap {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .home-hero-freedom-line {
+    font-size: clamp(42px, 10.8vw, 76px);
+  }
+}
+
 @media (min-width: 1536px) {
   .hero-content {
     padding-left: 30px;

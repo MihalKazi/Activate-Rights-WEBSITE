@@ -180,21 +180,20 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
               ))}
             </nav>
           </header>
+        </div>
 
-          <div className="pointer-events-none mt-16 space-y-1.5 text-center sm:mt-24 sm:space-y-2 md:mt-[160px] md:space-y-2">
-            {new Array(5).fill(null).map((_, i) => (
-              <p
-                key={`hero-line-${i}`}
-                className="home-headline-font text-[clamp(32px,9.5vw,92px)] lowercase leading-[0.93] tracking-[-0.03em] xl:text-[92px]"
-              >
-                internet demands freedom
-              </p>
-            ))}
-          </div>
+        <div className="home-hero-freedom-wrap">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <div key={index} className="home-hero-freedom-line">
+              internet demands freedom
+            </div>
+          ))}
+        </div>
 
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 md:px-10">
           <div className="mt-4 pb-0 sm:mt-10 md:mt-[52px]">
             <div className="h-4 bg-white" />
-            <div className="mt-3 h-[113px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
+            <div className="mt-3 h-[75px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
           </div>
         </div>
         <div
