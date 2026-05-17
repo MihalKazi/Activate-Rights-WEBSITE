@@ -156,17 +156,22 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
         <div className="home-mobile-hero-art">
           <div className="home-hero-freedom-wrap">
           {Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className="home-hero-freedom-line">
-              <span className="home-hero-freedom-line__part">internet demands </span>
-              <span className="home-hero-freedom-line__part">freedom</span>
-            </div>
+            <span
+              key={index}
+              className={`home-hero-freedom-line ${
+                index === 4 ? "home-hero-freedom-line--mobile-only" : ""
+              }`}
+            >
+              <span className="home-hero-freedom-line__part">internet demands</span>
+              <span className="home-hero-freedom-line__part"> freedom</span>
+            </span>
           ))}
           </div>
 
           <div className="home-hero-stripes-wrap mx-auto max-w-[1440px] px-4 sm:px-6 md:px-10">
             <div className="home-hero-stripes mt-4 pb-0 sm:mt-10 md:mt-[52px]">
               <div className="home-hero-stripe-thick h-4 bg-white" />
-              <div className="home-hero-stripe-thin mt-3 h-[75px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
+              <div className="home-hero-stripe-thin mt-3 h-[113px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
             </div>
           </div>
         </div>
