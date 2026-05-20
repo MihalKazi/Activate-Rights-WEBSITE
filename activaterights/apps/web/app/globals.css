@@ -132,12 +132,14 @@ body:has(main[data-home]) .site-film-grain {
   mix-blend-mode: soft-light;
 }
 
-/* Home first fold — hero height leaves half the rights marquee visible in viewport */
+/* Home first fold — hero reserves ~58% marquee height for first-view peek */
 main[data-home] {
   --home-rights-marquee-height: clamp(76px, 8vw, 96px);
-  --home-rights-marquee-peek: calc(var(--home-rights-marquee-height) / 2);
+  --home-rights-marquee-peek: calc(var(--home-rights-marquee-height) * 0.58);
   --hero-max-width: 1440px;
   --hero-gutter: clamp(16px, 4vw, 40px);
+  --home-hero-line-width: calc(min(100vw, var(--hero-max-width)) - (2 * var(--hero-gutter)));
+  --home-hero-line-aspect: 13.1;
 }
 
 /* Shared hero grid — nav, headline, stripes share the same horizontal shell */
@@ -154,11 +156,17 @@ main[data-home] {
 }
 
 .home-mobile-first-fold-hero {
-  height: calc(100svh - var(--home-rights-marquee-peek));
-  min-height: calc(100svh - var(--home-rights-marquee-peek));
+  min-height: calc(100dvh - var(--home-rights-marquee-peek));
+  height: auto;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+@supports not (height: 100dvh) {
+  .home-mobile-first-fold-hero {
+    min-height: calc(100svh - var(--home-rights-marquee-peek));
+  }
 }
 
 .home-hero-nav-wrap {
@@ -199,7 +207,11 @@ main[data-home] {
 /* “Digital rights…” marquee — same dark tile + grain as `.home-initiatives-section`. */
 .home-rights-marquee {
   --rights-marquee-gap: clamp(0.65rem, 2vw, 1.25rem);
-  position: relative;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: sticky;
+  bottom: calc(-1 * var(--home-rights-marquee-peek));
+  z-index: 20;
   isolation: isolate;
   display: flex;
   align-items: center;
@@ -239,13 +251,8 @@ main[data-home] {
 @media (max-width: 767px) {
   main[data-home] {
     --home-rights-marquee-height: 88px;
-    --home-rights-marquee-peek: 44px;
+    --home-rights-marquee-peek: calc(var(--home-rights-marquee-height) * 0.58);
     --hero-gutter: 14px;
-  }
-
-  .home-mobile-first-fold-hero {
-    height: calc(100svh - var(--home-rights-marquee-peek));
-    min-height: calc(100svh - var(--home-rights-marquee-peek));
   }
 
   .home-hero-nav-wrap {
@@ -774,7 +781,7 @@ main[data-home] {
 .home-hero-freedom-line-svg {
   display: block;
   width: 100%;
-  height: clamp(70px, 7.2vw, 104px);
+  height: calc(var(--home-hero-line-width) / var(--home-hero-line-aspect));
   overflow: hidden;
   flex: 0 0 auto;
 }
@@ -808,11 +815,6 @@ main[data-home] {
 }
 
 @media (min-width: 1440px) {
-  .home-mobile-first-fold-hero {
-    height: calc(100svh - var(--home-rights-marquee-peek));
-    min-height: calc(100svh - var(--home-rights-marquee-peek));
-  }
-
   .home-hero-freedom-wrap {
     margin-top: 96px;
     transform: none;
@@ -825,60 +827,16 @@ main[data-home] {
   }
 }
 
-@media (min-width: 769px) and (max-height: 860px) {
-  .home-hero-stripe-thin {
-    height: 75px !important;
+/* Short viewport — keep hero orientation; marquee peek unchanged */
+@media (max-height: 760px) {
+  .home-mobile-hero-art {
+    flex: 0 0 auto;
+    min-height: auto;
   }
-}
 
-@media (min-width: 769px) and (max-height: 800px) {
-  .home-hero-stripe-thin {
-    height: 56px !important;
-  }
-}
-
-@media (min-width: 769px) and (max-height: 760px) {
   .home-hero-freedom-wrap {
-    margin-top: clamp(74px, 6.6vw, 96px) !important;
-    overflow: visible;
-  }
-
-  .home-hero-freedom-line-svg {
-    height: clamp(52px, min(7.2vw, 12.2svh), 88px) !important;
-  }
-
-  .home-hero-stripe-thin {
-    height: 40px !important;
-  }
-}
-
-@media (min-width: 769px) and (max-height: 700px) {
-  .home-hero-freedom-wrap {
-    margin-top: clamp(74px, 6.6vw, 96px) !important;
-    overflow: visible;
-  }
-
-  .home-hero-freedom-line-svg {
-    height: clamp(44px, min(7.2vw, 11.6svh), 78px) !important;
-  }
-
-  .home-hero-stripe-thin {
-    height: 24px !important;
-  }
-}
-
-@media (min-width: 769px) and (max-height: 640px) {
-  .home-hero-freedom-wrap {
-    margin-top: clamp(74px, 6.6vw, 96px) !important;
-    overflow: visible;
-  }
-
-  .home-hero-freedom-line-svg {
-    height: clamp(36px, min(7.2vw, 10.8svh), 68px) !important;
-  }
-
-  .home-hero-stripe-thin {
-    height: 12px !important;
+    flex: 0 0 auto;
+    min-height: auto;
   }
 }
 
