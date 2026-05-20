@@ -26,13 +26,13 @@ export default defineConfig({
               .child(S.documentTypeList("event").title("Events").defaultOrdering([{ field: "date", direction: "desc" }])),
             S.divider(),
             S.listItem()
-              .title("Reports & updates on Home")
+              .title("Initiatives, reports & updates on Home")
               .id("singleton-reports-on-home")
               .child(
                 S.document()
                   .schemaType("reportsOnHome")
                   .documentId(REPORTS_ON_HOME_DOCUMENT_ID)
-                  .title("Reports & updates on Home")
+                  .title("Initiatives, reports & updates on Home")
               ),
             S.divider(),
             ...S.documentTypeListItems().filter(

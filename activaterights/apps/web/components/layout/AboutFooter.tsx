@@ -3,6 +3,7 @@ import { Roboto_Mono } from "next/font/google";
 import { cn } from "../../lib/utils";
 import type { Locale } from "../../i18n/config";
 import { BrandLogo } from "../brand/BrandLogo";
+import { SOCIAL_LINKS } from "../../lib/constants/socialLinks";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ type AboutFooterProps = {
   locale: Locale;
   emailLabel: string;
   facebookLabel: string;
-  twitterLabel: string;
+  linkedInLabel: string;
   instagramLabel: string;
   /** e.g. Projects mockup uses pure white footer */
   className?: string;
@@ -32,7 +33,7 @@ export function AboutFooter({
   locale,
   emailLabel,
   facebookLabel,
-  twitterLabel,
+  linkedInLabel,
   instagramLabel,
   className,
   brandClassName,
@@ -78,13 +79,28 @@ export function AboutFooter({
           <a href={mail} className="hover:underline">
             {emailLabel}
           </a>
-          <a href="https://facebook.com" className="hover:underline" target="_blank" rel="noreferrer noopener">
+          <a
+            href={SOCIAL_LINKS.facebook}
+            className="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {facebookLabel}
           </a>
-          <a href="https://x.com" className="hover:underline" target="_blank" rel="noreferrer noopener">
-            {twitterLabel}
+          <a
+            href={SOCIAL_LINKS.linkedIn}
+            className="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {linkedInLabel}
           </a>
-          <a href="https://instagram.com" className="hover:underline" target="_blank" rel="noreferrer noopener">
+          <a
+            href={SOCIAL_LINKS.instagram}
+            className="hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {instagramLabel}
           </a>
         </div>

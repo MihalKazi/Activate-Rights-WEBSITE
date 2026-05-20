@@ -63,7 +63,7 @@ export async function ContactSections({ locale }: ContactSectionsProps) {
         locale={locale}
         emailLabel={tAbout("footerEmail")}
         facebookLabel={tAbout("footerFacebook")}
-        twitterLabel={tAbout("footerTwitter")}
+        linkedInLabel={tAbout("footerLinkedIn")}
         instagramLabel={tAbout("footerInstagram")}
         className="mt-auto bg-transparent pt-8 md:pt-12"
         brandClassName="text-white"

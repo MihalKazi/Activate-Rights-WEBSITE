@@ -1,9 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
+import type { Image as SanityImage } from "sanity";
 import { getTranslations } from "next-intl/server";
 import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
+import { urlFor } from "../../lib/sanity/image";
+import { getAllProjects } from "../../lib/sanity/queries";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -18,24 +22,54 @@ type ProjectsSectionsProps = {
 type ProjectCard = {
   slug: string;
   title: string;
-  titleLeadingSlash: boolean;
-  body: string;
+  body: string | null;
+  coverUrl: string | null;
+  href: string;
+  isExternal: boolean;
 };
 
 export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
   const t = await getTranslations({ locale, namespace: "projects" });
 
-  const rawItems = t.raw("items");
-  const items: ProjectCard[] = Array.isArray(rawItems)
-    ? (rawItems as ProjectCard[]).filter(
-        (item) =>
-          item &&
-          typeof item.slug === "string" &&
-          typeof item.title === "string" &&
-          typeof item.body === "string" &&
-          typeof item.titleLeadingSlash === "boolean"
-      )
-    : [];
+  let items: ProjectCard[] = [];
+  try {
+    const rows = await getAllProjects(locale);
+    items = rows
+      .filter((p) => p?.slug?.current && typeof p.title === "string")
+      .map((p) => {
+        const slug = p.slug.current.trim();
+        const ext = p.externalUrl?.trim();
+        const coverUrl =
+          p.coverImage?.asset?._ref != null
+            ? urlFor(p.coverImage as SanityImage)
+                .width(598)
+                .height(468)
+                .fit("crop")
+                .auto("format")
+                .quality(85)
+                .url()
+            : null;
+        const body =
+          typeof p.description === "string" && p.description.trim().length > 0
+            ? p.description.trim()
+            : null;
+        const isExternal = Boolean(ext);
+        const href = ext ?? `/${locale}/projects/${slug}`;
+        return {
+          slug,
+          title: p.title.trim() || "Project",
+          body,
+          coverUrl,
+          href,
+          isExternal
+        };
+      });
+  } catch {
+    items = [];
+  }
+
+  const cardLinkClass =
+    "group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]";
 
   return (
     <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
@@ -53,31 +87,57 @@ export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
 
       <section className="bg-[#fafcff] px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
         <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:gap-x-[92px] lg:gap-y-16">
-          {items.map((item, index) => (
-            <article key={`${item.slug}-${index}`} className="min-w-0">
-              <Link
-                href={`/${locale}/projects/${item.slug}`}
-                className="group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]"
-              >
-                <div className="relative aspect-[598/468] w-full overflow-hidden bg-[#d9d9d9] transition-colors group-hover:bg-[#cfcfcf]" />
+          {items.length === 0 ? (
+            <p className={`col-span-full text-center text-[17px] text-[#212121]/80 ${robotoMono.className}`}>
+              {t("empty")}
+            </p>
+          ) : null}
+          {items.map((item) => {
+            const figure = (
+              <>
+                <div className="relative aspect-[598/468] w-full overflow-hidden bg-[#d9d9d9] transition-colors group-hover:bg-[#cfcfcf]">
+                  {item.coverUrl ? (
+                    <Image
+                      src={item.coverUrl}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                  ) : null}
+                </div>
                 <h2 className="home-headline-font mt-10 text-[28px] font-normal leading-none text-[#212121] md:text-[30px]">
-                  {item.titleLeadingSlash ? (
-                    <>
-                      <span className="text-[#05b557]">/</span>
-                      <span>{` ${item.title}`}</span>
-                    </>
-                  ) : (
-                    item.title
-                  )}
+                  {item.title}
                 </h2>
-                <p
-                  className={`${robotoMono.className} mt-4 max-w-[495px] text-[18px] font-normal leading-[26px] text-[#212121] md:text-[20px]`}
-                >
-                  {item.body}
-                </p>
-              </Link>
-            </article>
-          ))}
+                {item.body ? (
+                  <p
+                    className={`${robotoMono.className} mt-4 max-w-[495px] text-[18px] font-normal leading-[26px] text-[#212121] md:text-[20px]`}
+                  >
+                    {item.body}
+                  </p>
+                ) : null}
+              </>
+            );
+
+            return (
+              <article key={`${item.slug}-${item.href}`} className="min-w-0">
+                {item.isExternal ? (
+                  <a
+                    href={item.href}
+                    className={cardLinkClass}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {figure}
+                  </a>
+                ) : (
+                  <Link href={item.href} className={cardLinkClass}>
+                    {figure}
+                  </Link>
+                )}
+              </article>
+            );
+          })}
         </div>
       </section>
 

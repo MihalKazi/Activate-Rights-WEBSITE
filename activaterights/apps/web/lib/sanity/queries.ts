@@ -367,6 +367,23 @@ const reportBySlugQuery = groq`
   }
 `;
 
+/** Singleton `reportsOnHome` — curated initiatives for home; empty picks → first 2 projects. */
+const reportsOnHomePickedInitiativesQuery = groq`
+  *[_type == "reportsOnHome" && _id == $reportsOnHomeId][0]{
+    "initiatives": coalesce(initiatives[]->{
+      _id,
+      "title": coalesce(title[$locale], title.en, title.bn, ""),
+      slug,
+      "description": description[$locale],
+      status,
+      coverImage,
+      externalUrl,
+      order,
+      launchDate
+    }, [])
+  }.initiatives
+`;
+
 /** Singleton `reportsOnHome` — curated order for home; empty picks → use all reports. */
 const reportsOnHomePickedQuery = groq`
   *[_type == "reportsOnHome" && _id == $reportsOnHomeId][0]{
@@ -599,6 +616,28 @@ export async function getHomePageProjects(locale: Locale): Promise<ProjectItem[]
   return all.slice(0, 3);
 }
 
+/** Up to 2 initiatives for the home page: Reports on Home singleton, else first 2 by `order`. */
+export async function getHomePageInitiatives(locale: Locale): Promise<ProjectItem[]> {
+  const picked = await sanityClient.fetch<ProjectItem[] | null>(reportsOnHomePickedInitiativesQuery, {
+    locale,
+    reportsOnHomeId: REPORTS_ON_HOME_DOCUMENT_ID
+  });
+  const list = Array.isArray(picked) ? picked : [];
+  const cleaned = list.filter(
+    (p) =>
+      p &&
+      typeof p._id === "string" &&
+      p.slug &&
+      typeof p.slug.current === "string" &&
+      p.slug.current.length > 0
+  );
+  if (cleaned.length > 0) {
+    return cleaned.slice(0, 2);
+  }
+  const all = await getAllProjects(locale);
+  return all.slice(0, 2);
+}
+
 export async function getAllReports(locale: Locale): Promise<ReportItem[]> {
   return sanityClient.fetch(allReportsQuery, { locale });
 }
@@ -621,8 +660,7 @@ export async function getReportsForHome(locale: Locale): Promise<ReportItem[]> {
       typeof r._id === "string" &&
       r.slug &&
       typeof r.slug.current === "string" &&
-      r.slug.current.trim().length > 0 &&
-      typeof r.publishedDate === "string"
+      r.slug.current.trim().length > 0
   );
   if (cleaned.length > 0) {
     return cleaned.slice(0, 3);

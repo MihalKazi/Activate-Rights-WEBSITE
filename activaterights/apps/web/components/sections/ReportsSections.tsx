@@ -1,13 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
-import type { Image as SanityImage } from "sanity";
 import { getTranslations } from "next-intl/server";
 import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { formatReportCardDate } from "../../lib/reports/formatReportDate";
-import { urlFor } from "../../lib/sanity/image";
+import { mapReportRowsToListingCards } from "../../lib/reports/mapReportListingCards";
 import { getAllReports } from "../../lib/sanity/queries";
 
 const robotoMono = Roboto_Mono({
@@ -20,58 +19,21 @@ type ReportsSectionsProps = {
   locale: Locale;
 };
 
-type ReportCard = {
-  slug: string;
-  title: string;
-  titleLeadingSlash: boolean;
-  /** YYYY-MM-DD */
-  date: string;
-  coverUrl: string | null;
-  excerpt: string | null;
-};
-
 export async function ReportsSections({ locale }: ReportsSectionsProps) {
   const t = await getTranslations({ locale, namespace: "reports" });
 
-  let items: ReportCard[] = [];
+  let items = mapReportRowsToListingCards([]);
   try {
     const rows = await getAllReports(locale);
-    items = rows
-      .filter(
-        (r) =>
-          r?.slug?.current &&
-          typeof r.title === "string" &&
-          typeof r.publishedDate === "string"
-      )
-      .map((r) => {
-        const coverUrl =
-          r.coverImage?.asset?._ref != null
-            ? urlFor(r.coverImage as SanityImage)
-                .width(626)
-                .height(848)
-                .fit("crop")
-                .auto("format")
-                .quality(85)
-                .url()
-            : null;
-        const excerpt =
-          typeof r.excerpt === "string" && r.excerpt.trim().length > 0 ? r.excerpt.trim() : null;
-        return {
-          slug: r.slug.current,
-          title: r.title.trim() || "Report",
-          titleLeadingSlash: Boolean(r.titleLeadingSlash),
-          date: r.publishedDate,
-          coverUrl,
-          excerpt
-        };
-      });
-  } catch {
-    items = [];
+    items = mapReportRowsToListingCards(rows);
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[ReportsSections] Sanity fetch failed:", error);
+    }
   }
 
   return (
     <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
-      {/* Figma 34:740 — single fill #06B85C + grain (no second-tone overlay) */}
       <header className="projects-grain-green relative text-white">
         <div className="relative z-10">
           <Navbar locale={locale} />
@@ -92,8 +54,8 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
               {t("empty")}
             </p>
           ) : null}
-          {items.map((item, index) => (
-            <article key={`${item.slug}-${index}`} className="min-w-0">
+          {items.map((item) => (
+            <article key={item.slug} className="min-w-0">
               <Link
                 href={`/${locale}/reports/${item.slug}`}
                 className="group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]"
@@ -119,11 +81,13 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
                     item.title
                   )}
                 </h2>
-                <p
-                  className={`${robotoMono.className} mt-4 text-[14px] font-normal leading-[26px] text-[#a6a6a6]`}
-                >
-                  {formatReportCardDate(item.date, locale)}
-                </p>
+                {item.date ? (
+                  <p
+                    className={`${robotoMono.className} mt-4 text-[14px] font-normal leading-[26px] text-[#a6a6a6]`}
+                  >
+                    {formatReportCardDate(item.date, locale)}
+                  </p>
+                ) : null}
                 {item.excerpt ? (
                   <p className="mt-4 text-[16px] leading-[1.45] text-[#212121]/85">{item.excerpt}</p>
                 ) : null}

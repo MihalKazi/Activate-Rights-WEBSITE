@@ -5,6 +5,9 @@ import { ReportsSections } from "../../../components/sections/ReportsSections";
 import { locales, type Locale } from "../../../i18n/config";
 import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
+/** Avoid empty listing baked in at build when Sanity env is missing. */
+export const revalidate = 120;
+
 type ReportsPageProps = {
   params: {
     locale: string;

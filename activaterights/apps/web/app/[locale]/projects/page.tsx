@@ -5,6 +5,8 @@ import { ProjectsSections } from "../../../components/sections/ProjectsSections"
 import { locales, type Locale } from "../../../i18n/config";
 import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
+export const revalidate = 120;
+
 type ProjectsPageProps = {
   params: {
     locale: string;
