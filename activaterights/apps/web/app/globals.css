@@ -138,8 +138,6 @@ main[data-home] {
   --home-rights-marquee-peek: calc(var(--home-rights-marquee-height) * 0.58);
   --hero-max-width: 1440px;
   --hero-gutter: clamp(16px, 4vw, 40px);
-  --home-hero-line-width: calc(min(100vw, var(--hero-max-width)) - (2 * var(--hero-gutter)));
-  --home-hero-line-aspect: 13.1;
 }
 
 /* Shared hero grid — nav, headline, stripes share the same horizontal shell */
@@ -185,7 +183,7 @@ main[data-home] {
   min-height: 0;
   position: relative;
   z-index: 2;
-  margin-top: clamp(74px, 6.6vw, 96px);
+  margin-top: clamp(72px, 6.6vw, 96px);
   overflow: visible;
   transform: none;
 
@@ -286,43 +284,13 @@ main[data-home] {
     overflow-x: clip;
     transform: none !important;
     align-items: flex-start;
-    gap: clamp(14px, 2svh, 22px);
-  }
-
-  .home-hero-freedom-line-svg {
-    display: none !important;
-  }
-
-  .home-hero-freedom-line--mobile {
-    box-sizing: border-box;
-    display: flex !important;
-    flex-direction: column;
-    flex: 0 0 auto;
     gap: 0;
-    width: 100%;
-    max-width: 100%;
-    white-space: nowrap;
-
-    font-family: "Stack Sans Notch", var(--font-inter), Inter, sans-serif;
-    font-weight: 600;
-    font-size: min(
-      80px,
-      calc((min(100vw, var(--hero-max-width)) - 2 * var(--hero-gutter)) / 7.9)
-    );
-    line-height: 0.84;
-    letter-spacing: -0.085em;
-    color: #ffffff;
-
-    -webkit-font-smoothing: antialiased;
-    text-rendering: geometricPrecision;
   }
 
-  .home-hero-freedom-line--mobile .home-hero-freedom-line__part {
-    display: block;
-  }
-
-  .home-hero-freedom-line--mobile-only {
-    display: flex;
+  .home-hero-freedom-line {
+    font-size: clamp(42px, 13.5vw, 80px);
+    line-height: 0.929;
+    letter-spacing: 0;
   }
 
   .home-mobile-first-fold-hero .home-hero-stripes-wrap {
@@ -379,7 +347,7 @@ main[data-home] {
 @media (max-width: 767px) and (max-height: 700px) {
   .home-mobile-first-fold-hero .home-hero-freedom-wrap {
     padding-top: 2px;
-    gap: clamp(10px, 1.4svh, 16px);
+    gap: 0;
   }
 }
 
@@ -778,32 +746,25 @@ main[data-home] {
   font-style: normal;
 }
 
-.home-hero-freedom-line-svg {
+.home-hero-freedom-line {
   display: block;
-  width: 100%;
-  height: calc(var(--home-hero-line-width) / var(--home-hero-line-aspect));
-  overflow: hidden;
-  flex: 0 0 auto;
-}
+  width: max-content;
+  max-width: none;
+  white-space: nowrap;
+  overflow: visible;
 
-@media (min-width: 768px) {
-  .home-hero-freedom-line--mobile {
-    display: none !important;
-  }
-}
-
-.home-hero-freedom-line-svg text {
   font-family: "Stack Sans Notch", var(--font-inter), Inter, sans-serif;
-  font-size: 100px;
-  font-weight: 600;
-  fill: #ffffff;
-  dominant-baseline: alphabetic;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  color: #ffffff;
+
+  font-size: clamp(56px, 7.43vw, 107.02px);
+  line-height: 0.929;
+  letter-spacing: 0;
+
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
-}
-
-.home-hero-freedom-line-svg--mobile-only {
-  display: none;
 }
 
 .home-hero-stripes {
