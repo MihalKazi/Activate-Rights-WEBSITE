@@ -51,6 +51,8 @@ export async function ContactSections({ locale }: ContactSectionsProps) {
 
       <ContactForm
         thanksLabel={t("formThanks")}
+        errorLabel={t("formError")}
+        sendingLabel={t("formSending")}
         labels={{
           name: t("fieldName"),
           email: t("fieldEmail"),

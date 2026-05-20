@@ -7,14 +7,14 @@ type AboutPartnersClosingProps = {
 };
 
 /**
- * Home “we have worked with” band + site footer (no contact column).
+ * Home “we have worked with” band + site footer.
  * Used at the bottom of About, Projects, Reports, Articles, Events (and detail pages).
  */
 export function AboutPartnersClosing({ locale }: AboutPartnersClosingProps) {
   return (
     <>
       <HomePartnersSection />
-      <HomeSiteFooter locale={locale} showContact={false} />
+      <HomeSiteFooter locale={locale} />
     </>
   );
 }

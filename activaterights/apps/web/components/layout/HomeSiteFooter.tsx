@@ -14,7 +14,7 @@ const robotoMono = Roboto_Mono({
 
 type HomeSiteFooterProps = {
   locale: Locale;
-  /** Homepage includes the “Get in touch” column; other routes omit it. */
+  /** Set false only if a page needs footer without the contact column. */
   showContact?: boolean;
 };
 
@@ -137,10 +137,10 @@ export function HomeSiteFooter({ locale, showContact = true }: HomeSiteFooterPro
                     Get in touch
                   </p>
                   <a
-                    href="mailto:omuktomuk@website.com"
+                    href="mailto:info@activaterights.org"
                     className={`block text-[16px] lowercase underline-offset-2 hover:underline ${robotoMono.className}`}
                   >
-                    omuktomuk@website.com
+                    info@activaterights.org
                   </a>
                 </div>
               ) : null}

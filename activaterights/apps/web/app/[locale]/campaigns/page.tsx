@@ -35,7 +35,7 @@ export default function CampaignsPage({ params }: CampaignsPageProps) {
         <p className="text-text-secondary">Campaigns listing coming soon.</p>
       </div>
       <HomePartnersSection />
-      <HomeSiteFooter locale={locale} showContact={false} />
+      <HomeSiteFooter locale={locale} />
     </main>
   );
 }
