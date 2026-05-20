@@ -117,34 +117,14 @@ function RightsMarqueeIcon({ src }: { src: string | null }) {
 
 function HeroFreedomLine({ mobileOnly = false }: { mobileOnly?: boolean }) {
   const mobileOnlyClass = mobileOnly ? " home-hero-freedom-line--mobile-only" : "";
-  const svgOnlyClass = mobileOnly ? " home-hero-freedom-line-svg--mobile-only" : "";
 
   return (
-    <>
-      <span
-        className={`home-hero-freedom-line home-hero-freedom-line--mobile${mobileOnlyClass}`}
-      >
-        <span className="home-hero-freedom-line__part">internet demands</span>
-        <span className="home-hero-freedom-line__part"> freedom</span>
-      </span>
-      <svg
-        className={`home-hero-freedom-line-svg${svgOnlyClass}`}
-        viewBox="0 0 1000 110"
-        preserveAspectRatio="none"
-        role="img"
-        aria-label="internet demands freedom"
-      >
-        <text
-          x="0"
-          y="84"
-          fill="#ffffff"
-          textLength="1000"
-          lengthAdjust="spacingAndGlyphs"
-        >
-          internet demands freedom
-        </text>
-      </svg>
-    </>
+    <span
+      className={`home-hero-freedom-line${mobileOnlyClass}`}
+      aria-label="internet demands freedom"
+    >
+      internet demands freedom
+    </span>
   );
 }
 
@@ -206,7 +186,7 @@ export function HomeFullLayout({
         <div className="home-mobile-hero-art">
           <div className="home-hero-freedom-wrap">
             {Array.from({ length: 5 }).map((_, index) => (
-              <HeroFreedomLine key={index} mobileOnly={index === 4} />
+              <HeroFreedomLine key={index} />
             ))}
           </div>
 
