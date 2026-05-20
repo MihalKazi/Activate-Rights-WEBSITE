@@ -69,10 +69,10 @@ export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
   }
 
   const cardLinkClass =
-    "group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]";
+    "group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]";
 
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
+    <main className="flex min-h-screen flex-col overflow-x-clip site-white-section text-neutral-900">
       <header className="projects-grain-green text-white">
         <div className="relative z-10">
           <Navbar locale={locale} />
@@ -85,7 +85,7 @@ export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
         </div>
       </header>
 
-      <section className="bg-[#fafcff] px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
+      <section className="site-white-section px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
         <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:gap-x-[92px] lg:gap-y-16">
           {items.length === 0 ? (
             <p className={`col-span-full text-center text-[17px] text-[#212121]/80 ${robotoMono.className}`}>

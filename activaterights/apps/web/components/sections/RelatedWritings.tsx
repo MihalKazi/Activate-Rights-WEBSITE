@@ -47,7 +47,7 @@ export function RelatedWritings({ locale, items, sectionTitle }: RelatedWritings
             <li key={row._id}>
               <Link
                 href={`/${locale}/articles/${card.slug}`}
-                className="group flex flex-col gap-5 outline-none transition-colors sm:flex-row sm:items-start sm:gap-8 md:gap-10 focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]"
+                className="group flex flex-col gap-5 outline-none transition-colors sm:flex-row sm:items-start sm:gap-8 md:gap-10 focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]"
               >
                 <div className="relative aspect-[190/114] w-full max-w-[160px] shrink-0 overflow-hidden rounded-sm bg-neutral-300 sm:max-w-[176px]">
                   {card.coverSrc ? (

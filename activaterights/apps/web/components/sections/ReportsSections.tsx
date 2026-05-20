@@ -33,7 +33,7 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
   }
 
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
+    <main className="flex min-h-screen flex-col overflow-x-clip site-white-section text-neutral-900">
       <header className="projects-grain-green relative text-white">
         <div className="relative z-10">
           <Navbar locale={locale} />
@@ -46,9 +46,8 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
         </div>
       </header>
 
-      <section className="relative px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
-        <div className="reports-body-grain pointer-events-none absolute inset-0 z-0" aria-hidden />
-        <div className="relative z-10 mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-[92px] lg:gap-y-16">
+      <section className="site-white-section px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
+        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-[92px] lg:gap-y-16">
           {items.length === 0 ? (
             <p className={`col-span-full text-center text-[17px] text-[#212121]/80 ${robotoMono.className}`}>
               {t("empty")}
@@ -58,7 +57,7 @@ export async function ReportsSections({ locale }: ReportsSectionsProps) {
             <article key={item.slug} className="min-w-0">
               <Link
                 href={`/${locale}/reports/${item.slug}`}
-                className="group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]"
+                className="group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]"
               >
                 <div className="relative aspect-[313/424] w-full overflow-hidden bg-[#d9d9d9] transition-colors group-hover:bg-[#cfcfcf]">
                   {item.coverUrl ? (

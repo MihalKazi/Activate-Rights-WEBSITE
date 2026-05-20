@@ -47,7 +47,7 @@ function AttachmentShell({
         className
       )}
     >
-      <figcaption className="flex flex-col gap-4 border-b border-[#e8eaf8] bg-gradient-to-r from-[#fafcff] via-white to-[#fafcff] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+      <figcaption className="flex flex-col gap-4 border-b border-[#e8eaf8] bg-gradient-to-r from-[#f5f4f2] via-white to-[#f5f4f2] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
         <div className="min-w-0">
           <p className="truncate text-[15px] font-semibold leading-snug text-[#303ccf] sm:text-[17px]">{name}</p>
           <p className="mt-0.5 text-[13px] leading-snug text-neutral-500 sm:text-[14px]">{documentLabel}</p>
@@ -57,7 +57,7 @@ function AttachmentShell({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-lg border border-[#303ccf]/30 bg-white px-4 py-2.5 text-[13px] font-medium uppercase tracking-wide text-[#303ccf] transition-colors hover:border-[#303ccf]/50 hover:bg-[#fafcff] sm:text-[14px]"
+            className="inline-flex items-center justify-center rounded-lg border border-[#303ccf]/30 bg-white px-4 py-2.5 text-[13px] font-medium uppercase tracking-wide text-[#303ccf] transition-colors hover:border-[#303ccf]/50 hover:bg-[#f5f4f2] sm:text-[14px]"
           >
             {openLabel}
           </a>
@@ -178,7 +178,7 @@ export function PublicationAttachmentEmbed({
         downloadLabel={labels.download}
         className={className}
       >
-        <div className="bg-[#fafcff] px-4 py-8 sm:px-6">
+        <div className="site-white-section px-4 py-8 sm:px-6">
           <audio src={url} controls preload="metadata" className="w-full">
             <a href={url} target="_blank" rel="noopener noreferrer">
               {labels.open}
@@ -198,7 +198,7 @@ export function PublicationAttachmentEmbed({
       downloadLabel={labels.download}
       className={className}
     >
-      <div className="flex items-center justify-center bg-[#fafcff] px-6 py-14 text-center text-[15px] leading-relaxed text-neutral-600">
+      <div className="site-white-section flex items-center justify-center px-6 py-14 text-center text-[15px] leading-relaxed text-neutral-600">
         {labels.open} / {labels.download}
       </div>
     </AttachmentShell>

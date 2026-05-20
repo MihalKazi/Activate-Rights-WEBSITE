@@ -95,7 +95,7 @@ export function ArticlesListClient({ locale, items, labels }: ArticlesListClient
           <li key={item.slug} className="flex flex-col">
             <Link
               href={`/${locale}/articles/${item.slug}`}
-              className="group flex flex-col gap-8 outline-none transition-colors lg:flex-row lg:items-center lg:gap-[119px] focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff]"
+              className="group flex flex-col gap-8 outline-none transition-colors lg:flex-row lg:items-center lg:gap-[119px] focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]"
             >
               <div className="relative aspect-[190/114] w-full max-w-[190px] shrink-0 overflow-hidden bg-neutral-300">
                 {item.coverSrc ? (

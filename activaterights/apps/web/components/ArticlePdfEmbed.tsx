@@ -54,7 +54,7 @@ export function ArticlePdfEmbed({
         className
       )}
     >
-      <figcaption className="flex flex-col gap-4 border-b border-[#e8eaf8] bg-gradient-to-r from-[#fafcff] via-white to-[#fafcff] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
+      <figcaption className="flex flex-col gap-4 border-b border-[#e8eaf8] bg-gradient-to-r from-[#f5f4f2] via-white to-[#f5f4f2] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
         <div className="flex min-w-0 items-start gap-3 sm:items-center">
           <PdfGlyph className="hidden sm:block" />
           <div className="min-w-0">
@@ -71,7 +71,7 @@ export function ArticlePdfEmbed({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-lg border border-[#303ccf]/30 bg-white px-4 py-2.5 text-[13px] font-medium uppercase tracking-wide text-[#303ccf] transition-colors hover:border-[#303ccf]/50 hover:bg-[#fafcff] sm:text-[14px]"
+            className="inline-flex items-center justify-center rounded-lg border border-[#303ccf]/30 bg-white px-4 py-2.5 text-[13px] font-medium uppercase tracking-wide text-[#303ccf] transition-colors hover:border-[#303ccf]/50 hover:bg-[#f5f4f2] sm:text-[14px]"
           >
             {openLabel}
           </a>

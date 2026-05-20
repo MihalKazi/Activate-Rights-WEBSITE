@@ -1,9 +1,16 @@
+import { Roboto_Mono } from "next/font/google";
 import { getTranslations } from "next-intl/server";
 import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { getListedEvents } from "../../lib/sanity/queries";
 import { EventList } from "./EventList";
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap"
+});
 
 type EventsSectionsProps = {
   locale: Locale;
@@ -14,8 +21,8 @@ export async function EventsSections({ locale }: EventsSectionsProps) {
   const events = await getListedEvents(locale);
 
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
-      <header className="events-hero-dark relative min-h-[min(444px,52vh)] text-white">
+    <main className="flex min-h-screen flex-col overflow-x-clip site-white-section text-neutral-900">
+      <header className="projects-grain-green relative text-white">
         <div className="relative z-10">
           <Navbar locale={locale} />
           <div className="mx-auto max-w-[1440px] px-6 pb-14 pt-2 md:px-10 md:pb-16 lg:px-[40px] lg:pb-20">
@@ -27,10 +34,10 @@ export async function EventsSections({ locale }: EventsSectionsProps) {
       </header>
 
       {events.length === 0 ? (
-        <section className="bg-[#fafcff] py-16 text-neutral-900">
-          <div className="container-shell">
-            <p className="text-text-secondary max-w-2xl">{t("empty")}</p>
-          </div>
+        <section className="site-white-section px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
+          <p className={`mx-auto max-w-[1360px] text-[17px] text-[#212121]/80 ${robotoMono.className}`}>
+            {t("empty")}
+          </p>
         </section>
       ) : (
         <EventList locale={locale} events={events} />

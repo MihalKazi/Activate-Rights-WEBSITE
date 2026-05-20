@@ -215,8 +215,8 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
         </div>
       </section>
 
-      {/* What do we do — Figma white / #fafcff */}
-      <section className="relative overflow-x-clip bg-[#fafcff] px-6 py-10 text-[#303ccf] md:px-10 md:py-14 lg:px-[40px] lg:py-16">
+      {/* What do we do — site paper tile */}
+      <section className="relative overflow-x-clip site-white-section px-6 py-10 text-[#303ccf] md:px-10 md:py-14 lg:px-[40px] lg:py-16">
         <PixelDecoration />
 
         <div className="relative z-10 mx-auto max-w-[1440px]">
@@ -254,7 +254,7 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       </section>
 
       {/* Dotted rule before “who we are” — 1px dark green dotted (Figma ref), full content width */}
-      <div className="bg-[#fafcff] px-6 md:px-10 lg:px-[40px]">
+      <div className="site-white-section px-6 md:px-10 lg:px-[40px]">
         <div className="mx-auto max-w-[1440px]">
           <hr
             className="w-full border-0 border-t border-dotted border-[#006837]"
@@ -264,7 +264,7 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       </div>
 
       {/* Who are we + team cards */}
-      <section className="bg-[#fafcff] px-6 py-10 md:px-10 md:py-14 lg:px-[40px] lg:py-16">
+      <section className="site-white-section px-6 py-10 md:px-10 md:py-14 lg:px-[40px] lg:py-16">
         <div className="mx-auto max-w-[1440px]">
           <h2 className="home-headline-font mb-6 text-right text-[clamp(28px,4.8vw,62px)] font-semibold leading-[0.96] tracking-tight text-[#303ccf] md:mb-8">
             {t("whoWeAreTitle")}
@@ -275,7 +275,7 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
               <article
                 key={member._id ?? `${member.name}-${index}`}
                 tabIndex={0}
-                className={`group flex flex-col border border-solid pb-5 outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fafcff] ${teamCardBorderClass(index)}`}
+                className={`group flex flex-col border border-solid pb-5 outline-none transition-shadow focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2] ${teamCardBorderClass(index)}`}
               >
                 <div className="mt-3 px-3 md:px-4">
                   <div className="relative mx-auto aspect-square w-full max-w-[320px] overflow-hidden bg-neutral-200 lg:max-w-[300px]">
@@ -300,7 +300,7 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
                         href={member.linkedInUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`${robotoMono.className} absolute bottom-3 right-3 z-10 inline-flex h-9 min-w-9 items-center justify-center border border-[#303ccf] bg-[#fafcff]/95 px-2 text-[13px] font-normal leading-none text-[#303ccf] opacity-0 transition-opacity duration-300 ease-out hover:bg-[#303ccf] hover:text-white focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100 group-active:opacity-100`}
+                        className={`${robotoMono.className} absolute bottom-3 right-3 z-10 inline-flex h-9 min-w-9 items-center justify-center border border-[#303ccf] bg-[color-mix(in_srgb,var(--site-white-section-bg)_95%,transparent)] px-2 text-[13px] font-normal leading-none text-[#303ccf] opacity-0 transition-opacity duration-300 ease-out hover:bg-[#303ccf] hover:text-white focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100 group-active:opacity-100`}
                         aria-label={`${member.name} on LinkedIn`}
                       >
                         in
@@ -322,7 +322,7 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
         </div>
       </section>
 
-      <AboutPartnersClosing locale={locale} footerCompact />
+      <AboutPartnersClosing locale={locale} />
     </>
   );
 }

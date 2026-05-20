@@ -19,7 +19,7 @@ export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
     .map((row) => mapArticleToCardRow(row, locale));
 
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
+    <main className="flex min-h-screen flex-col overflow-x-clip site-white-section text-neutral-900">
       <header className="projects-grain-green relative text-white">
         <div className="relative z-10">
           <Navbar locale={locale} />
