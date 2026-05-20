@@ -82,7 +82,7 @@
     "ctaHeading1": "want to work with us",
     "ctaHeading2": "on our fight for digital freedom?",
     "ctaButton": "Let's Collab!",
-    "footerEmail": "contact@activaterights.org",
+    "footerEmail": "info@activaterights.org",
     "footerFacebook": "Facebook",
     "footerLinkedIn": "LinkedIn",
     "footerInstagram": "Instagram"
@@ -178,7 +178,9 @@
     "fieldEmail": "Email *",
     "fieldStory": "Write us your story *",
     "send": "Send",
-    "formThanks": "Thanks — we’ll get back to you soon."
+    "formSending": "Sending…",
+    "formThanks": "Thanks — we’ll get back to you soon.",
+    "formError": "We couldn’t send your message. Please email info@activaterights.org directly."
   },
   "nav": {
     "home": "Home",

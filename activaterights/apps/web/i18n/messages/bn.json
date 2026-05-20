@@ -82,7 +82,7 @@
     "ctaHeading1": "আমাদের সঙ্গে কাজ করতে চান",
     "ctaHeading2": "ডিজিটাল স্বাধীনতার এই লড়াইয়ে?",
     "ctaButton": "চলুন সহযোগিতা করি!",
-    "footerEmail": "contact@activaterights.org",
+    "footerEmail": "info@activaterights.org",
     "footerFacebook": "ফেসবুক",
     "footerLinkedIn": "লিংকডইন",
     "footerInstagram": "ইনস্টাগ্রাম"
@@ -178,7 +178,9 @@
     "fieldEmail": "ইমেইল *",
     "fieldStory": "আপনার গল্প লিখুন *",
     "send": "পাঠান",
-    "formThanks": "ধন্যবাদ — শীঘ্রই আমরা যোগাযোগ করব।"
+    "formSending": "পাঠানো হচ্ছে…",
+    "formThanks": "ধন্যবাদ — শীঘ্রই আমরা যোগাযোগ করব।",
+    "formError": "বার্তা পাঠানো যায়নি। সরাসরি info@activaterights.org-এ ইমেইল করুন।"
   },
   "nav": {
     "home": "হোম",

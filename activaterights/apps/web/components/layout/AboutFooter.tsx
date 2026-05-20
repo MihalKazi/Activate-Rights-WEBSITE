@@ -41,7 +41,7 @@ export function AboutFooter({
   ruleBarVariant = "neutral",
   compact = false
 }: AboutFooterProps) {
-  const mail = "mailto:contact@activaterights.org";
+  const mail = "mailto:info@activaterights.org";
   const barClass = ruleBarVariant === "forest" ? "bg-[#075e3b]" : "bg-[#d9d9d9]";
 
   return (

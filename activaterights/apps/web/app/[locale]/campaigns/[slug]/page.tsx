@@ -33,7 +33,7 @@ export default function CampaignSlugPage({ params }: Props) {
         </p>
       </div>
       <HomePartnersSection />
-      <HomeSiteFooter locale={locale} showContact={false} />
+      <HomeSiteFooter locale={locale} />
     </main>
   );
 }
