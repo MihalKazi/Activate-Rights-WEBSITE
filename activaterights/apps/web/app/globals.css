@@ -1,4 +1,7 @@
 :root {
+  /* Home marketing bands + inner pages (paper tile) */
+  --site-white-section-bg: #f5f4f2;
+
   /* Figma Home frame fill (Rectangle 38) */
   --color-bg: #248f6b;
   --color-surface: #1a8d77;
@@ -88,7 +91,7 @@ body:has(main[data-home]) .site-film-grain {
 
 /* Home — paper tiles repeat at intrinsic size (no stretch).
  * `.home-paper-section` — published reports + blog (original `home-paper-texture-tile.png`).
- * `.home-paper-marketing-section` — what we do, projects, partners (`home-white-section-tile.png`). */
+ * `.site-white-section` / `.home-paper-marketing-section` — what we do, projects, partners (`home-white-section-tile.png`). */
 .home-paper-section {
   background-color: #eceae5;
   background-image: url("/images/home-paper-texture-tile.png");
@@ -97,8 +100,9 @@ body:has(main[data-home]) .site-film-grain {
   background-position: 0 0;
 }
 
+.site-white-section,
 .home-paper-marketing-section {
-  background-color: #f5f4f2;
+  background-color: var(--site-white-section-bg);
   background-image: url("/images/home-white-section-tile.png");
   background-size: auto;
   background-repeat: repeat;

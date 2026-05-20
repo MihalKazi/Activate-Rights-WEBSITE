@@ -56,7 +56,7 @@ function makeComponents(labels: ArticlePdfLabels): PortableTextComponents {
         </h3>
       ),
       blockquote: ({ children }) => (
-        <blockquote className="relative my-2 rounded-br-xl rounded-tr-xl border border-[#303ccf]/12 bg-gradient-to-br from-[#f6f8ff] to-[#fafcff] py-5 pl-6 pr-5 text-[1.05em] italic leading-[1.65] text-neutral-700 shadow-[inset_3px_0_0_0_rgba(48,60,207,0.55)] md:py-6 md:pl-7 [&_p]:mb-3 [&_p:last-child]:mb-0">
+        <blockquote className="relative my-2 rounded-br-xl rounded-tr-xl border border-[#303ccf]/12 bg-gradient-to-br from-[#f6f8ff] to-[#f5f4f2] py-5 pl-6 pr-5 text-[1.05em] italic leading-[1.65] text-neutral-700 shadow-[inset_3px_0_0_0_rgba(48,60,207,0.55)] md:py-6 md:pl-7 [&_p]:mb-3 [&_p:last-child]:mb-0">
           {children}
         </blockquote>
       )

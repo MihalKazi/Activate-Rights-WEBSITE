@@ -30,7 +30,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   }
 
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-neutral-900">
+    <main className="site-white-section flex min-h-screen flex-col overflow-x-clip text-neutral-900">
       <div className="projects-grain-blue">
         <Navbar locale={locale} />
       </div>

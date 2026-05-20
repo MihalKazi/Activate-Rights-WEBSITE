@@ -74,7 +74,7 @@ export async function ProjectDetailSections({ locale, slug }: ProjectDetailSecti
   };
 
   return (
-    <main className="flex min-h-screen flex-col overflow-x-clip bg-[#fafcff] text-[#212121]">
+    <main className="flex min-h-screen flex-col overflow-x-clip site-white-section text-[#212121]">
       <div className="relative w-full">
         <div className="relative h-[min(56vw,804px)] min-h-[220px] w-full overflow-hidden bg-neutral-300">
           {coverSrc ? (
@@ -99,7 +99,7 @@ export async function ProjectDetailSections({ locale, slug }: ProjectDetailSecti
         </div>
       </div>
 
-      <section className="relative bg-[#fafcff] px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14">
+      <section className="relative site-white-section px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14">
         <div className="reports-body-grain pointer-events-none absolute inset-0 z-0" aria-hidden />
 
         <article className="relative z-10 mx-auto w-full max-w-[min(100%,720px)] lg:max-w-[785px]">

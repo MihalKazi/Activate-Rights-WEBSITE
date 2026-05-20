@@ -49,7 +49,7 @@ export function AboutFooter({
       className={cn(
         "text-neutral-900",
         compact ? "pb-5 pt-10" : "pb-6 pt-14",
-        className ?? "bg-[#fafcff]"
+        className ?? "site-white-section"
       )}
     >
       <div

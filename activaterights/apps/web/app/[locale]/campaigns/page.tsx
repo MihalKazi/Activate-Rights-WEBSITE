@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { HomePartnersSection } from "../../../components/layout/HomePartnersSection";
+import { HomeSiteFooter } from "../../../components/layout/HomeSiteFooter";
 import { locales, type Locale } from "../../../i18n/config";
 import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
@@ -28,8 +30,12 @@ export default function CampaignsPage({ params }: CampaignsPageProps) {
   }
 
   return (
-    <main className="container-shell py-16">
-      <p className="text-text-secondary">Campaigns listing coming soon.</p>
+    <main className="site-white-section flex min-h-screen flex-col">
+      <div className="container-shell flex-1 py-16">
+        <p className="text-text-secondary">Campaigns listing coming soon.</p>
+      </div>
+      <HomePartnersSection />
+      <HomeSiteFooter locale={locale} showContact={false} />
     </main>
   );
 }

@@ -120,9 +120,8 @@ export function EventList({ locale, events }: EventListProps) {
   const rows = chunkPairs(events);
 
   return (
-    <section className="relative bg-[#fafcff] text-neutral-900">
-      <div className="articles-listing-grain pointer-events-none absolute inset-0" aria-hidden />
-      <div className="relative z-10 mx-auto max-w-[1440px] px-6 pb-20 pt-12 md:px-10 md:pt-14 lg:px-[40px]">
+    <section className="site-white-section px-6 py-16 text-neutral-900 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
+      <div className="mx-auto max-w-[1440px] pb-4 pt-0 md:pb-6">
         <div className="flex flex-col">
           {rows.map((pair, rowIndex) => {
             const [left, right] = pair;

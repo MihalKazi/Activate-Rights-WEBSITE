@@ -10,10 +10,9 @@ import Image from "next/image";
 import { Roboto_Mono, Space_Mono } from "next/font/google";
 import { useTranslations } from "next-intl";
 import type { HomeArticleCard } from "../../lib/articles/mapArticleCard";
-import { PartnersMarquee } from "../marquee/PartnersMarquee";
+import { HomePartnersSection } from "../layout/HomePartnersSection";
 import { cn } from "../../lib/utils";
-import { SOCIAL_LINKS } from "../../lib/constants/socialLinks";
-import { BrandLogoLink } from "../brand/BrandLogo";
+import { HomeSiteFooter } from "../layout/HomeSiteFooter";
 import { HomeHeroNav } from "./HomeHeroNav";
 
 const robotoMono = Roboto_Mono({
@@ -218,25 +217,25 @@ export function HomeFullLayout({
         </div>
       </div>
 
-      <section className="home-paper-marketing-section py-10 text-black md:py-16 xl:py-24">
+      <section className="home-paper-marketing-section py-9 text-black md:py-14 xl:py-20">
         <div className={`mx-auto max-w-[1440px] ${HOME_PAD_155}`}>
-          <h2 className="home-headline-font max-w-[min(100%,520px)] text-[clamp(56px,7.55vw,109px)] font-semibold lowercase leading-[0.92] text-[#05b557]">
+          <h2 className="home-headline-font max-w-[min(100%,480px)] text-[clamp(44px,5.6vw,88px)] font-semibold lowercase leading-[0.92] text-[#05b557]">
             <span className="block">what do</span>
             <span className="block">we do</span>
           </h2>
 
-          <div className="mt-10 max-w-[980px] space-y-8 md:mt-14 md:space-y-10 lg:max-w-[900px] xl:ml-[326px]">
+          <div className="mt-9 max-w-[900px] space-y-7 md:mt-12 md:space-y-9 lg:max-w-[820px] xl:ml-[min(22vw,280px)]">
             {missionRows.map((row) => (
               <div
                 key={row.line1AfterSlashes}
-                className="grid grid-cols-1 gap-5 sm:grid-cols-[minmax(0,320px)_1fr] sm:gap-x-8 md:grid-cols-[minmax(0,360px)_1fr] md:gap-x-10"
+                className="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,290px)_1fr] sm:gap-x-7 md:grid-cols-[minmax(0,320px)_1fr] md:gap-x-9"
               >
-                <p className="home-mission-label-font m-0 text-[clamp(22px,2.8vw,30px)] font-semibold uppercase leading-[1.1] tracking-[0.02em] text-[#303ccf]">
+                <p className="home-mission-label-font m-0 text-[clamp(19px,2.4vw,27px)] font-semibold uppercase leading-[1.1] tracking-[0.02em] text-[#303ccf]">
                   <span className="text-[#05b557]">{"// "}</span>
                   {`${row.line1AfterSlashes} ${row.line2}`}
                 </p>
                 <p
-                  className={`m-0 max-w-[495px] text-[17px] font-normal leading-[1.4] text-[#303ccf] sm:text-[19px] md:text-[22px] md:leading-[1.45] lg:text-[24px] lg:leading-[26px] ${spaceMono.className}`}
+                  className={`m-0 max-w-[480px] text-[clamp(16px,1.65vw,21px)] font-normal leading-[1.45] text-[#303ccf] md:text-[22px] md:leading-[1.42] ${spaceMono.className}`}
                 >
                   We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
                   access and hold authorities accountable.
@@ -614,139 +613,9 @@ export function HomeFullLayout({
         </div>
       </section>
 
-      <section className="home-paper-marketing-section py-14 text-black md:py-20 xl:py-24">
-        <div className={`mx-auto max-w-[1440px] ${HOME_PAD_155}`}>
-          <h2 className="home-headline-font home-partners-heading max-w-[min(100%,720px)] text-left text-[clamp(40px,6vw,109px)] lowercase text-[#2d74fd] xl:text-[109px]">
-            <span className="block">we have</span>
-            <span className="block">worked with</span>
-          </h2>
-          <PartnersMarquee
-            className={`${HOME_NEG_155} mt-16 xl:mt-[100px]`}
-            ariaLabel="Organizations we have worked with"
-          />
-        </div>
-      </section>
+      <HomePartnersSection />
 
-      <footer className="home-footer pb-16 pt-12 text-white md:pb-20 md:pt-16">
-        <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-10">
-          <div className="grid grid-cols-1 gap-14 min-[900px]:grid-cols-2 min-[900px]:items-start min-[900px]:gap-x-16 lg:gap-x-24">
-            {/* Left — ASCII at design size (670×176), then brand + copyright */}
-            <div className="flex min-w-0 flex-col gap-10">
-              <Image
-                src="/images/home-footer-ascii-overlay.png"
-                alt=""
-                width={670}
-                height={176}
-                className="home-footer-ascii-banner h-auto w-[670px] max-w-full shrink-0 object-contain object-left"
-                sizes="670px"
-              />
-              <div className="mt-auto flex flex-col gap-6 pt-2">
-                <BrandLogoLink
-                  href={withLocale(locale, "/")}
-                  size="homeFooter"
-                  linkClassName="home-headline-font leading-none hover:opacity-90 focus-visible:ring-offset-[#248f6b]"
-                />
-                <p className={`text-[13px] lowercase text-white/70 ${robotoMono.className}`}>
-                  © Activate Rights. All rights reserved.
-                </p>
-              </div>
-            </div>
-
-            {/* Right — CTA then link columns */}
-            <div className="flex min-w-0 flex-col gap-12">
-              <div>
-                <p className="home-headline-font text-[clamp(32px,4.2vw,52px)] lowercase leading-[1.05] text-white">
-                  want to work with us on our fight for digital freedom?
-                </p>
-                <Link
-                  href={withLocale(locale, "/team")}
-                  className={`mt-8 inline-block w-fit bg-white px-8 py-4 text-[14px] font-normal uppercase tracking-wide text-black transition hover:bg-white/90 ${robotoMono.className}`}
-                >
-                  Let&apos;s Collab!
-                </Link>
-              </div>
-
-              <div className="grid grid-cols-1 gap-10 border-t border-white/20 pt-10 sm:grid-cols-3 sm:gap-8 sm:border-t-0 sm:pt-0">
-                <div>
-                  <p className={`mb-4 text-[12px] uppercase tracking-[0.2em] text-white/75 ${robotoMono.className}`}>
-                    About
-                  </p>
-                  <ul className={`space-y-3 text-[16px] lowercase leading-snug ${robotoMono.className}`}>
-                    <li>
-                      <Link href={withLocale(locale, "/about")} className="hover:underline">
-                        About Us
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={withLocale(locale, "/projects")} className="hover:underline">
-                        Our Projects
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={withLocale(locale, "/reports")} className="hover:underline">
-                        Our Publications
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href={withLocale(locale, "/articles")} className="hover:underline">
-                        Updates
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <p className={`mb-4 text-[12px] uppercase tracking-[0.2em] text-white/75 ${robotoMono.className}`}>
-                    Connect
-                  </p>
-                  <ul className={`space-y-3 text-[16px] lowercase ${robotoMono.className}`}>
-                    <li>
-                      <a
-                        href={SOCIAL_LINKS.facebook}
-                        className="hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Facebook
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href={SOCIAL_LINKS.linkedIn}
-                        className="hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        LinkedIn
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href={SOCIAL_LINKS.instagram}
-                        className="hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Instagram
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <p className={`mb-4 text-[12px] uppercase tracking-[0.2em] text-white/75 ${robotoMono.className}`}>
-                    Get in touch
-                  </p>
-                  <a
-                    href="mailto:omuktomuk@website.com"
-                    className={`block text-[16px] lowercase underline-offset-2 hover:underline ${robotoMono.className}`}
-                  >
-                    omuktomuk@website.com
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <HomeSiteFooter locale={locale} showContact />
     </main>
   );
 }
