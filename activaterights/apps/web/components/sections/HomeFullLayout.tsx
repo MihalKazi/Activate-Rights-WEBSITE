@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 import type { HomeArticleCard } from "../../lib/articles/mapArticleCard";
 import { PartnersMarquee } from "../marquee/PartnersMarquee";
 import { cn } from "../../lib/utils";
+import { SOCIAL_LINKS } from "../../lib/constants/socialLinks";
 import { BrandLogoLink } from "../brand/BrandLogo";
 import { HomeHeroNav } from "./HomeHeroNav";
 
@@ -44,9 +45,19 @@ export type HomeFeaturedReportCard = {
   excerpt: string | null;
 };
 
+export type HomeInitiativeCard = {
+  title: string;
+  description: string | null;
+  href: string;
+  isExternal: boolean;
+  imageUrl: string | null;
+};
+
 type HomeFullLayoutProps = {
   locale: "en" | "bn";
   featuredProjects: HomeFeaturedProjectCard[];
+  /** “Our initiatives” rows — cover image, title (left), description (right). */
+  initiatives: HomeInitiativeCard[];
   /** Same list + fields as `/reports` (all published report documents). */
   reports: HomeFeaturedReportCard[];
   /** Latest articles for “updates and blog” — same CMS as `/articles`. */
@@ -104,6 +115,39 @@ function RightsMarqueeIcon({ src }: { src: string | null }) {
   );
 }
 
+function HeroFreedomLine({ mobileOnly = false }: { mobileOnly?: boolean }) {
+  const mobileOnlyClass = mobileOnly ? " home-hero-freedom-line--mobile-only" : "";
+  const svgOnlyClass = mobileOnly ? " home-hero-freedom-line-svg--mobile-only" : "";
+
+  return (
+    <>
+      <span
+        className={`home-hero-freedom-line home-hero-freedom-line--mobile${mobileOnlyClass}`}
+      >
+        <span className="home-hero-freedom-line__part">internet demands</span>
+        <span className="home-hero-freedom-line__part"> freedom</span>
+      </span>
+      <svg
+        className={`home-hero-freedom-line-svg${svgOnlyClass}`}
+        viewBox="0 0 1000 110"
+        preserveAspectRatio="none"
+        role="img"
+        aria-label="internet demands freedom"
+      >
+        <text
+          x="0"
+          y="84"
+          fill="#ffffff"
+          textLength="1000"
+          lengthAdjust="spacingAndGlyphs"
+        >
+          internet demands freedom
+        </text>
+      </svg>
+    </>
+  );
+}
+
 function RightsMarqueeSequence() {
   const [iconGreen, iconYellow, iconBlue, iconRed] = RIGHTS_MARQUEE_ICONS;
   return (
@@ -128,7 +172,13 @@ function RightsMarqueeSequence() {
   );
 }
 
-export function HomeFullLayout({ locale, featuredProjects, reports, articles }: HomeFullLayoutProps) {
+export function HomeFullLayout({
+  locale,
+  featuredProjects,
+  initiatives,
+  reports,
+  articles
+}: HomeFullLayoutProps) {
   const tArticles = useTranslations("articles");
   const cardLinkClass =
     "group block outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]";
@@ -149,26 +199,18 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
             priority
           />
         </div>
-        <div className="home-hero-nav-wrap w-full mx-auto max-w-[1440px] px-4 pt-6 sm:px-6 sm:pt-7 md:px-10 md:pt-10">
+        <div className="home-hero-nav-wrap w-full pt-6 sm:pt-7 md:pt-10">
           <HomeHeroNav locale={locale} />
         </div>
 
         <div className="home-mobile-hero-art">
           <div className="home-hero-freedom-wrap">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <span
-              key={index}
-              className={`home-hero-freedom-line ${
-                index === 4 ? "home-hero-freedom-line--mobile-only" : ""
-              }`}
-            >
-              <span className="home-hero-freedom-line__part">internet demands</span>
-              <span className="home-hero-freedom-line__part"> freedom</span>
-            </span>
-          ))}
+            {Array.from({ length: 5 }).map((_, index) => (
+              <HeroFreedomLine key={index} mobileOnly={index === 4} />
+            ))}
           </div>
 
-          <div className="home-hero-stripes-wrap mx-auto max-w-[1440px] px-4 sm:px-6 md:px-10">
+          <div className="home-hero-stripes-wrap">
             <div className="home-hero-stripes mt-4 pb-0 sm:mt-10 md:mt-[52px]">
               <div className="home-hero-stripe-thick h-4 bg-white" />
               <div className="home-hero-stripe-thin mt-3 h-[113px] bg-[repeating-linear-gradient(to_bottom,#fff_0,#fff_7px,transparent_7px,transparent_19px)]" />
@@ -371,47 +413,66 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
           </h2>
 
           <div className="mt-4 space-y-6 px-4 sm:mt-5 sm:space-y-8 sm:px-6 md:mt-6 md:space-y-10 md:px-10 lg:mt-8 lg:space-y-12 xl:px-10">
-            <article>
-              <div className="w-full max-w-[1130px]">
-                <div
-                  className="h-[min(380px,62vw)] w-full bg-[#d9d9d9] md:h-[626px]"
-                  aria-hidden
-                />
+            {initiatives.map((item, index) => {
+              const figure = (
+                <div className="relative h-[min(380px,62vw)] w-full overflow-hidden bg-[#d9d9d9] md:h-[626px]">
+                  {item.imageUrl ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 1130px"
+                    />
+                  ) : null}
+                </div>
+              );
+              const copy = (
                 <div className="mt-3 flex flex-col gap-4 md:mt-5 md:flex-row md:items-start md:justify-between md:gap-6">
                   <h3 className="shrink-0 text-[clamp(26px,2.8vw,30px)] font-semibold leading-[1.15] tracking-tight text-white">
-                    Bangladesh Protest Archive
+                    {item.title}
                   </h3>
-                  <p
-                    className={`max-w-[555px] text-[20px] leading-[1.45] text-white md:text-right md:text-[20px] md:leading-[1.4] ${spaceMono.className}`}
-                  >
-                    We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
-                    access and hold authorities accountable. We measure and monitor internet shutdowns
-                    in Bangladesh to fight for uninterrupted access and hold authorities accountable.
-                  </p>
+                  {item.description ? (
+                    <p
+                      className={`max-w-[555px] text-[20px] leading-[1.45] text-white md:ml-auto md:text-right md:text-[20px] md:leading-[1.4] ${spaceMono.className}`}
+                    >
+                      {item.description}
+                    </p>
+                  ) : null}
                 </div>
-              </div>
-            </article>
+              );
+              const inner = (
+                <>
+                  {figure}
+                  {copy}
+                </>
+              );
+              const wrapClass = cn(
+                "w-full max-w-[1130px]",
+                index === 1 && "xl:ml-[230px]"
+              );
 
-            <article>
-              <div className="w-full max-w-[1130px] xl:ml-[230px]">
-                <div
-                  className="h-[min(380px,62vw)] w-full bg-[#d9d9d9] md:h-[626px]"
-                  aria-hidden
-                />
-                <div className="mt-3 flex flex-col gap-4 md:mt-5 md:flex-row md:items-start md:justify-between md:gap-6">
-                  <h3 className="shrink-0 text-[clamp(26px,2.8vw,30px)] font-semibold leading-[1.15] tracking-tight text-white">
-                    Archive &amp; Resist Archive
-                  </h3>
-                  <p
-                    className={`max-w-[555px] text-[20px] leading-[1.45] text-white md:text-right md:text-[20px] md:leading-[1.4] ${spaceMono.className}`}
-                  >
-                    We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
-                    access and hold authorities accountable. We measure and monitor internet shutdowns
-                    in Bangladesh to fight for uninterrupted access and hold authorities accountable.
-                  </p>
-                </div>
-              </div>
-            </article>
+              return (
+                <article key={`${item.title}-${item.href}`}>
+                  <div className={wrapClass}>
+                    {item.isExternal ? (
+                      <a
+                        href={item.href}
+                        className={cardLinkClass}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link href={item.href} className={cardLinkClass}>
+                        {inner}
+                      </Link>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -659,17 +720,32 @@ export function HomeFullLayout({ locale, featuredProjects, reports, articles }: 
                   </p>
                   <ul className={`space-y-3 text-[16px] lowercase ${robotoMono.className}`}>
                     <li>
-                      <a href="https://www.facebook.com" className="hover:underline" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={SOCIAL_LINKS.facebook}
+                        className="hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         Facebook
                       </a>
                     </li>
                     <li>
-                      <a href="https://twitter.com" className="hover:underline" target="_blank" rel="noopener noreferrer">
-                        X / Twitter
+                      <a
+                        href={SOCIAL_LINKS.linkedIn}
+                        className="hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        LinkedIn
                       </a>
                     </li>
                     <li>
-                      <a href="https://www.instagram.com" className="hover:underline" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={SOCIAL_LINKS.instagram}
+                        className="hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         Instagram
                       </a>
                     </li>

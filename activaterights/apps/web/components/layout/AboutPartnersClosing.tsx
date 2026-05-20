@@ -62,7 +62,7 @@ export async function AboutPartnersClosing({ locale, footerCompact = false }: Ab
         locale={locale}
         emailLabel={t("footerEmail")}
         facebookLabel={t("footerFacebook")}
-        twitterLabel={t("footerTwitter")}
+        linkedInLabel={t("footerLinkedIn")}
         instagramLabel={t("footerInstagram")}
         compact={footerCompact}
       />

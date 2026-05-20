@@ -136,6 +136,21 @@ body:has(main[data-home]) .site-film-grain {
 main[data-home] {
   --home-rights-marquee-height: clamp(76px, 8vw, 96px);
   --home-rights-marquee-peek: calc(var(--home-rights-marquee-height) / 2);
+  --hero-max-width: 1440px;
+  --hero-gutter: clamp(16px, 4vw, 40px);
+}
+
+/* Shared hero grid — nav, headline, stripes share the same horizontal shell */
+.home-hero-nav-wrap,
+.home-hero-freedom-wrap,
+.home-hero-stripes-wrap {
+  width: 100%;
+  max-width: var(--hero-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--hero-gutter);
+  padding-right: var(--hero-gutter);
+  box-sizing: border-box;
 }
 
 .home-mobile-first-fold-hero {
@@ -160,6 +175,17 @@ main[data-home] {
 .home-hero-freedom-wrap {
   flex: 1 1 auto;
   min-height: 0;
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(74px, 6.6vw, 96px);
+  overflow: visible;
+  transform: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
 }
 
 .home-hero-stripes-wrap {
@@ -214,6 +240,7 @@ main[data-home] {
   main[data-home] {
     --home-rights-marquee-height: 88px;
     --home-rights-marquee-peek: 44px;
+    --hero-gutter: 14px;
   }
 
   .home-mobile-first-fold-hero {
@@ -244,32 +271,24 @@ main[data-home] {
     opacity: 1;
   }
 
-  .home-mobile-first-fold-hero .home-hero-freedom-line--mobile-only {
-    display: flex;
-  }
-
   .home-mobile-first-fold-hero .home-hero-freedom-wrap {
-    position: relative;
-    z-index: 2;
     flex: 0 0 auto;
     width: 100%;
     padding-top: clamp(4px, 1svh, 10px);
-    padding-left: 14px;
-    padding-right: 14px;
     padding-bottom: 0;
     overflow-x: clip;
     transform: none !important;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     align-items: flex-start;
     gap: clamp(14px, 2svh, 22px);
   }
 
-  .home-mobile-first-fold-hero .home-hero-freedom-line {
+  .home-hero-freedom-line-svg {
+    display: none !important;
+  }
+
+  .home-hero-freedom-line--mobile {
     box-sizing: border-box;
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     flex: 0 0 auto;
     gap: 0;
@@ -279,7 +298,10 @@ main[data-home] {
 
     font-family: "Stack Sans Notch", var(--font-inter), Inter, sans-serif;
     font-weight: 600;
-    font-size: min(80px, calc((100vw - 28px) / 7.9));
+    font-size: min(
+      80px,
+      calc((min(100vw, var(--hero-max-width)) - 2 * var(--hero-gutter)) / 7.9)
+    );
     line-height: 0.84;
     letter-spacing: -0.085em;
     color: #ffffff;
@@ -288,8 +310,12 @@ main[data-home] {
     text-rendering: geometricPrecision;
   }
 
-  .home-mobile-first-fold-hero .home-hero-freedom-line__part {
+  .home-hero-freedom-line--mobile .home-hero-freedom-line__part {
     display: block;
+  }
+
+  .home-hero-freedom-line--mobile-only {
+    display: flex;
   }
 
   .home-mobile-first-fold-hero .home-hero-stripes-wrap {
@@ -745,49 +771,40 @@ main[data-home] {
   font-style: normal;
 }
 
-.home-hero-freedom-wrap {
+.home-hero-freedom-line-svg {
+  display: block;
   width: 100%;
-  max-width: none;
-  margin-top: clamp(74px, 6.6vw, 96px);
-  padding-left: 28px;
-  padding-right: 28px;
-  overflow: visible;
-  transform: none;
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  height: clamp(70px, 7.2vw, 104px);
+  overflow: hidden;
+  flex: 0 0 auto;
 }
 
-.home-hero-freedom-line {
-  display: block;
-  width: max-content;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  white-space: nowrap;
+@media (min-width: 768px) {
+  .home-hero-freedom-line--mobile {
+    display: none !important;
+  }
+}
 
+.home-hero-freedom-line-svg text {
   font-family: "Stack Sans Notch", var(--font-inter), Inter, sans-serif;
+  font-size: 100px;
   font-weight: 600;
-  font-size: clamp(72px, 7.43vw, 107px);
-  line-height: 0.929;
-  letter-spacing: 0;
-  color: #ffffff;
-
+  fill: #ffffff;
+  dominant-baseline: alphabetic;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
 
+.home-hero-freedom-line-svg--mobile-only {
+  display: none;
+}
+
+.home-hero-stripes {
+  width: 100%;
+}
+
 .home-hero-stripe-thick {
   display: block;
-}
-
-.home-hero-freedom-line__part {
-  display: inline;
-}
-
-.home-hero-freedom-line--mobile-only {
-  display: none;
 }
 
 @media (min-width: 1440px) {
@@ -796,53 +813,15 @@ main[data-home] {
     min-height: calc(100svh - var(--home-rights-marquee-peek));
   }
 
-  .home-mobile-hero-art {
-    width: 100%;
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .home-hero-freedom-wrap {
-    width: 100%;
-    max-width: 1440px;
     margin-top: 96px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 28px;
-    padding-right: 28px;
     transform: none;
-  }
-
-  .home-hero-freedom-line {
-    font-size: 107px;
-    line-height: 0.929;
-    letter-spacing: 0;
-  }
-
-  .home-hero-stripes-wrap {
-    width: 100%;
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
   }
 }
 
 @media (min-width: 1920px) {
-  .home-mobile-hero-art,
-  .home-hero-freedom-wrap,
-  .home-hero-stripes-wrap {
-    max-width: 1440px;
-  }
-
   .home-hero-freedom-wrap {
     margin-top: 96px;
-    padding-left: 28px;
-    padding-right: 28px;
-  }
-
-  .home-hero-freedom-line {
-    font-size: 107px;
   }
 }
 
@@ -861,14 +840,11 @@ main[data-home] {
 @media (min-width: 769px) and (max-height: 760px) {
   .home-hero-freedom-wrap {
     margin-top: clamp(74px, 6.6vw, 96px) !important;
-    padding-left: clamp(88px, 6.6vw, 108px) !important;
-    padding-right: 28px !important;
     overflow: visible;
   }
 
-  .home-hero-freedom-line {
-    font-size: clamp(78px, min(7.43vw, 12.2svh), 96px) !important;
-    line-height: 0.929;
+  .home-hero-freedom-line-svg {
+    height: clamp(52px, min(7.2vw, 12.2svh), 88px) !important;
   }
 
   .home-hero-stripe-thin {
@@ -879,14 +855,11 @@ main[data-home] {
 @media (min-width: 769px) and (max-height: 700px) {
   .home-hero-freedom-wrap {
     margin-top: clamp(74px, 6.6vw, 96px) !important;
-    padding-left: clamp(104px, 7.8vw, 132px) !important;
-    padding-right: 28px !important;
     overflow: visible;
   }
 
-  .home-hero-freedom-line {
-    font-size: clamp(68px, min(7.43vw, 11.6svh), 86px) !important;
-    line-height: 0.929;
+  .home-hero-freedom-line-svg {
+    height: clamp(44px, min(7.2vw, 11.6svh), 78px) !important;
   }
 
   .home-hero-stripe-thin {
@@ -897,52 +870,15 @@ main[data-home] {
 @media (min-width: 769px) and (max-height: 640px) {
   .home-hero-freedom-wrap {
     margin-top: clamp(74px, 6.6vw, 96px) !important;
-    padding-left: clamp(118px, 9vw, 150px) !important;
-    padding-right: 28px !important;
     overflow: visible;
   }
 
-  .home-hero-freedom-line {
-    font-size: clamp(58px, min(7.43vw, 10.8svh), 76px) !important;
-    line-height: 0.929;
+  .home-hero-freedom-line-svg {
+    height: clamp(36px, min(7.2vw, 10.8svh), 68px) !important;
   }
 
   .home-hero-stripe-thin {
     height: 12px !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .home-hero-freedom-wrap {
-    padding-left: 18px;
-    padding-right: 18px;
-    overflow: visible;
-    transform: translateY(clamp(10px, 2.8vw, 18px));
-  }
-
-  .home-hero-freedom-line {
-    width: auto;
-    max-width: calc(100vw - 36px);
-  }
-
-  .home-hero-stripes {
-    margin-top: 0.75rem;
-  }
-
-  .home-hero-stripe-thick {
-    height: 10px;
-  }
-
-  .home-hero-stripe-thin {
-    margin-top: 0.375rem;
-    height: 57px;
-    background: repeating-linear-gradient(
-      to bottom,
-      #fff 0,
-      #fff 5px,
-      transparent 5px,
-      transparent 14px
-    );
   }
 }
 

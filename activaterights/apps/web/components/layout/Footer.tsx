@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "../ui/Button";
 import { BrandLogoLink } from "../brand/BrandLogo";
+import { SOCIAL_LINKS } from "../../lib/constants/socialLinks";
 
 type FooterProps = {
   locale: "en" | "bn";
@@ -15,10 +16,9 @@ const links = [
 ] as const;
 
 const social = [
-  { label: "X", href: "https://x.com" },
-  { label: "F", href: "https://facebook.com" },
-  { label: "in", href: "https://linkedin.com" },
-  { label: "GH", href: "https://github.com" }
+  { label: "F", href: SOCIAL_LINKS.facebook },
+  { label: "in", href: SOCIAL_LINKS.linkedIn },
+  { label: "IG", href: SOCIAL_LINKS.instagram }
 ] as const;
 
 export function Footer({ locale }: FooterProps) {

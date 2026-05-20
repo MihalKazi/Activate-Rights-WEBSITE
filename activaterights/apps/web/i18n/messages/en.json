@@ -84,7 +84,7 @@
     "ctaButton": "Let's Collab!",
     "footerEmail": "contact@activaterights.org",
     "footerFacebook": "Facebook",
-    "footerTwitter": "Twitter / X",
+    "footerLinkedIn": "LinkedIn",
     "footerInstagram": "Instagram"
   },
   "projects": {
@@ -106,32 +106,7 @@
     "attachmentVideo": "Video",
     "attachmentAudio": "Audio",
     "attachmentFile": "File download",
-    "items": [
-      {
-        "slug": "shutdown-watch",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": false,
-        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
-      },
-      {
-        "slug": "disinfo-watch",
-        "title": "Disinfo Watch",
-        "titleLeadingSlash": false,
-        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
-      },
-      {
-        "slug": "shutdown-watch",
-        "title": "Shutdown Watch",
-        "titleLeadingSlash": false,
-        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
-      },
-      {
-        "slug": "disinfo-watch",
-        "title": "Disinfo Watch",
-        "titleLeadingSlash": false,
-        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
-      }
-    ]
+    "empty": "No projects published yet. Add projects in Sanity Studio."
   },
   "reports": {
     "metaTitle": "Reports — Activate Rights",

@@ -84,7 +84,7 @@
     "ctaButton": "চলুন সহযোগিতা করি!",
     "footerEmail": "contact@activaterights.org",
     "footerFacebook": "ফেসবুক",
-    "footerTwitter": "টুইটার / এক্স",
+    "footerLinkedIn": "লিংকডইন",
     "footerInstagram": "ইনস্টাগ্রাম"
   },
   "projects": {
@@ -106,32 +106,7 @@
     "attachmentVideo": "ভিডিও",
     "attachmentAudio": "অডিও",
     "attachmentFile": "ফাইল ডাউনলোড",
-    "items": [
-      {
-        "slug": "shutdown-watch",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": false,
-        "body": "নিরবচ্ছিন্ন অ্যাক্সেস ও জবাবদিহির জন্য বাংলাদেশে ইন্টারনেট বন্ধের অবস্থা মাপি ও পর্যবেক্ষণ করি।"
-      },
-      {
-        "slug": "disinfo-watch",
-        "title": "ডিজিনফো ওয়াচ",
-        "titleLeadingSlash": false,
-        "body": "নিরবচ্ছিন্ন অ্যাক্সেস ও জবাবদিহির জন্য বাংলাদেশে ইন্টারনেট বন্ধের অবস্থা মাপি ও পর্যবেক্ষণ করি।"
-      },
-      {
-        "slug": "shutdown-watch",
-        "title": "শাটডাউন ওয়াচ",
-        "titleLeadingSlash": false,
-        "body": "নিরবচ্ছিন্ন অ্যাক্সেস ও জবাবদিহির জন্য বাংলাদেশে ইন্টারনেট বন্ধের অবস্থা মাপি ও পর্যবেক্ষণ করি।"
-      },
-      {
-        "slug": "disinfo-watch",
-        "title": "ডিজিনফো ওয়াচ",
-        "titleLeadingSlash": false,
-        "body": "নিরবচ্ছিন্ন অ্যাক্সেস ও জবাবদিহির জন্য বাংলাদেশে ইন্টারনেট বন্ধের অবস্থা মাপি ও পর্যবেক্ষণ করি।"
-      }
-    ]
+    "empty": "এখনও কোনো প্রকল্প প্রকাশিত হয়নি। Sanity Studio-তে প্রকল্প যোগ করুন।"
   },
   "reports": {
     "metaTitle": "প্রতিবেদন — অ্যাক্টিভেট রাইটস",
