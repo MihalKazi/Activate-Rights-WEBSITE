@@ -88,7 +88,10 @@ export async function ReportDetailSections({ locale, slug }: ReportDetailSection
         </div>
       </div>
 
-      <section className="site-white-section px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14">
+      <section
+        className="site-white-section px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14"
+        data-scroll-reveal="fade-up"
+      >
         <article className="mx-auto w-full max-w-[min(100%,720px)] lg:max-w-[785px]">
           <h1
             className={cn(

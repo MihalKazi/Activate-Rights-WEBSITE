@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { AboutFooter } from "../layout/AboutFooter";
@@ -27,6 +28,7 @@ export async function ContactSections({ locale }: ContactSectionsProps) {
         className={cn(
           "relative z-10 mx-auto flex w-full max-w-[960px] flex-col items-center px-6 pt-4 pb-6 md:pb-10"
         )}
+        data-scroll-reveal="fade-up"
       >
         <div className="relative mx-auto flex w-full max-w-[320px] flex-col items-center md:max-w-[400px]">
           <div className="relative aspect-[289/426] w-[min(72vw,289px)] shrink-0">
@@ -49,17 +51,19 @@ export async function ContactSections({ locale }: ContactSectionsProps) {
         </div>
       </section>
 
-      <ContactForm
-        thanksLabel={t("formThanks")}
-        errorLabel={t("formError")}
-        sendingLabel={t("formSending")}
-        labels={{
-          name: t("fieldName"),
-          email: t("fieldEmail"),
-          story: t("fieldStory"),
-          send: t("send")
-        }}
-      />
+      <div data-scroll-reveal="fade-up" style={{ "--scroll-reveal-delay": "120ms" } as CSSProperties}>
+        <ContactForm
+          thanksLabel={t("formThanks")}
+          errorLabel={t("formError")}
+          sendingLabel={t("formSending")}
+          labels={{
+            name: t("fieldName"),
+            email: t("fieldEmail"),
+            story: t("fieldStory"),
+            send: t("send")
+          }}
+        />
+      </div>
 
       <AboutFooter
         locale={locale}

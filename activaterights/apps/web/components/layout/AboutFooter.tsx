@@ -4,6 +4,7 @@ import { cn } from "../../lib/utils";
 import type { Locale } from "../../i18n/config";
 import { BrandLogo } from "../brand/BrandLogo";
 import { SOCIAL_LINKS } from "../../lib/constants/socialLinks";
+import { CookieSettingsLink } from "./CookieSettingsLink";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -103,6 +104,7 @@ export function AboutFooter({
           >
             {instagramLabel}
           </a>
+          <CookieSettingsLink className="hover:underline" />
         </div>
       </div>
 

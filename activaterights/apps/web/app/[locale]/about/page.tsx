@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { AboutSections } from "../../../components/sections/AboutSections";
-import { Navbar } from "../../../components/layout/Navbar";
 import { locales, type Locale } from "../../../i18n/config";
 import { withLocaleSeo } from "../../../lib/seo/buildPageMetadata";
 
@@ -31,9 +30,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
   return (
     <main className="site-white-section flex min-h-screen flex-col overflow-x-clip text-neutral-900">
-      <div className="projects-grain-blue">
-        <Navbar locale={locale} />
-      </div>
       <AboutSections locale={locale} />
     </main>
   );

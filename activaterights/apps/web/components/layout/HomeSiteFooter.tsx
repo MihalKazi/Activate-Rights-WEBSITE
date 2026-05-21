@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Roboto_Mono } from "next/font/google";
 import { BrandLogoLink } from "../brand/BrandLogo";
+import { CookieSettingsLink } from "./CookieSettingsLink";
 import { SOCIAL_LINKS } from "../../lib/constants/socialLinks";
 import type { Locale } from "../../i18n/config";
 import { cn } from "../../lib/utils";
@@ -43,7 +44,8 @@ export function HomeSiteFooter({ locale, showContact = true }: HomeSiteFooterPro
                 linkClassName="home-headline-font leading-none hover:opacity-90 focus-visible:ring-offset-[#2d74fd]"
               />
               <p className={`text-[13px] lowercase text-white/70 ${robotoMono.className}`}>
-                © Activate Rights. All rights reserved.
+                © Activate Rights. All rights reserved.{" "}
+                <CookieSettingsLink className="text-white/85 underline-offset-2 hover:text-white hover:underline" />
               </p>
             </div>
           </div>

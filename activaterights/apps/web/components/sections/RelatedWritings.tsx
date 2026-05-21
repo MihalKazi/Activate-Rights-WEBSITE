@@ -27,6 +27,7 @@ export function RelatedWritings({ locale, items, sectionTitle }: RelatedWritings
     <section
       className="relative z-10 mx-auto mt-14 w-full max-w-[min(100%,720px)] lg:max-w-[785px] md:mt-16"
       aria-labelledby="related-writings-heading"
+      data-scroll-reveal="fade-up"
     >
       <div className={cn("mb-8 h-px w-full", ARTICLE_ROW_RULE_CLASS)} aria-hidden />
 
@@ -40,7 +41,7 @@ export function RelatedWritings({ locale, items, sectionTitle }: RelatedWritings
         {sectionTitle}
       </h2>
 
-      <ul className="flex flex-col gap-10 md:gap-12">
+      <ul className="flex flex-col gap-10 md:gap-12" data-scroll-reveal-stagger="straight">
         {items.map((row) => {
           const card = mapArticleToCardRow(row, locale);
           return (

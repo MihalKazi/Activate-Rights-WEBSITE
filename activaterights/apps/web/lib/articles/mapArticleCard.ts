@@ -19,12 +19,18 @@ export function mapArticleToCardRow(row: ArticleListItem, locale: Locale): Artic
 
   const coverSrc = row.coverImage?.asset?._ref
     ? urlFor(row.coverImage as Image)
-        .width(380)
-        .height(228)
+        .width(640)
+        .height(390)
         .fit("crop")
         .auto("format")
+        .quality(85)
         .url()
     : undefined;
+
+  const excerpt =
+    row.excerpt && typeof row.excerpt === "string" && row.excerpt.trim().length > 0
+      ? row.excerpt.trim()
+      : null;
 
   const slug =
     row.slug && typeof row.slug === "object" && "current" in row.slug && row.slug.current
@@ -39,6 +45,7 @@ export function mapArticleToCardRow(row: ArticleListItem, locale: Locale): Artic
     filter: articleCategoryToFilter(row.category),
     accentTitle: Boolean(row.featured),
     coverSrc,
+    excerpt,
     publishedAt: formatPublished(row.publishedAt, locale)
   };
 }

@@ -17,7 +17,7 @@ import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { plainTextToParagraphs } from "../../lib/plainTextParagraphs";
-import { formatCalendarDayMonthYear, formatCalendarDdMmYyyyUtc } from "../../lib/datetime/formatCalendarDisplay";
+import { formatEventListingDate } from "../../lib/events/formatEventListing";
 import { getEventBySlug } from "../../lib/sanity/queries";
 import { urlFor } from "../../lib/sanity/image";
 import { ArticleShareButton } from "./ArticleShareButton";
@@ -33,12 +33,6 @@ type EventDetailSectionsProps = {
   locale: Locale;
   slug: string;
 };
-
-function formatEventDate(iso: string, locale: Locale): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return "—";
-  return locale === "bn" ? formatCalendarDayMonthYear(iso, "bn") : formatCalendarDdMmYyyyUtc(iso);
-}
 
 function locationDisplayText(
   event: { isOnline: boolean; location?: string },
@@ -65,7 +59,7 @@ export async function EventDetailSections({ locale, slug }: EventDetailSectionsP
     ? urlFor(event.coverImage as SanityImage).width(1920).height(1080).fit("crop").auto("format").url()
     : undefined;
 
-  const dateDisplay = formatEventDate(event.date, locale);
+  const dateDisplay = formatEventListingDate(event.date, locale);
   const primaryMeta = locationDisplayText(event, t("locationTbd"), t("online"));
   const hasBody = Array.isArray(event.body) && event.body.length > 0;
   const excerptText = (event.description ?? "").trim();
@@ -108,7 +102,10 @@ export async function EventDetailSections({ locale, slug }: EventDetailSectionsP
         </div>
       </div>
 
-      <section className="site-white-section px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14">
+      <section
+        className="site-white-section px-6 pb-12 pt-10 md:px-10 md:pb-16 md:pt-12 lg:px-[40px] lg:pb-20 lg:pt-14"
+        data-scroll-reveal="fade-up"
+      >
         <article className="mx-auto w-full max-w-[min(100%,720px)] lg:max-w-[785px]">
           <h1
             className={cn(

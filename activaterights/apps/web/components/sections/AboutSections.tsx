@@ -2,9 +2,11 @@ import Image from "next/image";
 import { Roboto_Mono } from "next/font/google";
 import { getTranslations } from "next-intl/server";
 import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
+import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { cardImageUrl } from "../../lib/sanity/image";
 import { getAllTeamMembers } from "../../lib/sanity/queries";
+import { CollectiveZineHeadline } from "./CollectiveZineHeadline";
 import { WhatWeDoSection } from "./WhatWeDoSection";
 
 const robotoMono = Roboto_Mono({
@@ -42,35 +44,18 @@ function teamCardBorderClass(index: number) {
   return index % 3 === 2 ? "border-[#212121]" : "border-[#1e64eb]";
 }
 
-/** Decorative pixel cluster — Figma About frame right rail (green squares). */
-function PixelDecoration() {
-  const positions = [
-    "right-[30px] top-0",
-    "right-[75px] top-[45px]",
-    "right-[75px] top-[90px]",
-    "right-[75px] top-[135px]",
-    "right-[30px] top-[180px]",
-    "right-[30px] top-[225px]",
-    "right-[75px] top-[225px]",
-    "right-[75px] top-[270px]",
-    "right-[-15px] top-[90px]",
-    "right-[-15px] top-[135px]",
-    "right-[-15px] top-[180px]",
-    "right-[-15px] top-[225px]",
-    "right-[-15px] top-[270px]",
-    "right-[30px] top-[90px]"
-  ];
+/** Home initiatives pixel accent — rotated vertical for About “what we do” right rail (Figma). */
+function AboutPixelRail() {
   return (
-    <div
-      className="pointer-events-none absolute right-0 top-8 hidden h-[320px] w-[120px] lg:block"
-      aria-hidden
-    >
-      {positions.map((pos, i) => (
-        <div
-          key={`pixel-${i}`}
-          className={`absolute size-[11px] rotate-90 bg-[#06b85c] md:size-[13px] ${pos}`}
-        />
-      ))}
+    <div className="about-pixel-rail" aria-hidden>
+      <Image
+        src="/images/home-initiatives-pixel-accent.png"
+        alt=""
+        width={315}
+        height={135}
+        className="about-pixel-rail__img"
+        sizes="120px"
+      />
     </div>
   );
 }
@@ -121,56 +106,25 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
 
   return (
     <>
-      {/* Hero — Figma 34:77 blue band — same grain tile as Projects `.projects-grain-blue` */}
-      <section className="projects-grain-blue relative overflow-hidden pb-0 pt-2 md:pb-0">
-        <div className="relative mx-auto max-w-[1440px] px-6 lg:px-[40px]">
-          <div className="relative pb-16 pt-5 md:pb-20 md:pt-7 lg:pb-24 lg:pt-8">
-            <h1 className="home-headline-font home-collective-zine__type relative z-10 max-w-[min(100%,1180px)] text-[clamp(40px,6.5vw,96px)] font-bold lowercase leading-[0.98] tracking-[-0.02em] text-white">
-              <span className="home-collective-zine__line m-0 block whitespace-pre-wrap">
-                <span className="text-white">// </span>
-                {t("heroLine1")}
-              </span>
-              <span className="home-collective-zine__line home-collective-zine__line--fighting m-0 mt-[0.08em] flex flex-wrap items-end gap-x-[min(0.45em,16px)] gap-y-3 md:gap-x-[0.5em]">
-                <span className="shrink-0">{t("heroLine2")}</span>
-                <span className="home-collective-zine__picsPair shrink-0" aria-hidden>
-                  <span className="home-collective-zine__picWrap">
-                    <Image
-                      src="/images/home-collective-zine-ear.png"
-                      alt=""
-                      fill
-                      sizes="97px"
-                      className="object-cover object-center"
-                    />
-                  </span>
-                  <span className="home-collective-zine__picWrap">
-                    <Image
-                      src="/images/home-collective-zine-mouth.png"
-                      alt=""
-                      fill
-                      sizes="97px"
-                      className="object-cover object-center"
-                    />
-                  </span>
-                </span>
-              </span>
-              <span className="home-collective-zine__line m-0 mt-[0.06em] block">{t("heroLine3")}</span>
-              <span className="home-collective-zine__line home-collective-zine__line--open m-0 mt-[0.06em] flex flex-wrap items-end gap-x-[min(0.45em,16px)] gap-y-3 md:gap-x-[0.5em]">
-                <span className="shrink-0">{t("heroLine4Start")}</span>
-                <span
-                  className="home-collective-zine__picWrap home-collective-zine__picWrap--narrow shrink-0"
-                  aria-hidden
-                >
-                  <Image
-                    src="/images/home-collective-zine-eye.png"
-                    alt=""
-                    fill
-                    sizes="97px"
-                    className="object-cover object-center"
-                  />
-                </span>
-                <span className="shrink-0">{t("heroLine4End")}</span>
-              </span>
-            </h1>
+      {/* Hero — nav + blue band in one block (same pattern as Projects/Reports headers) */}
+      <header className="projects-grain-blue relative overflow-x-clip pb-0 text-white">
+        <div className="relative z-10">
+          <Navbar locale={locale} />
+          <div className="relative mx-auto max-w-[1440px] px-6 lg:px-[40px]">
+            <div className="about-hero-zine-wrap relative pb-12 pt-2 md:pb-14 md:pt-4 lg:pb-16 lg:pt-5">
+              <div className="home-collective-zine__stack relative z-10 max-w-[min(100%,1180px)]">
+                <CollectiveZineHeadline
+                  as="h1"
+                  lines={{
+                    line1: t("heroLine1"),
+                    line2: t("heroLine2"),
+                    line3: t("heroLine3"),
+                    line4Start: t("heroLine4Start"),
+                    line4End: t("heroLine4End")
+                  }}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -190,13 +144,12 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
             }}
           />
         </div>
-      </section>
+      </header>
 
-      {/* What do we do — site paper tile */}
-      <section className="relative overflow-x-clip site-white-section px-6 py-6 text-[#303ccf] md:px-10 md:py-8 lg:px-[40px] lg:py-11">
-        <PixelDecoration />
-
-        <div className="relative z-10 mx-auto max-w-[1440px]">
+      {/* What do we do — paper tile; pixel rail sits top-right just below hero glitch */}
+      <section className="about-what-we-do-section relative site-white-section px-6 pb-6 pt-4 text-[#303ccf] md:px-10 md:pb-8 md:pt-5 lg:px-[40px] lg:pb-10 lg:pt-6">
+        <div className="about-what-we-do-inner relative z-10 mx-auto max-w-[1440px]">
+          <AboutPixelRail />
           <WhatWeDoSection
             titleClassName="text-[clamp(28px,3.8vw,52px)] leading-[0.9] md:text-[clamp(32px,4vw,64px)]"
           />
@@ -214,13 +167,19 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       </div>
 
       {/* Who are we + team cards */}
-      <section className="site-white-section px-6 py-10 md:px-10 md:py-14 lg:px-[40px] lg:py-16">
+      <section
+        className="site-white-section px-6 py-10 md:px-10 md:py-14 lg:px-[40px] lg:py-16"
+        data-scroll-reveal="fade-up"
+      >
         <div className="mx-auto max-w-[1440px]">
           <h2 className="home-headline-font mb-6 text-right text-[clamp(28px,4.8vw,62px)] font-semibold leading-[0.96] tracking-tight text-[#303ccf] md:mb-8">
             {t("whoWeAreTitle")}
           </h2>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-4">
+          <div
+            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 lg:gap-4"
+            data-scroll-reveal-stagger="straight"
+          >
             {teamMembers.map((member, index) => (
               <article
                 key={member._id ?? `${member.name}-${index}`}

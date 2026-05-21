@@ -16,8 +16,8 @@ function reportCoverUrl(coverImage: ReportItem["coverImage"]): string | null {
   if (coverImage?.asset?._ref == null) return null;
   try {
     return urlFor(coverImage as SanityImage)
-      .width(626)
-      .height(848)
+      .width(1200)
+      .height(800)
       .fit("crop")
       .auto("format")
       .quality(85)

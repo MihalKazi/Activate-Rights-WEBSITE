@@ -13,7 +13,9 @@ import type { HomeArticleCard } from "../../lib/articles/mapArticleCard";
 import { HomePartnersSection } from "../layout/HomePartnersSection";
 import { cn } from "../../lib/utils";
 import { HomeSiteFooter } from "../layout/HomeSiteFooter";
+import { ProjectPosterCard } from "../ProjectPosterCard";
 import { HomeHeroNav } from "./HomeHeroNav";
+import { CollectiveZineHeadline } from "./CollectiveZineHeadline";
 import { WhatWeDoSection } from "./WhatWeDoSection";
 
 const robotoMono = Roboto_Mono({
@@ -172,8 +174,6 @@ export function HomeFullLayout({
   const tReports = useTranslations("reports");
   const initiativeCardLinkClass =
     "home-initiative-card group block w-full p-3 outline-none focus-visible:ring-2 focus-visible:ring-[#05b557] focus-visible:ring-offset-2 focus-visible:ring-offset-[#1a1a1a] sm:p-3.5 md:p-4";
-  const projectCardLinkClass =
-    "home-project-card group flex h-full w-full flex-col overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f5f4f2]";
   const reportCardLinkClass =
     "home-report-card group flex h-full w-full flex-col overflow-hidden outline-none transition-[transform,box-shadow,border-color] duration-300 focus-visible:ring-2 focus-visible:ring-[#303ccf] focus-visible:ring-offset-2 focus-visible:ring-offset-[#f3efe6]";
   const articleCardLinkClass =
@@ -254,46 +254,15 @@ export function HomeFullLayout({
           />
         </div>
         <div className="home-collective-zine__stack max-w-[min(100%,1180px)]">
-          <div className="home-headline-font home-collective-zine__type text-[clamp(40px,5.4vw,77px)] font-bold lowercase tracking-[-0.02em] text-white">
-            <p className="home-collective-zine__line">// we are a collective</p>
-            <p className="home-collective-zine__line home-collective-zine__line--fighting mt-[0.08em]">
-              fighting for{" "}
-              <span className="home-collective-zine__picsPair" aria-hidden>
-                <span className="home-collective-zine__picWrap">
-                  <Image
-                    src="/images/home-collective-zine-ear.png"
-                    alt=""
-                    fill
-                    sizes="2em"
-                    className="object-contain object-center"
-                  />
-                </span>
-                <span className="home-collective-zine__picWrap">
-                  <Image
-                    src="/images/home-collective-zine-mouth.png"
-                    alt=""
-                    fill
-                    sizes="2em"
-                    className="object-contain object-center"
-                  />
-                </span>
-              </span>
-            </p>
-            <p className="home-collective-zine__line mt-[0.06em]">free speech, human rights,</p>
-            <p className="home-collective-zine__line home-collective-zine__line--open mt-[0.06em]">
-              and{" "}
-              <span className="home-collective-zine__picWrap home-collective-zine__picWrap--narrow" aria-hidden>
-                <Image
-                  src="/images/home-collective-zine-eye.png"
-                  alt=""
-                  fill
-                  sizes="2em"
-                  className="object-contain object-center"
-                />
-              </span>{" "}
-              an open internet
-            </p>
-          </div>
+          <CollectiveZineHeadline
+            lines={{
+              line1: "we are a collective",
+              line2: "fighting for",
+              line3: "free speech, human rights,",
+              line4Start: "and",
+              line4End: "an open internet"
+            }}
+          />
         </div>
       </section>
 
@@ -318,21 +287,14 @@ export function HomeFullLayout({
                   spaceMono.className
                 )}
               >
-                We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
-                access and hold authorities accountable.
+                {tProjects("listingIntro")}
               </p>
-              <Link
-                href={withLocale(locale, "/projects")}
-                className={`mt-5 inline-block bg-[#303ccf] px-4 py-3 text-[13px] uppercase tracking-wide text-white sm:mt-6 sm:px-5 sm:py-3.5 sm:text-[14px] ${robotoMono.className}`}
-              >
-                View all projects
-              </Link>
             </div>
           </div>
 
           <div
             className="home-featured-projects-grid mt-6 grid grid-cols-1 sm:mt-8 md:mt-10"
-            data-scroll-reveal-stagger
+            data-scroll-reveal-stagger="straight"
           >
             {featuredProjects.map((p, index) => {
               const ctaLabel = p.isExternal
@@ -343,79 +305,30 @@ export function HomeFullLayout({
                 : tProjects("viewProjectAria");
               const indexLabel = String(index + 1).padStart(2, "0");
 
-              const cardInner = (
-                <>
-                  <div className="relative aspect-[5/4] w-full overflow-hidden bg-[#e8e8e8] sm:aspect-[598/468]">
-                    {p.imageUrl ? (
-                      <Image
-                        src={p.imageUrl}
-                        alt=""
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="home-project-card__media object-cover"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0 bg-[linear-gradient(145deg,#303ccf_0%,#05b557_100%)] opacity-90"
-                        aria-hidden
-                      />
-                    )}
-                    <span
-                      className={`absolute left-0 top-0 z-[1] bg-[#303ccf] px-2.5 py-1 text-[11px] uppercase leading-none tracking-wider text-white sm:text-[12px] ${robotoMono.className}`}
-                      aria-hidden
-                    >
-                      {indexLabel}
-                    </span>
-                    <div className="absolute inset-x-0 bottom-0 z-[1] bg-[#05b557] px-2.5 py-2 sm:px-3 sm:py-2.5">
-                      <h3 className="home-headline-font m-0 line-clamp-2 text-[clamp(14px,2vw,18px)] font-bold leading-[1.05] tracking-tight text-white">
-                        {p.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <div
-                    className={`home-project-card__footer flex flex-col gap-1.5 border-t-2 border-[#303ccf] bg-white px-2.5 py-2.5 sm:px-3 sm:py-3 ${robotoMono.className}`}
-                  >
-                    {p.dateLabel ? (
-                      <span className="text-[11px] uppercase leading-snug tracking-wide text-[#212121]/55 sm:text-[12px]">
-                        {p.dateLabel}
-                      </span>
-                    ) : (
-                      <span className="text-[11px] uppercase leading-snug tracking-wide text-[#212121]/40 sm:text-[12px]">
-                        {tProjects("projectLabel")}
-                      </span>
-                    )}
-                    <span className="home-project-card__cta text-[12px] font-normal uppercase leading-snug tracking-wide text-[#303ccf] underline decoration-[#303ccf] sm:text-[13px]">
-                      {ctaLabel}
-                      {p.isExternal ? " ↗" : " →"}
-                    </span>
-                  </div>
-                </>
-              );
-
               return (
-                <article key={`${p.title}-${p.href}`} className="scroll-reveal-card flex min-w-0">
-                  {p.isExternal ? (
-                    <a
-                      href={p.href}
-                      className={projectCardLinkClass}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${ctaAria}: ${p.title}`}
-                    >
-                      {cardInner}
-                    </a>
-                  ) : (
-                    <Link
-                      href={p.href}
-                      className={projectCardLinkClass}
-                      aria-label={`${ctaAria}: ${p.title}`}
-                    >
-                      {cardInner}
-                    </Link>
-                  )}
-                </article>
+                <ProjectPosterCard
+                  key={`${p.title}-${p.href}`}
+                  title={p.title}
+                  href={p.href}
+                  isExternal={p.isExternal}
+                  imageUrl={p.imageUrl}
+                  dateLabel={p.dateLabel}
+                  indexLabel={indexLabel}
+                  projectLabel={tProjects("projectLabel")}
+                  ctaLabel={ctaLabel}
+                  ctaAria={ctaAria}
+                />
               );
             })}
+          </div>
+
+          <div className="listing-load-more">
+            <Link
+              href={withLocale(locale, "/projects")}
+              className={cn(robotoMono.className, "listing-load-more__btn")}
+            >
+              View all projects
+            </Link>
           </div>
         </div>
       </section>
@@ -445,7 +358,7 @@ export function HomeFullLayout({
               "mt-1.5 space-y-2.5 sm:mt-2 sm:space-y-3 md:mt-2.5 md:space-y-3.5",
               HOME_PAD_155
             )}
-            data-scroll-reveal-stagger
+            data-scroll-reveal-stagger="straight"
           >
             {initiatives.map((item) => {
               const ctaLabel = item.isExternal
@@ -559,12 +472,6 @@ export function HomeFullLayout({
                   We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted
                   access and hold authorities accountable.
                 </p>
-                <Link
-                  href={withLocale(locale, "/reports")}
-                  className={`mt-5 inline-flex min-h-[44px] w-full items-center justify-center bg-[#303ccf] px-4 py-3 text-[13px] uppercase tracking-wide text-white transition-colors hover:bg-[#05b557] sm:mt-6 sm:w-auto sm:min-w-[200px] sm:px-5 sm:text-[14px] ${robotoMono.className}`}
-                >
-                  View All Reports
-                </Link>
               </div>
             </div>
           </div>
@@ -572,7 +479,7 @@ export function HomeFullLayout({
           <div className={`${HOME_PAD_112} mt-8 md:mt-10 lg:mt-12`}>
             <div
               className="home-reports-grid grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-4 lg:gap-5"
-              data-scroll-reveal-stagger
+              data-scroll-reveal-stagger="straight"
             >
               {reports.map((report, index) => {
                 const indexLabel = String(index + 1).padStart(2, "0");
@@ -650,15 +557,21 @@ export function HomeFullLayout({
               })}
             </div>
 
+            <div className="listing-load-more">
+              <Link
+                href={withLocale(locale, "/reports")}
+                className={cn(robotoMono.className, "listing-load-more__btn")}
+              >
+                View All Reports
+              </Link>
+            </div>
+
             <div className="mt-10 h-px w-full bg-black/15 md:mt-12" />
           </div>
         </div>
       </section>
 
-      <section
-        className="home-updates-section home-paper-section pb-12 text-black md:pb-20 xl:pb-28"
-        data-scroll-reveal="fade-up"
-      >
+      <section className="home-updates-section home-paper-section pb-12 text-black md:pb-20 xl:pb-28">
         <div className={`mx-auto max-w-[1440px] ${HOME_PAD_155}`}>
           <h2
             className="home-headline-font text-center text-[clamp(28px,5.5vw,56px)] lowercase leading-[0.92]"
@@ -670,7 +583,7 @@ export function HomeFullLayout({
 
           <div
             className="home-updates-list mx-auto mt-6 w-full max-w-[960px] sm:mt-8 md:mt-10"
-            data-scroll-reveal-stagger="list"
+            data-scroll-reveal-stagger="straight"
           >
             {articles.length === 0 ? (
               <p className={`text-center text-[17px] text-black/75 ${robotoMono.className}`}>
@@ -771,14 +684,10 @@ export function HomeFullLayout({
             })}
           </div>
 
-          <div
-            className="mt-6 text-center md:mt-8"
-            data-scroll-reveal="fade-up"
-            style={{ "--scroll-reveal-delay": "180ms" } as CSSProperties}
-          >
+          <div className="listing-load-more">
             <Link
               href={withLocale(locale, "/articles")}
-              className={`inline-flex min-h-[44px] w-full items-center justify-center bg-[#303ccf] px-4 py-3 text-[14px] uppercase tracking-wide text-white transition-colors hover:bg-[#05b557] sm:w-auto sm:min-w-[160px] ${robotoMono.className}`}
+              className={cn(robotoMono.className, "listing-load-more__btn")}
             >
               View All
             </Link>

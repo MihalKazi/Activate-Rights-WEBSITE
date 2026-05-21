@@ -1,10 +1,18 @@
+import { Space_Mono } from "next/font/google";
 import { getTranslations } from "next-intl/server";
 import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import { Navbar } from "../layout/Navbar";
 import type { Locale } from "../../i18n/config";
 import { mapArticleToCardRow } from "../../lib/articles/mapArticleCard";
 import { getAllArticles } from "../../lib/sanity/queries";
+import { cn } from "../../lib/utils";
 import { ArticlesListClient } from "./ArticlesListClient";
+
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap"
+});
 
 type ArticlesSectionsProps = {
   locale: Locale;
@@ -28,15 +36,19 @@ export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
               <span className="block lowercase">{t("heroLine1")}</span>
               <span className="block lowercase">{t("heroLine2")}</span>
             </h1>
+            <p
+              className={cn(
+                "mt-6 max-w-[min(100%,560px)] text-[clamp(14px,1.6vw,18px)] font-normal leading-[1.55] text-white/88 md:mt-8",
+                spaceMono.className
+              )}
+            >
+              {t("listingIntro")}
+            </p>
           </div>
         </div>
       </header>
 
-      <section
-        className="relative px-6 py-12 md:px-10 md:py-16 lg:px-[40px] lg:py-20"
-        data-scroll-reveal="fade-down-right"
-      >
-        <div className="articles-listing-grain pointer-events-none absolute inset-0 z-0" aria-hidden />
+      <section className="site-white-section px-6 py-12 md:px-10 md:py-16 lg:px-[40px] lg:py-20">
         <ArticlesListClient
           locale={locale}
           items={items}
@@ -46,7 +58,9 @@ export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
             filterUpdates: t("filterUpdates"),
             filterFeature: t("filterFeature"),
             filterBlah: t("filterBlah"),
-            loadMore: t("loadMore")
+            loadMore: t("loadMore"),
+            readAction: t("readAction"),
+            empty: t("emptyListing")
           }}
         />
       </section>

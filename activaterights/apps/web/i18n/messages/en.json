@@ -2,7 +2,7 @@
   "about": {
     "metaTitle": "About — Activate Rights",
     "metaDescription": "We are a collective fighting for free speech, human rights, and an open internet in Bangladesh.",
-    "heroLine1": "       we are a collective",
+    "heroLine1": "we are a collective",
     "heroLine2": "fighting for",
     "heroLine3": "free speech, human rights,",
     "heroLine4Start": "and",
@@ -97,6 +97,7 @@
     "metaDescription": "Initiatives we run to defend digital rights, monitor shutdowns, and push back on disinformation in Bangladesh.",
     "heroLine1": "our",
     "heroLine2": "projects",
+    "listingIntro": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
     "partnerTechTalesLine1": "TECH TALES",
     "partnerTechTalesLine2": "YOUTH",
     "statusActive": "Active project",
@@ -114,15 +115,20 @@
     "attachmentVideo": "Video",
     "attachmentAudio": "Audio",
     "attachmentFile": "File download",
-    "empty": "No projects published yet. Add projects in Sanity Studio."
+    "empty": "No projects published yet. Add projects in Sanity Studio.",
+    "loadMore": "Load more",
+    "listingCount": "{count, plural, one {# project} other {# projects}}"
   },
   "reports": {
     "metaTitle": "Reports — Activate Rights",
     "metaDescription": "Published reports on digital rights, internet shutdowns, and policy in Bangladesh.",
     "heroLine1": "published",
     "heroLine2": "reports",
+    "listingIntro": "Published reports on digital rights, internet shutdowns, and policy in Bangladesh.",
     "empty": "No reports published yet. Check back soon.",
+    "loadMore": "Load more",
     "readReport": "Read report",
+    "readReportAria": "Read report details",
     "reportKind": "Report",
     "shareReportAria": "Share this report",
     "backToReports": "Back to reports",
@@ -137,6 +143,8 @@
     "metaDescription": "Updates and articles on digital rights, internet freedom, and policy in Bangladesh.",
     "heroLine1": "updates and",
     "heroLine2": "articles",
+    "listingIntro": "Updates and articles on digital rights, internet freedom, and policy in Bangladesh.",
+    "emptyListing": "No articles in this category yet.",
     "filterAll": "ALL",
     "filterOpinion": "OPINION",
     "filterUpdates": "UPDATES",
@@ -165,7 +173,11 @@
     "heroTitle": "events",
     "heroLine1": "upcoming",
     "heroLine2": "events",
+    "listingIntro": "Workshops, talks, and community events from Activate Rights.",
     "empty": "No events published yet. Check back soon.",
+    "loadMore": "Load more",
+    "viewEvent": "View event",
+    "viewEventAria": "View event details",
     "eventKind": "Event",
     "online": "Online",
     "locationTbd": "Location TBA",
@@ -219,5 +231,13 @@
     "error": "Something went wrong.",
     "scrollToTop": "Top",
     "scrollToTopAria": "Scroll to top of page"
+  },
+  "cookies": {
+    "title": "Cookies",
+    "description": "We use essential cookies so the site works, and optional cookies only if you allow them (for example analytics). You can change your choice anytime. Questions?",
+    "contactLink": "Contact us",
+    "essentialOnly": "Essential only",
+    "acceptAll": "Accept all",
+    "settings": "Cookie settings"
   }
 }

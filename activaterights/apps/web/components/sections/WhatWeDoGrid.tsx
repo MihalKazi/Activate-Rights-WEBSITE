@@ -36,7 +36,7 @@ export function WhatWeDoGrid({ className, staggerFromLg = false }: WhatWeDoGridP
         staggerFromLg && "home-what-we-do-grid--stagger-lg",
         className
       )}
-      {...(staggerFromLg ? { "data-scroll-reveal-stagger": true } : {})}
+      {...(staggerFromLg ? { "data-scroll-reveal-stagger": "straight" } : {})}
     >
       {items.map((item) => (
         <article key={item.title} className="home-what-we-do-row min-w-0">

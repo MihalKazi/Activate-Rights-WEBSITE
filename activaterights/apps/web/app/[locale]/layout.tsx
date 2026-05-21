@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Inter, Noto_Sans_Bengali } from "next/font/google";
 import { locales, type Locale } from "../../i18n/config";
+import { CookieConsent } from "../../components/layout/CookieConsent";
 import { ScrollToTopButton } from "../../components/layout/ScrollToTopButton";
 import { ScrollRevealObserver } from "../../components/motion/ScrollRevealObserver";
 
@@ -59,6 +60,7 @@ export default async function LocaleLayout({
           {children}
           <ScrollRevealObserver />
           <ScrollToTopButton />
+          <CookieConsent />
         </div>
         <div className="site-film-grain" aria-hidden />
       </>

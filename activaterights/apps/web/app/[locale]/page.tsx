@@ -10,7 +10,7 @@ import {
 } from "../../components/sections/HomeFullLayout";
 import { locales, type Locale } from "../../i18n/config";
 import { mapArticleToHomeRow, type HomeArticleCard } from "../../lib/articles/mapArticleCard";
-import { formatCalendarDayMonthYear } from "../../lib/datetime/formatCalendarDisplay";
+import { formatProjectLaunchDate } from "../../lib/projects/formatProjectLaunchDate";
 import { urlFor } from "../../lib/sanity/image";
 import { formatReportCardDate } from "../../lib/reports/formatReportDate";
 import { mapReportRowsToListingCards } from "../../lib/reports/mapReportListingCards";
@@ -29,14 +29,6 @@ type HomePageProps = {
     locale: string;
   };
 };
-
-function formatLaunchDate(iso: string | null | undefined, locale: Locale): string | null {
-  if (!iso || typeof iso !== "string") return null;
-  const trimmed = iso.trim();
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return null;
-  const label = formatCalendarDayMonthYear(`${trimmed}T12:00:00Z`, locale);
-  return label === "—" ? null : label;
-}
 
 function toHomeReportCards(
   locale: Locale,
@@ -76,7 +68,7 @@ function toFeaturedProjectCards(locale: Locale, projects: Awaited<ReturnType<typ
       href,
       isExternal,
       imageUrl,
-      dateLabel: formatLaunchDate(p.launchDate, locale)
+      dateLabel: formatProjectLaunchDate(p.launchDate, locale)
     };
   });
 }
