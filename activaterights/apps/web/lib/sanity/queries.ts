@@ -725,9 +725,9 @@ export async function getReportsForHome(locale: Locale): Promise<ReportItem[]> {
   });
   const list = Array.isArray(slots) ? slots : [];
   const cleaned = list
-    .filter((row) => isValidReportRow(row?.doc))
     .sort((a, b) => (a.position ?? 999) - (b.position ?? 999))
-    .map((row) => row.doc);
+    .map((row) => row.doc)
+    .filter(isValidReportRow);
   if (cleaned.length > 0) {
     return cleaned.slice(0, HOME_REPORTS_COUNT);
   }
