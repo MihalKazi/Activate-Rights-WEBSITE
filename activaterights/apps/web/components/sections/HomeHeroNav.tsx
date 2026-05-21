@@ -18,8 +18,8 @@ type HomeHeroNavProps = {
   locale: "en" | "bn";
 };
 
+/** Home page hero — logo links home; no separate HOME nav item. */
 const navDefs = [
-  { key: "home" as const, href: "/" },
   { key: "about" as const, href: "/about" },
   { key: "projects" as const, href: "/projects" },
   { key: "reports" as const, href: "/reports" },
@@ -37,7 +37,7 @@ export function HomeHeroNav({ locale }: HomeHeroNavProps) {
   const t = useTranslations("nav");
 
   const linkClass =
-    "border border-white bg-white px-3 py-2 text-[11px] uppercase text-black transition hover:bg-transparent hover:text-white sm:px-[14px] sm:py-[9px] sm:text-[12px] md:px-[18px] md:py-[10px] md:text-[14px]";
+    "home-hero-nav-link border border-white bg-white uppercase text-black transition hover:bg-transparent hover:text-white";
 
   const openMenu = () => setIsOpen(true);
   const closeMenu = () => setIsOpen(false);

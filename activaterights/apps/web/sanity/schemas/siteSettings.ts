@@ -22,11 +22,13 @@ export const siteSettingsSchema = defineType({
     }),
     defineField({
       name: "homeFeaturedProjects",
-      title: "Projects on home page",
-      description: "Up to 3 projects shown in the home “our projects” row. Order here = order on the site.",
+      title: "Projects on home page (legacy)",
+      description:
+        "Deprecated — use “Initiatives, reports & updates on Home” → Projects instead. Kept for old data fallback only.",
       type: "array",
       of: [defineArrayMember({ type: "reference", to: [{ type: "project" }] })],
-      validation: (rule) => rule.max(3)
+      validation: (rule) => rule.max(3),
+      hidden: true
     }),
     defineField({ name: "footerText", type: "localizedText" }),
     defineField({

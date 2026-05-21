@@ -26,17 +26,28 @@ export default defineConfig({
               .child(S.documentTypeList("event").title("Events").defaultOrdering([{ field: "date", direction: "desc" }])),
             S.divider(),
             S.listItem()
-              .title("Initiatives, reports & updates on Home")
+              .title("Home page: projects, initiatives & more")
               .id("singleton-reports-on-home")
               .child(
                 S.document()
                   .schemaType("reportsOnHome")
                   .documentId(REPORTS_ON_HOME_DOCUMENT_ID)
-                  .title("Initiatives, reports & updates on Home")
+                  .title("Home page: projects, initiatives & more")
               ),
             S.divider(),
+            S.listItem()
+              .title("Reports")
+              .id("reports-root")
+              .child(
+                S.documentTypeList("report")
+                  .title("Reports")
+                  .defaultOrdering([
+                    { field: "order", direction: "asc" },
+                    { field: "publishedDate", direction: "desc" }
+                  ])
+              ),
             ...S.documentTypeListItems().filter(
-              (item) => item.getId() !== "event" && item.getId() !== "reportsOnHome"
+              (item) => item.getId() !== "event" && item.getId() !== "reportsOnHome" && item.getId() !== "report"
             )
           ])
     }),

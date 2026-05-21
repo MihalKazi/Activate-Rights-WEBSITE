@@ -1,18 +1,13 @@
 import Image from "next/image";
-import { Roboto_Mono, Space_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import { getTranslations } from "next-intl/server";
 import { AboutPartnersClosing } from "../layout/AboutPartnersClosing";
 import type { Locale } from "../../i18n/config";
 import { cardImageUrl } from "../../lib/sanity/image";
 import { getAllTeamMembers } from "../../lib/sanity/queries";
+import { WhatWeDoSection } from "./WhatWeDoSection";
 
 const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap"
-});
-
-const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap"
@@ -100,24 +95,6 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       linkedInUrl: linkedInUrlFromSocialLinks(m.socialLinks)
     });
   }
-
-  const workRows = [
-    {
-      title1: t("workRow1Title1"),
-      title2: t("workRow1Title2"),
-      body: t("workRow1Body")
-    },
-    {
-      title1: t("workRow2Title1"),
-      title2: t("workRow2Title2"),
-      body: t("workRow2Body")
-    },
-    {
-      title1: t("workRow3Title1"),
-      title2: t("workRow3Title2"),
-      body: t("workRow3Body")
-    }
-  ];
 
   const rawTeam = t.raw("teamMembers");
   const fromTranslations: TeamMemberEntry[] = Array.isArray(rawTeam)
@@ -216,40 +193,13 @@ export async function AboutSections({ locale }: AboutSectionsProps) {
       </section>
 
       {/* What do we do — site paper tile */}
-      <section className="relative overflow-x-clip site-white-section px-6 py-10 text-[#303ccf] md:px-10 md:py-14 lg:px-[40px] lg:py-16">
+      <section className="relative overflow-x-clip site-white-section px-6 py-6 text-[#303ccf] md:px-10 md:py-8 lg:px-[40px] lg:py-11">
         <PixelDecoration />
 
         <div className="relative z-10 mx-auto max-w-[1440px]">
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,260px)_1fr] lg:gap-10 xl:grid-cols-[minmax(0,300px)_1fr]">
-            <h2 className="home-headline-font text-[clamp(28px,4.8vw,62px)] font-semibold leading-[0.96] tracking-tight text-[#05b557]">
-              <span className="block whitespace-pre-wrap">{t("whatWeDoTitle1")}</span>
-              <span className="block whitespace-pre-wrap">{t("whatWeDoTitle2")}</span>
-            </h2>
-
-            <div className="flex max-w-[720px] flex-col gap-7 lg:pt-0">
-              {workRows.map((row) => (
-                <div
-                  key={row.title1}
-                  className="flex flex-col gap-4 border-b border-[#303ccf]/15 pb-7 last:border-0 last:pb-0 md:flex-row md:items-start md:justify-between md:gap-5"
-                >
-                  <div className="shrink-0 uppercase">
-                    <p className="home-mission-label-font text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.12]">
-                      <span className="text-[#05b557]">// </span>
-                      <span>{row.title1}</span>
-                    </p>
-                    <p className="home-mission-label-font mt-0.5 text-[clamp(17px,2.2vw,22px)] font-normal leading-[1.12]">
-                      {row.title2}
-                    </p>
-                  </div>
-                  <p
-                    className={`${spaceMono.className} max-w-[460px] text-[clamp(14px,1.35vw,18px)] leading-[1.55]`}
-                  >
-                    {row.body}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <WhatWeDoSection
+            titleClassName="text-[clamp(28px,3.8vw,52px)] leading-[0.9] md:text-[clamp(32px,4vw,64px)]"
+          />
         </div>
       </section>
 

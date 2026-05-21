@@ -5,9 +5,18 @@ export const REPORTS_ON_HOME_DOCUMENT_ID = "reportsOnHome";
 
 export const reportsOnHomeSchema = defineType({
   name: "reportsOnHome",
-  title: "Initiatives, reports & updates on Home",
+  title: "Home page: projects, initiatives & more",
   type: "document",
   fields: [
+    defineField({
+      name: "featuredProjects",
+      title: "Projects (“our projects” on home)",
+      description:
+        "Pick exactly 3 projects for the home page grid. Drag to set order. Leave empty to use the first 3 projects by order field.",
+      type: "array",
+      of: [defineArrayMember({ type: "reference", to: [{ type: "project" }] })],
+      validation: (rule) => rule.max(3).warning("Home shows at most 3 projects.")
+    }),
     defineField({
       name: "initiatives",
       title: "Initiatives (“our initiatives” on home)",
@@ -21,9 +30,51 @@ export const reportsOnHomeSchema = defineType({
       name: "reports",
       title: "Reports (published reports band)",
       description:
-        "Up to 3 references to Report documents. Drag to set order. Leave empty to show every report on the home page (newest first).",
+        "Add up to 3 slots. Set Position (1 = left, 2 = middle, 3 = right) for each. Leave empty to use the 3 reports with the lowest Order on each Report document (then newest date).",
       type: "array",
-      of: [defineArrayMember({ type: "reference", to: [{ type: "report" }] })],
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "homeReportSlot",
+          title: "Home report slot",
+          fields: [
+            defineField({
+              name: "position",
+              title: "Position on home page",
+              type: "number",
+              options: {
+                list: [
+                  { title: "1 — Left", value: 1 },
+                  { title: "2 — Middle", value: 2 },
+                  { title: "3 — Right", value: 3 }
+                ],
+                layout: "radio"
+              },
+              validation: (rule) => rule.required().integer().min(1).max(3)
+            }),
+            defineField({
+              name: "report",
+              title: "Report",
+              type: "reference",
+              to: [{ type: "report" }],
+              validation: (rule) => rule.required()
+            })
+          ],
+          preview: {
+            select: {
+              position: "position",
+              title: "report.title.en",
+              media: "report.coverImage"
+            },
+            prepare({ position, title, media }) {
+              return {
+                title: `Position ${position ?? "?"}: ${title || "Choose report"}`,
+                media
+              };
+            }
+          }
+        })
+      ],
       validation: (rule) => rule.max(3)
     }),
     defineField({
@@ -38,7 +89,7 @@ export const reportsOnHomeSchema = defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Initiatives, reports & updates on Home" };
+      return { title: "Home page: projects, initiatives & more" };
     }
   }
 });

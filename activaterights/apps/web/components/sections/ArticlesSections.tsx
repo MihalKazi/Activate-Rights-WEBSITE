@@ -32,7 +32,10 @@ export async function ArticlesSections({ locale }: ArticlesSectionsProps) {
         </div>
       </header>
 
-      <section className="relative px-6 py-12 md:px-10 md:py-16 lg:px-[40px] lg:py-20">
+      <section
+        className="relative px-6 py-12 md:px-10 md:py-16 lg:px-[40px] lg:py-20"
+        data-scroll-reveal="fade-down-right"
+      >
         <div className="articles-listing-grain pointer-events-none absolute inset-0 z-0" aria-hidden />
         <ArticlesListClient
           locale={locale}

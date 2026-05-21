@@ -5,6 +5,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Inter, Noto_Sans_Bengali } from "next/font/google";
 import { locales, type Locale } from "../../i18n/config";
 import { ScrollToTopButton } from "../../components/layout/ScrollToTopButton";
+import { ScrollRevealObserver } from "../../components/motion/ScrollRevealObserver";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -56,6 +57,7 @@ export default async function LocaleLayout({
           className={`${inter.variable} ${notoSansBengali.variable} ${localeFontClass} min-h-screen`}
         >
           {children}
+          <ScrollRevealObserver />
           <ScrollToTopButton />
         </div>
         <div className="site-film-grain" aria-hidden />

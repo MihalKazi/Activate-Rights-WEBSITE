@@ -14,6 +14,15 @@ export const reportSchema = defineType({
       validation: (rule) => rule.required()
     }),
     defineField({
+      name: "order",
+      title: "Order",
+      type: "number",
+      description:
+        "Lower numbers appear first on /reports and on the home page when home report slots are empty. For exact left/middle/right on home, set Position in “Home page: projects, initiatives & more” → Reports.",
+      initialValue: 0,
+      validation: (rule) => rule.integer().min(0)
+    }),
+    defineField({
       name: "publishedDate",
       title: "Published date",
       type: "date",
@@ -45,13 +54,17 @@ export const reportSchema = defineType({
   preview: {
     select: {
       title: "title.en",
-      subtitle: "publishedDate",
+      publishedDate: "publishedDate",
+      order: "order",
       media: "coverImage"
     },
-    prepare({ title, subtitle, media }) {
+    prepare({ title, publishedDate, order, media }) {
+      const orderLabel = typeof order === "number" ? `Order ${order}` : undefined;
+      const dateLabel = publishedDate ? String(publishedDate) : undefined;
+      const subtitle = [orderLabel, dateLabel].filter(Boolean).join(" · ");
       return {
         title: title || "Report",
-        subtitle: subtitle ? String(subtitle) : undefined,
+        subtitle: subtitle || undefined,
         media
       };
     }

@@ -1,3 +1,4 @@
+import { Resend } from "resend";
 import { getContactRecipients } from "./recipients";
 
 export type ContactFormPayload = {
@@ -16,28 +17,22 @@ export async function sendContactEmail(payload: ContactFormPayload): Promise<voi
     process.env.CONTACT_EMAIL_FROM?.trim() ?? "Activate Rights <onboarding@resend.dev>";
   const to = getContactRecipients();
 
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      from,
-      to,
-      reply_to: payload.email,
-      subject: `Contact form — ${payload.name}`,
-      text: [
-        `Name: ${payload.name}`,
-        `Email: ${payload.email}`,
-        "",
-        payload.message
-      ].join("\n")
-    })
+  const resend = new Resend(apiKey);
+
+  const { error } = await resend.emails.send({
+    from,
+    to,
+    replyTo: payload.email,
+    subject: `Contact form — ${payload.name}`,
+    text: [
+      `Name: ${payload.name}`,
+      `Email: ${payload.email}`,
+      "",
+      payload.message
+    ].join("\n")
   });
 
-  if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    throw new Error(detail || `Email send failed (${response.status})`);
+  if (error) {
+    throw new Error(error.message);
   }
 }

@@ -49,6 +49,7 @@ export type HomeArticleCard = {
   title: string;
   excerpt: string | null;
   coverSrc: string | null;
+  publishedAt: string;
   metaCategory: string;
   author: string;
   accentTitle: boolean;
@@ -73,6 +74,7 @@ export function mapArticleToHomeRow(row: ArticleListItem, locale: Locale): HomeA
     title: card.title,
     excerpt,
     coverSrc,
+    publishedAt: card.publishedAt ?? "",
     metaCategory: card.metaCategory,
     author: card.author,
     accentTitle: card.accentTitle

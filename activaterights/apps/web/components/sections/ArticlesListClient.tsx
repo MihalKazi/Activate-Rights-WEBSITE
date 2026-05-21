@@ -90,7 +90,7 @@ export function ArticlesListClient({ locale, items, labels }: ArticlesListClient
       </div>
 
       {/* Figma 34:912–961 — 60px between row+rule blocks; rule from MCP line asset (blue tint) */}
-      <ul className="flex flex-col gap-[60px]">
+      <ul className="flex flex-col gap-[60px]" data-scroll-reveal-stagger="list">
         {visible.map((item) => (
           <li key={item.slug} className="flex flex-col">
             <Link

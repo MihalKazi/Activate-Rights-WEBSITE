@@ -4,6 +4,12 @@ import { REPORTS_ON_HOME_DOCUMENT_ID } from "../../sanity/schemas/reportsOnHome"
 import { sanityClient } from "./client";
 import type { Locale } from "../../i18n/config";
 
+/** Home “our projects” grid — always at most this many cards. */
+export const HOME_FEATURED_PROJECTS_COUNT = 3;
+
+/** Home published-reports band — always at most this many cards. */
+export const HOME_REPORTS_COUNT = 3;
+
 type Slug = { current: string };
 type SanityImage = {
   asset?: {
@@ -66,6 +72,7 @@ export type ReportItem = {
   coverImage: SanityImage;
   titleLeadingSlash?: boolean;
   excerpt?: string | null;
+  order?: number;
 };
 
 export type PublicationFileAttachment = {
@@ -300,19 +307,32 @@ const projectBySlugQuery = groq`
   }
 `;
 
-/** Curated list from Site Settings; order = CMS array order. */
-const homePageProjectsQuery = groq`
+const homePageProjectFields = `
+  _id,
+  "title": coalesce(title[$locale], title.en, title.bn, ""),
+  slug,
+  "description": description[$locale],
+  status,
+  coverImage,
+  externalUrl,
+  order,
+  launchDate
+`;
+
+/** Curated list from “Initiatives, reports & updates on Home” → Projects. */
+const homePageProjectsFromReportsOnHomeQuery = groq`
+  *[_type == "reportsOnHome" && _id == $reportsOnHomeId][0]{
+    "projects": coalesce(featuredProjects[]->{
+      ${homePageProjectFields}
+    }, [])
+  }.projects
+`;
+
+/** Legacy fallback — Site Settings → homeFeaturedProjects. */
+const homePageProjectsFromSiteSettingsQuery = groq`
   *[_type == "siteSettings"][0]{
     "projects": coalesce(homeFeaturedProjects[]->{
-      _id,
-      "title": coalesce(title[$locale], title.en, title.bn, ""),
-      slug,
-      "description": description[$locale],
-      status,
-      coverImage,
-      externalUrl,
-      order,
-      launchDate
+      ${homePageProjectFields}
     }, [])
   }.projects
 `;
@@ -342,13 +362,27 @@ select(
 `.trim();
 
 const allReportsQuery = groq`
-  *[_type == "report"] | order(publishedDate desc) {
+  *[_type == "report"] | order(order asc, publishedDate desc) {
     _id,
     "title": coalesce(title[$locale], title.en, title.bn, ""),
     slug,
     publishedDate,
     coverImage,
     titleLeadingSlash,
+    order,
+    "excerpt": ${localizedReportExcerpt}
+  }
+`;
+
+const homeLatestReportsQuery = groq`
+  *[_type == "report"] | order(order asc, publishedDate desc)[0...${HOME_REPORTS_COUNT}] {
+    _id,
+    "title": coalesce(title[$locale], title.en, title.bn, ""),
+    slug,
+    publishedDate,
+    coverImage,
+    titleLeadingSlash,
+    order,
     "excerpt": ${localizedReportExcerpt}
   }
 `;
@@ -384,19 +418,23 @@ const reportsOnHomePickedInitiativesQuery = groq`
   }.initiatives
 `;
 
-/** Singleton `reportsOnHome` — curated order for home; empty picks → use all reports. */
+/** Singleton `reportsOnHome` — slots (`position` + `report`) or legacy plain references. */
 const reportsOnHomePickedQuery = groq`
   *[_type == "reportsOnHome" && _id == $reportsOnHomeId][0]{
-    "reports": coalesce(reports[]->{
-      _id,
-      "title": coalesce(title[$locale], title.en, title.bn, ""),
-      slug,
-      publishedDate,
-      coverImage,
-      titleLeadingSlash,
-      "excerpt": ${localizedReportExcerpt}
+    "reportSlots": coalesce(reports[]{
+      position,
+      "doc": coalesce(report->, @->){
+        _id,
+        "title": coalesce(title[$locale], title.en, title.bn, ""),
+        slug,
+        publishedDate,
+        coverImage,
+        titleLeadingSlash,
+        order,
+        "excerpt": ${localizedReportExcerpt}
+      }
     }, [])
-  }.reports
+  }.reportSlots
 `;
 
 /** Same singleton — curated articles for home “updates and blog”; empty → 3 newest articles. */
@@ -597,11 +635,9 @@ export async function getAllProjects(locale: Locale): Promise<ProjectItem[]> {
   return sanityClient.fetch(allProjectsQuery, { locale });
 }
 
-/** Up to 3 projects for the home page: Site Settings picks, else first 3 by `order`. */
-export async function getHomePageProjects(locale: Locale): Promise<ProjectItem[]> {
-  const picked = await sanityClient.fetch<ProjectItem[] | null>(homePageProjectsQuery, { locale });
-  const list = Array.isArray(picked) ? picked : [];
-  const cleaned = list.filter(
+function cleanHomeProjectRows(rows: ProjectItem[] | null | undefined): ProjectItem[] {
+  const list = Array.isArray(rows) ? rows : [];
+  return list.filter(
     (p) =>
       p &&
       typeof p._id === "string" &&
@@ -609,11 +645,30 @@ export async function getHomePageProjects(locale: Locale): Promise<ProjectItem[]
       typeof p.slug.current === "string" &&
       p.slug.current.length > 0
   );
-  if (cleaned.length > 0) {
-    return cleaned.slice(0, 3);
+}
+
+/** Home “our projects”: Reports on Home picks (max 3), else legacy Site Settings, else first 3 by `order`. */
+export async function getHomePageProjects(locale: Locale): Promise<ProjectItem[]> {
+  const fromReportsOnHome = await sanityClient.fetch<ProjectItem[] | null>(
+    homePageProjectsFromReportsOnHomeQuery,
+    { locale, reportsOnHomeId: REPORTS_ON_HOME_DOCUMENT_ID }
+  );
+  const curated = cleanHomeProjectRows(fromReportsOnHome);
+  if (curated.length > 0) {
+    return curated.slice(0, HOME_FEATURED_PROJECTS_COUNT);
   }
+
+  const fromSiteSettings = await sanityClient.fetch<ProjectItem[] | null>(
+    homePageProjectsFromSiteSettingsQuery,
+    { locale }
+  );
+  const legacy = cleanHomeProjectRows(fromSiteSettings);
+  if (legacy.length > 0) {
+    return legacy.slice(0, HOME_FEATURED_PROJECTS_COUNT);
+  }
+
   const all = await getAllProjects(locale);
-  return all.slice(0, 3);
+  return all.slice(0, HOME_FEATURED_PROJECTS_COUNT);
 }
 
 /** Up to 2 initiatives for the home page: Reports on Home singleton, else first 2 by `order`. */
@@ -647,25 +702,36 @@ export async function getReportBySlug(slug: string, locale: Locale): Promise<Rep
   return sanityClient.fetch(reportBySlugQuery, { slug: normalized, locale });
 }
 
-/** Home published-reports band: order from Reports on Home singleton if set, else all reports by date. */
+type HomeReportSlotRow = {
+  position?: number;
+  doc: ReportItem | null;
+};
+
+function isValidReportRow(r: ReportItem | null | undefined): r is ReportItem {
+  return (
+    !!r &&
+    typeof r._id === "string" &&
+    !!r.slug &&
+    typeof r.slug.current === "string" &&
+    r.slug.current.trim().length > 0
+  );
+}
+
+/** Home published-reports band: home slots by Position; else 3 lowest `order` then newest date. */
 export async function getReportsForHome(locale: Locale): Promise<ReportItem[]> {
-  const picked = await sanityClient.fetch<ReportItem[] | null>(reportsOnHomePickedQuery, {
+  const slots = await sanityClient.fetch<HomeReportSlotRow[] | null>(reportsOnHomePickedQuery, {
     locale,
     reportsOnHomeId: REPORTS_ON_HOME_DOCUMENT_ID
   });
-  const list = Array.isArray(picked) ? picked : [];
-  const cleaned = list.filter(
-    (r) =>
-      r &&
-      typeof r._id === "string" &&
-      r.slug &&
-      typeof r.slug.current === "string" &&
-      r.slug.current.trim().length > 0
-  );
+  const list = Array.isArray(slots) ? slots : [];
+  const cleaned = list
+    .filter((row) => isValidReportRow(row?.doc))
+    .sort((a, b) => (a.position ?? 999) - (b.position ?? 999))
+    .map((row) => row.doc);
   if (cleaned.length > 0) {
-    return cleaned.slice(0, 3);
+    return cleaned.slice(0, HOME_REPORTS_COUNT);
   }
-  return getAllReports(locale);
+  return sanityClient.fetch<ReportItem[]>(homeLatestReportsQuery, { locale });
 }
 
 export async function getProjectBySlug(

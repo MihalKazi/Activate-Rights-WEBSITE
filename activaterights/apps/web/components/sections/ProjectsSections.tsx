@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Roboto_Mono } from "next/font/google";
@@ -85,8 +86,14 @@ export async function ProjectsSections({ locale }: ProjectsSectionsProps) {
         </div>
       </header>
 
-      <section className="site-white-section px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
-        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:gap-x-[92px] lg:gap-y-16">
+      <section
+        className="site-white-section px-6 py-16 md:px-10 md:py-20 lg:px-[40px] lg:py-24"
+        data-scroll-reveal="fade-down-left"
+      >
+        <div
+          className="mx-auto grid max-w-[1360px] grid-cols-1 gap-x-[72px] gap-y-14 sm:grid-cols-2 lg:gap-x-[92px] lg:gap-y-16"
+          data-scroll-reveal-stagger
+        >
           {items.length === 0 ? (
             <p className={`col-span-full text-center text-[17px] text-[#212121]/80 ${robotoMono.className}`}>
               {t("empty")}

@@ -120,7 +120,10 @@ export function EventList({ locale, events }: EventListProps) {
   const rows = chunkPairs(events);
 
   return (
-    <section className="site-white-section px-6 py-16 text-neutral-900 md:px-10 md:py-20 lg:px-[40px] lg:py-24">
+    <section
+      className="site-white-section px-6 py-16 text-neutral-900 md:px-10 md:py-20 lg:px-[40px] lg:py-24"
+      data-scroll-reveal="fade-up"
+    >
       <div className="mx-auto max-w-[1440px] pb-4 pt-0 md:pb-6">
         <div className="flex flex-col">
           {rows.map((pair, rowIndex) => {
@@ -131,7 +134,7 @@ export function EventList({ locale, events }: EventListProps) {
             const rightFeatured = right !== undefined && rightIndex === globalFeaturedIndex;
 
             return (
-              <div key={left._id}>
+              <div key={left._id} data-scroll-reveal="fade-up">
                 <div className="h-px w-full bg-[#303ccf]/25" aria-hidden />
                 <div className="grid grid-cols-1 gap-y-12 pt-[30px] pb-12 lg:grid-cols-2 lg:gap-x-5 lg:gap-y-0 lg:pb-14">
                   <EventCell event={left} isFeatured={leftFeatured} locale={locale} />

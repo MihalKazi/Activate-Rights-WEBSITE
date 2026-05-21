@@ -9,15 +9,20 @@
     "heroLine4End": "an open internet",
     "whatWeDoTitle1": "what  do",
     "whatWeDoTitle2": "we do",
-    "workRow1Title1": "CENSORSHIP",
-    "workRow1Title2": "Monitoring",
-    "workRow1Body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
-    "workRow2Title1": "Archive",
-    "workRow2Title2": "Violence",
-    "workRow2Body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
-    "workRow3Title1": "EMPOWER",
-    "workRow3Title2": "COMMUNITY",
-    "workRow3Body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable.",
+    "whatWeDoItems": [
+      {
+        "title": "Censorship\nMonitoring",
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      },
+      {
+        "title": "Archive\nViolence",
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      },
+      {
+        "title": "Empower\nCommunity",
+        "body": "We measure and monitor internet shutdowns in Bangladesh to fight for uninterrupted access and hold authorities accountable."
+      }
+    ],
     "whoWeAreTitle": "who are we",
     "teamMembers": [
       {
@@ -101,6 +106,9 @@
     "backToProjects": "Back to projects",
     "externalLink": "Visit project",
     "externalLinkAria": "Open project link in a new tab",
+    "viewProject": "View project",
+    "viewProjectAria": "View project details",
+    "projectLabel": "Project",
     "fallbackBody": "Add project details and file attachments in Sanity Studio to publish the full project page here.",
     "attachmentImage": "Image",
     "attachmentVideo": "Video",
@@ -114,6 +122,7 @@
     "heroLine1": "published",
     "heroLine2": "reports",
     "empty": "No reports published yet. Check back soon.",
+    "readReport": "Read report",
     "reportKind": "Report",
     "shareReportAria": "Share this report",
     "backToReports": "Back to reports",

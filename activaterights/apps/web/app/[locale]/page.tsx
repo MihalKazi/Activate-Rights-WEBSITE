@@ -18,6 +18,8 @@ import {
   getArticlesForHome,
   getHomePageInitiatives,
   getHomePageProjects,
+  HOME_FEATURED_PROJECTS_COUNT,
+  HOME_REPORTS_COUNT,
   getReportsForHome
 } from "../../lib/sanity/queries";
 import { withLocaleSeo } from "../../lib/seo/buildPageMetadata";
@@ -42,6 +44,7 @@ function toHomeReportCards(
 ): HomeFeaturedReportCard[] {
   return mapReportRowsToListingCards(reports)
     .filter((r) => r.date.length > 0)
+    .slice(0, HOME_REPORTS_COUNT)
     .map((r) => ({
       slug: r.slug,
       title: r.title,
@@ -53,7 +56,7 @@ function toHomeReportCards(
 }
 
 function toFeaturedProjectCards(locale: Locale, projects: Awaited<ReturnType<typeof getHomePageProjects>>): HomeFeaturedProjectCard[] {
-  return projects.map((p) => {
+  return projects.slice(0, HOME_FEATURED_PROJECTS_COUNT).map((p) => {
     const slug = p.slug?.current?.trim();
     const ext = p.externalUrl?.trim();
     const imageUrl =

@@ -24,7 +24,7 @@ function withLocale(locale: Locale, href: string): string {
 
 export function HomeSiteFooter({ locale, showContact = true }: HomeSiteFooterProps) {
   return (
-    <footer className="home-footer pb-16 pt-12 text-white md:pb-20 md:pt-16">
+    <footer className="home-footer pb-16 pt-12 text-white md:pb-20 md:pt-16" data-scroll-reveal="fade-up">
       <div className="relative z-10 mx-auto max-w-[1440px] px-6 md:px-10">
         <div className="grid grid-cols-1 gap-14 min-[900px]:grid-cols-2 min-[900px]:items-start min-[900px]:gap-x-16 lg:gap-x-24">
           <div className="flex min-w-0 flex-col gap-10">
