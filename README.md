@@ -190,3 +190,4 @@ Proprietary — (c) Activate Rights. All rights reserved unless otherwise noted 
 </p>
 
 **Live site:** https://activate-rights-website.vercel.app
+
