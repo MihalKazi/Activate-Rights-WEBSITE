@@ -188,3 +188,5 @@ Proprietary — (c) Activate Rights. All rights reserved unless otherwise noted 
 <p align="center">
   <sub>Built with care for an open, safe, and rights-respecting internet.</sub>
 </p>
+
+**Live site:** https://activate-rights-website.vercel.app
