@@ -191,3 +191,4 @@ Proprietary — (c) Activate Rights. All rights reserved unless otherwise noted 
 
 **Live site:** https://activate-rights-website.vercel.app
 
+
